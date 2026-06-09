@@ -75,15 +75,16 @@ const LeadGate = (function () {
     document.body.style.overflow = '';
   }
 
-  // Close on backdrop click
+  // Close on backdrop click — only if NOT in forced mode
   document.addEventListener('click', (e) => {
     const modal = document.getElementById('lead-gate-modal');
-    if (modal && e.target === modal) closeModal();
+    if (modal && e.target === modal && !modal.classList.contains('forced')) closeModal();
   });
 
-  // Escape key
+  // Escape key — only if NOT in forced mode
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
+    const modal = document.getElementById('lead-gate-modal');
+    if (e.key === 'Escape' && modal && !modal.classList.contains('forced')) closeModal();
   });
 
   // Wire up any element with data-gate attribute
@@ -98,6 +99,33 @@ const LeadGate = (function () {
   });
 
   return { open: openModal, close: closeModal, isRegistered, getRegistration };
+})();
+
+// ── Hero Carousel ──
+(function () {
+  const slides = document.querySelectorAll('.hero-slide');
+  if (!slides.length) return;
+  let current = 0;
+
+  function nextSlide() {
+    slides[current].classList.remove('active');
+    current = (current + 1) % slides.length;
+    slides[current].classList.add('active');
+  }
+
+  setInterval(nextSlide, 6000); // rotate every 6 seconds
+})();
+
+// ── 60-Second Forced Registration ──
+(function () {
+  if (LeadGate.isRegistered()) return; // already registered, skip
+  setTimeout(function () {
+    if (!LeadGate.isRegistered()) {
+      const modal = document.getElementById('lead-gate-modal');
+      if (modal) modal.classList.add('forced');
+      LeadGate.open();
+    }
+  }, 60000); // 60 seconds
 })();
 
 // ── Smooth scroll for anchor links ──
