@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Idaho Market Updates & Blog | CWRE Idaho</title>
+  <meta name="description" content="Monthly Idaho real estate market reports, community news, buyer tips, and seller guides from Clint Walker Real Estate Idaho." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .blog-page-grid { display: grid; grid-template-columns: 1fr 320px; gap: 3rem; align-items: start; }
+    .blog-sidebar { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 1.5rem; }
+    .sidebar-card { background: var(--white); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow); }
+    .sidebar-card h3 { font-size: 1rem; margin-bottom: 1rem; color: var(--text); }
+    .category-list { display: flex; flex-direction: column; gap: 0.4rem; }
+    .category-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.88rem; color: var(--text-light); cursor: pointer; transition: all var(--transition); text-decoration: none; }
+    .category-item:hover { background: var(--gray-light); color: var(--navy); }
+    .category-count { background: var(--gray-light); color: var(--gray-dark); font-size: 0.75rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 50px; }
+    .blog-main-grid { display: grid; gap: 2rem; }
+    .blog-card-horiz { display: grid; grid-template-columns: 240px 1fr; background: var(--white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); transition: all var(--transition); text-decoration: none; }
+    .blog-card-horiz:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .blog-card-horiz-img { background: linear-gradient(135deg, var(--navy-dark), var(--navy-light)); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; min-height: 200px; }
+    .blog-card-horiz-body { padding: 1.75rem; display: flex; flex-direction: column; justify-content: center; }
+    .blog-card-horiz-body .blog-card-tag { position: static; margin-bottom: 0.6rem; display: inline-block; }
+    .blog-card-horiz-body h3 { font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text); }
+    .blog-card-horiz-body p { font-size: 0.9rem; color: var(--text-light); line-height: 1.6; }
+    .pagination { display: flex; justify-content: center; gap: 0.5rem; margin-top: 2.5rem; }
+    .page-btn { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 600; border: 1.5px solid var(--gray); color: var(--text-light); transition: all var(--transition); cursor: pointer; }
+    .page-btn:hover, .page-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+    @media (max-width: 900px) { .blog-page-grid { grid-template-columns: 1fr; } .blog-sidebar { position: static; } .blog-card-horiz { grid-template-columns: 1fr; } .blog-card-horiz-img { min-height: 160px; } }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-icon">CW</div>
+      <div class="nav-logo-text">
+        <span class="nav-logo-main">CWRE Idaho</span>
+        <span class="nav-logo-sub">Clint Walker Real Estate</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li class="nav-dropdown"><a href="../communities/index.html">Communities</a>
+        <ul class="dropdown-menu">
+          <li><a href="../communities/boise.html">Boise</a></li>
+          <li><a href="../communities/eagle.html">Eagle</a></li>
+          <li><a href="../communities/meridian.html">Meridian</a></li>
+          <li><a href="../communities/index.html">View All →</a></li>
+        </ul>
+      </li>
+      <li><a href="../buyers.html">Buy</a></li>
+      <li><a href="../sellers.html">Sell</a></li>
+      <li><a href="index.html" class="active">Market Updates</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-cta"><a href="../contact.html" class="btn btn-gold">Get in Touch</a></div>
+    <button class="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container page-hero-inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span>Market Updates</div>
+    <h1>Idaho Real Estate Insights</h1>
+    <p>Monthly market reports, community guides, buyer tips, and seller strategies from Clint Walker.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="blog-page-grid">
+
+      <main>
+        <div class="blog-main-grid">
+
+          <a href="june-2025-market-report.html" class="blog-card-horiz">
+            <div class="blog-card-horiz-img">📊</div>
+            <div class="blog-card-horiz-body">
+              <span class="blog-card-tag">Market Report</span>
+              <div class="blog-card-meta" style="font-size:0.8rem;color:var(--gray-dark);margin-bottom:0.5rem;">June 2025 · 5 min read</div>
+              <h3>June 2025 Treasure Valley Market Report</h3>
+              <p>Inventory levels, median prices, days on market, and what buyers and sellers need to know heading into summer in the Boise metro area.</p>
+              <span class="blog-card-read-more" style="display:inline-flex;align-items:center;gap:.35rem;margin-top:.75rem;font-size:.85rem;font-weight:600;color:var(--navy);">Read Full Report →</span>
+            </div>
+          </a>
+
+          <a href="buying-in-eagle-idaho.html" class="blog-card-horiz">
+            <div class="blog-card-horiz-img" style="background:linear-gradient(135deg,#1a4a2a,#2d7a45);">🏡</div>
+            <div class="blog-card-horiz-body">
+              <span class="blog-card-tag">Buyer Guide</span>
+              <div class="blog-card-meta" style="font-size:0.8rem;color:var(--gray-dark);margin-bottom:0.5rem;">May 2025 · 7 min read</div>
+              <h3>Why Buyers Are Choosing Eagle, Idaho in 2025</h3>
+              <p>Eagle's school ratings, new developments, lifestyle amenities, and what makes it one of Idaho's most sought-after communities for families.</p>
+              <span class="blog-card-read-more" style="display:inline-flex;align-items:center;gap:.35rem;margin-top:.75rem;font-size:.85rem;font-weight:600;color:var(--navy);">Read More →</span>
+            </div>
+          </a>
+
+          <a href="selling-your-home-tips.html" class="blog-card-horiz">
+            <div class="blog-card-horiz-img" style="background:linear-gradient(135deg,#4a1a0a,#8a3520);">🔑</div>
+            <div class="blog-card-horiz-body">
+              <span class="blog-card-tag">Seller Tips</span>
+              <div class="blog-card-meta" style="font-size:0.8rem;color:var(--gray-dark);margin-bottom:0.5rem;">April 2025 · 6 min read</div>
+              <h3>5 Things Idaho Sellers Should Do Before Listing</h3>
+              <p>Small investments before you list can mean thousands more at closing. Here's what CWRE Idaho recommends for every seller in today's market.</p>
+              <span class="blog-card-read-more" style="display:inline-flex;align-items:center;gap:.35rem;margin-top:.75rem;font-size:.85rem;font-weight:600;color:var(--navy);">Read More →</span>
+            </div>
+          </a>
+
+          <a href="#" class="blog-card-horiz">
+            <div class="blog-card-horiz-img" style="background:linear-gradient(135deg,#1a4a5a,#2a7a8a);">📍</div>
+            <div class="blog-card-horiz-body">
+              <span class="blog-card-tag">Community</span>
+              <div class="blog-card-meta" style="font-size:0.8rem;color:var(--gray-dark);margin-bottom:0.5rem;">March 2025 · 5 min read</div>
+              <h3>Living in Star, Idaho: What You Need to Know in 2025</h3>
+              <p>Star is one of the fastest-growing cities in Idaho. Here's an honest look at the neighborhoods, commute times, schools, and what homes cost today.</p>
+              <span class="blog-card-read-more" style="display:inline-flex;align-items:center;gap:.35rem;margin-top:.75rem;font-size:.85rem;font-weight:600;color:var(--navy);">Read More →</span>
+            </div>
+          </a>
+
+          <a href="#" class="blog-card-horiz">
+            <div class="blog-card-horiz-img" style="background:linear-gradient(135deg,#2a1a4a,#5a35a0);">💰</div>
+            <div class="blog-card-horiz-body">
+              <span class="blog-card-tag">Buyer Guide</span>
+              <div class="blog-card-meta" style="font-size:0.8rem;color:var(--gray-dark);margin-bottom:0.5rem;">February 2025 · 8 min read</div>
+              <h3>First-Time Buyer Guide: Buying a Home in Idaho in 2025</h3>
+              <p>Everything a first-time buyer needs to know — from getting pre-approved to navigating inspections — in today's Idaho market.</p>
+              <span class="blog-card-read-more" style="display:inline-flex;align-items:center;gap:.35rem;margin-top:.75rem;font-size:.85rem;font-weight:600;color:var(--navy);">Read More →</span>
+            </div>
+          </a>
+
+        </div>
+
+        <div class="pagination">
+          <div class="page-btn active">1</div>
+          <div class="page-btn">2</div>
+          <div class="page-btn">3</div>
+          <div class="page-btn">→</div>
+        </div>
+      </main>
+
+      <aside class="blog-sidebar">
+        <div class="sidebar-card">
+          <h3>Categories</h3>
+          <div class="category-list">
+            <a href="#" class="category-item">📊 Market Reports <span class="category-count">8</span></a>
+            <a href="#" class="category-item">🏠 Buyer Guides <span class="category-count">6</span></a>
+            <a href="#" class="category-item">🔑 Seller Tips <span class="category-count">5</span></a>
+            <a href="#" class="category-item">📍 Community News <span class="category-count">7</span></a>
+            <a href="#" class="category-item">💡 Real Estate Tips <span class="category-count">4</span></a>
+          </div>
+        </div>
+
+        <div class="sidebar-card" style="background:var(--navy);color:white;">
+          <h3 style="color:white;margin-bottom:.5rem;">Monthly Market Report</h3>
+          <p style="font-size:.85rem;color:rgba(255,255,255,.7);margin-bottom:1rem;">Get Idaho market updates delivered to your inbox every month.</p>
+          <form class="newsletter-form" novalidate>
+            <input type="email" placeholder="Email address" required />
+            <button type="submit">Subscribe →</button>
+          </form>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Recent Posts</h3>
+          <div style="display:flex;flex-direction:column;gap:.75rem;">
+            <a href="june-2025-market-report.html" style="display:flex;gap:.75rem;align-items:flex-start;text-decoration:none;">
+              <div style="width:56px;height:48px;background:linear-gradient(135deg,#0d2e60,#194d9b);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.25rem;">📊</div>
+              <div><p style="font-size:.82rem;font-weight:600;color:var(--text);margin:0;line-height:1.3;">June 2025 Market Report</p><span style="font-size:.75rem;color:var(--gray-dark);">June 2025</span></div>
+            </a>
+            <a href="buying-in-eagle-idaho.html" style="display:flex;gap:.75rem;align-items:flex-start;text-decoration:none;">
+              <div style="width:56px;height:48px;background:linear-gradient(135deg,#1a4a2a,#2d7a45);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.25rem;">🏡</div>
+              <div><p style="font-size:.82rem;font-weight:600;color:var(--text);margin:0;line-height:1.3;">Why Buyers Choose Eagle</p><span style="font-size:.75rem;color:var(--gray-dark);">May 2025</span></div>
+            </a>
+            <a href="selling-your-home-tips.html" style="display:flex;gap:.75rem;align-items:flex-start;text-decoration:none;">
+              <div style="width:56px;height:48px;background:linear-gradient(135deg,#4a1a0a,#8a3520);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.25rem;">🔑</div>
+              <div><p style="font-size:.82rem;font-weight:600;color:var(--text);margin:0;line-height:1.3;">5 Things to Do Before Listing</p><span style="font-size:.75rem;color:var(--gray-dark);">April 2025</span></div>
+            </a>
+          </div>
+        </div>
+
+        <div class="sidebar-card" style="background:var(--gray-light);">
+          <h3>Talk to Clint</h3>
+          <p style="font-size:.88rem;margin-bottom:1rem;">Questions about the market? Ready to buy or sell? Let's connect.</p>
+          <a href="../contact.html" class="btn btn-primary" style="width:100%;justify-content:center;">Get in Touch →</a>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-brand-text">CWRE Idaho</span>
+        <span class="footer-brand-sub">Clint Walker Real Estate</span>
+        <p class="footer-bio">Serving the Treasure Valley and Southwest Idaho.</p>
+        <div class="footer-contact-item">📞 <a href="tel:+12088704279">(208) 870-4279</a></div>
+        <div class="footer-contact-item">✉️ <a href="mailto:clintwalkeridaho@gmail.com">clintwalkeridaho@gmail.com</a></div>
+      </div>
+      <div><span class="footer-heading">Navigation</span>
+        <ul class="footer-links">
+          <li><a href="../index.html">Home</a></li><li><a href="../buyers.html">Buy</a></li>
+          <li><a href="../sellers.html">Sell</a></li><li><a href="../communities/index.html">Communities</a></li>
+          <li><a href="index.html">Market Updates</a></li><li><a href="../about.html">About</a></li>
+        </ul>
+      </div>
+      <div><span class="footer-heading">Communities</span>
+        <ul class="footer-links">
+          <li><a href="../communities/boise.html">Boise</a></li>
+          <li><a href="../communities/eagle.html">Eagle</a></li>
+          <li><a href="../communities/meridian.html">Meridian</a></li>
+          <li><a href="../communities/index.html">View All →</a></li>
+        </ul>
+      </div>
+      <div class="footer-newsletter"><span class="footer-heading">Monthly Market Report</span>
+        <p>Idaho real estate updates monthly.</p>
+        <form class="newsletter-form" novalidate>
+          <input type="email" placeholder="Email address" required />
+          <button type="submit">Subscribe Free →</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 CWRE Idaho · Clint Walker Real Estate. All rights reserved.</span>
+      <div class="footer-bottom-links"><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

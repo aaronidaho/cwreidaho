@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sell Your Home | CWRE Idaho</title>
+  <meta name="description" content="Sell your Idaho home for top dollar with CWRE Idaho. Free home valuation, expert marketing, and proven results across the Treasure Valley." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .marketing-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; margin-top: 2rem; }
+    .marketing-card { background: var(--white); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); text-align: center; }
+    .marketing-card-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .marketing-card h4 { margin-bottom: 0.4rem; }
+    .marketing-card p { font-size: 0.85rem; }
+    .seller-results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .result-card { background: var(--navy); border-radius: var(--radius-lg); padding: 2rem; text-align: center; }
+    .result-card strong { display: block; font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--white); line-height: 1; }
+    .result-card span { font-size: 0.85rem; color: rgba(255,255,255,0.65); margin-top: 0.4rem; display: block; }
+    @media (max-width: 700px) { .seller-results { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">CW</div>
+      <div class="nav-logo-text">
+        <span class="nav-logo-main">CWRE Idaho</span>
+        <span class="nav-logo-sub">Clint Walker Real Estate</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li class="nav-dropdown"><a href="communities/index.html">Communities</a>
+        <ul class="dropdown-menu">
+          <li><a href="communities/boise.html">Boise</a></li>
+          <li><a href="communities/eagle.html">Eagle</a></li>
+          <li><a href="communities/meridian.html">Meridian</a></li>
+          <li><a href="communities/index.html">View All →</a></li>
+        </ul>
+      </li>
+      <li><a href="buyers.html">Buy</a></li>
+      <li><a href="sellers.html" class="active">Sell</a></li>
+      <li><a href="blog/index.html">Market Updates</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-cta"><a href="contact.html" class="btn btn-gold">Get in Touch</a></div>
+    <button class="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span>Sell Your Home</div>
+    <h1>Sell Smarter in Idaho</h1>
+    <p>Strategic pricing, professional marketing, and expert negotiation to get you the best possible outcome.</p>
+  </div>
+</div>
+
+<!-- Free valuation form -->
+<section class="section lead-cta" style="background:linear-gradient(135deg,#0d2e60,#194d9b);">
+  <div class="container">
+    <div class="lead-cta-inner">
+      <div class="lead-cta-text">
+        <span class="section-label" style="color:var(--gold-light);">Seller Services</span>
+        <h2>What's Your Home Worth?</h2>
+        <p>Get a free, no-obligation Comparative Market Analysis (CMA) from Clint Walker — based on real local sales data, not automated estimates.</p>
+        <div class="lead-cta-perks">
+          <div class="lead-perk"><div class="lead-perk-icon">✓</div>Free Comparative Market Analysis</div>
+          <div class="lead-perk"><div class="lead-perk-icon">✓</div>Professional photography &amp; staging advice</div>
+          <div class="lead-perk"><div class="lead-perk-icon">✓</div>MLS + social media + digital marketing</div>
+          <div class="lead-perk"><div class="lead-perk-icon">✓</div>Expert negotiation from listing to close</div>
+        </div>
+      </div>
+      <div class="lead-form-card">
+        <h3>Get Your Free Home Value</h3>
+        <p>Takes less than 2 minutes. No obligation.</p>
+        <form novalidate>
+          <div class="form-row">
+            <div class="form-group"><label>First Name *</label><input type="text" required placeholder="First" /></div>
+            <div class="form-group"><label>Last Name *</label><input type="text" required placeholder="Last" /></div>
+          </div>
+          <div class="form-group"><label>Email Address *</label><input type="email" required placeholder="you@email.com" /></div>
+          <div class="form-group"><label>Phone Number *</label><input type="tel" required placeholder="(208) 870-4279" /></div>
+          <div class="form-group"><label>Property Address *</label><input type="text" required placeholder="123 Main St, Boise, ID" /></div>
+          <div class="form-group">
+            <label>When are you thinking of selling?</label>
+            <select>
+              <option value="">Select timeline</option>
+              <option>ASAP / Already listed</option>
+              <option>Within 3 months</option>
+              <option>3–6 months</option>
+              <option>6–12 months</option>
+              <option>Just exploring my options</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg form-submit">Get My Free Home Value →</button>
+          <p class="form-privacy">No spam. <a href="privacy.html">Privacy Policy</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Results -->
+<section class="section">
+  <div class="container">
+    <div class="section-header centered">
+      <span class="section-label">Track Record</span>
+      <h2>Results That Speak for Themselves</h2>
+    </div>
+    <div class="seller-results">
+      <div class="result-card"><strong>98.5%</strong><span>Average List-to-Sale Price Ratio</span></div>
+      <div class="result-card"><strong>21</strong><span>Average Days on Market</span></div>
+      <div class="result-card"><strong>500+</strong><span>Homes Successfully Sold</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Marketing -->
+<section class="section" style="background:var(--gray-light);">
+  <div class="container">
+    <div class="section-header centered">
+      <span class="section-label">Marketing That Works</span>
+      <h2>How We Sell Your Home</h2>
+      <p>A comprehensive marketing strategy designed to attract the most qualified buyers and maximum offers.</p>
+    </div>
+    <div class="marketing-grid">
+      <div class="marketing-card"><div class="marketing-card-icon">📸</div><h4>Professional Photography</h4><p>High-resolution photos and virtual tours that showcase your home's best features online and in print.</p></div>
+      <div class="marketing-card"><div class="marketing-card-icon">🏠</div><h4>MLS Listing</h4><p>Maximum MLS exposure reaching thousands of buyers and their agents across the Treasure Valley and beyond.</p></div>
+      <div class="marketing-card"><div class="marketing-card-icon">📱</div><h4>Social Media Marketing</h4><p>Targeted Facebook, Instagram, and Google ads to reach active buyers in your price range and target area.</p></div>
+      <div class="marketing-card"><div class="marketing-card-icon">🌐</div><h4>Digital Syndication</h4><p>Your listing appears on Zillow, Realtor.com, Trulia, and 100+ real estate portals automatically.</p></div>
+      <div class="marketing-card"><div class="marketing-card-icon">📊</div><h4>Pricing Strategy</h4><p>Data-driven pricing analysis using recent comparable sales to position your home competitively from day one.</p></div>
+      <div class="marketing-card"><div class="marketing-card-icon">🤝</div><h4>Open Houses &amp; Showings</h4><p>Strategic open houses and broker tours coordinated to maximize qualified buyer traffic in the first critical weeks.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Process steps -->
+<section class="section">
+  <div class="container">
+    <div class="section-header centered">
+      <span class="section-label">The Selling Process</span>
+      <h2>From Listing to Closing</h2>
+    </div>
+    <div class="steps-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;margin-top:2.5rem;">
+      <div class="step-card"><div class="step-num">1</div><div class="step-icon">📊</div><h4>Free Home Valuation</h4><p>We analyze recent sales, market trends, and your home's unique features to determine the optimal listing price.</p></div>
+      <div class="step-card"><div class="step-num">2</div><div class="step-icon">🎨</div><h4>Prepare &amp; Stage</h4><p>We walk through your home and provide specific recommendations to maximize buyer appeal before photos are taken.</p></div>
+      <div class="step-card"><div class="step-num">3</div><div class="step-icon">📢</div><h4>Launch &amp; Market</h4><p>Professional photos, MLS listing, digital ads, and open houses are deployed to create immediate buyer interest.</p></div>
+      <div class="step-card"><div class="step-num">4</div><div class="step-icon">📝</div><h4>Review Offers</h4><p>We analyze every offer on price, terms, and contingencies — and negotiate strongly on your behalf.</p></div>
+      <div class="step-card"><div class="step-num">5</div><div class="step-icon">🔬</div><h4>Inspection &amp; Appraisal</h4><p>We guide you through buyer inspections and appraisal, protecting your interests and keeping the deal on track.</p></div>
+      <div class="step-card"><div class="step-num">6</div><div class="step-icon">💰</div><h4>Close &amp; Get Paid</h4><p>We coordinate a smooth closing so you walk away with maximum net proceeds and zero surprises.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-brand-text">CWRE Idaho</span>
+        <span class="footer-brand-sub">Clint Walker Real Estate</span>
+        <p class="footer-bio">Serving the Treasure Valley and Southwest Idaho.</p>
+        <div class="footer-contact-item">📞 <a href="tel:+12088704279">(208) 870-4279</a></div>
+        <div class="footer-contact-item">✉️ <a href="mailto:clintwalkeridaho@gmail.com">clintwalkeridaho@gmail.com</a></div>
+      </div>
+      <div><span class="footer-heading">Navigation</span>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li><li><a href="buyers.html">Buy</a></li>
+          <li><a href="sellers.html">Sell</a></li><li><a href="communities/index.html">Communities</a></li>
+          <li><a href="blog/index.html">Market Updates</a></li><li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+      <div><span class="footer-heading">Communities</span>
+        <ul class="footer-links">
+          <li><a href="communities/boise.html">Boise</a></li><li><a href="communities/eagle.html">Eagle</a></li>
+          <li><a href="communities/meridian.html">Meridian</a></li><li><a href="communities/index.html">View All →</a></li>
+        </ul>
+      </div>
+      <div class="footer-newsletter"><span class="footer-heading">Monthly Market Report</span>
+        <p>Get Idaho real estate updates delivered monthly.</p>
+        <form class="newsletter-form" novalidate>
+          <input type="email" placeholder="Email address" required />
+          <button type="submit">Subscribe Free →</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 CWRE Idaho · Clint Walker Real Estate. All rights reserved.</span>
+      <div class="footer-bottom-links"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

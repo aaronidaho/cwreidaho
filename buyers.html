@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buy a Home in Idaho | CWRE Idaho</title>
+  <meta name="description" content="Looking to buy a home in the Treasure Valley or Southwest Idaho? CWRE Idaho guides buyers every step of the way." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+    .step-card { background: var(--white); border-radius: var(--radius-lg); padding: 1.75rem; box-shadow: var(--shadow); position: relative; }
+    .step-num { position: absolute; top: -14px; left: 1.5rem; background: var(--navy); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; }
+    .step-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
+    .step-card h4 { margin-bottom: 0.5rem; }
+    .step-card p { font-size: 0.88rem; }
+    .buyer-cta { background: linear-gradient(135deg, #0d2e60, var(--navy)); }
+    .faq-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+    .faq-item { background: var(--white); border-radius: var(--radius); padding: 1.25rem 1.5rem; box-shadow: var(--shadow); }
+    .faq-item h4 { color: var(--navy); margin-bottom: 0.5rem; font-size: 1rem; }
+    .faq-item p { font-size: 0.9rem; margin: 0; }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">CW</div>
+      <div class="nav-logo-text">
+        <span class="nav-logo-main">CWRE Idaho</span>
+        <span class="nav-logo-sub">Clint Walker Real Estate</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li class="nav-dropdown"><a href="communities/index.html">Communities</a>
+        <ul class="dropdown-menu">
+          <li><a href="communities/boise.html">Boise</a></li>
+          <li><a href="communities/eagle.html">Eagle</a></li>
+          <li><a href="communities/meridian.html">Meridian</a></li>
+          <li><a href="communities/index.html">View All →</a></li>
+        </ul>
+      </li>
+      <li><a href="buyers.html" class="active">Buy</a></li>
+      <li><a href="sellers.html">Sell</a></li>
+      <li><a href="blog/index.html">Market Updates</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-cta"><a href="contact.html" class="btn btn-gold">Get in Touch</a></div>
+    <button class="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span>Buy a Home</div>
+    <h1>Your Idaho Home Starts Here</h1>
+    <p>Expert buyer representation across the Treasure Valley and Southwest Idaho — from first showing to closing day.</p>
+  </div>
+</div>
+
+<!-- Lead form section -->
+<section class="section lead-cta buyer-cta">
+  <div class="container">
+    <div class="lead-cta-inner">
+      <div class="lead-cta-text">
+        <span class="section-label" style="color:var(--gold-light);">Buyer Services</span>
+        <h2>Find Your Idaho Dream Home</h2>
+        <p>Whether you're a first-time buyer or a seasoned investor, CWRE Idaho gives you the local expertise and dedicated representation you deserve in today's competitive market.</p>
+        <div class="lead-cta-perks">
+          <div class="lead-perk"><div class="lead-perk-icon">✓</div>Free buyer consultation — no obligation</div>
+          <div class="lead-perk"><div class="lead-perk-icon">✓</div>Access to MLS + off-market opportunities</div>
+          <div class="lead-perk"><div class="lead-perk-icon">✓</div>Expert negotiation on your behalf</div>
+          <div class="lead-perk"><div class="lead-perk-icon">✓</div>Guided from pre-approval to closing</div>
+        </div>
+      </div>
+      <div class="lead-form-card">
+        <h3>Start Your Home Search</h3>
+        <p>Tell us what you're looking for and we'll get started.</p>
+        <form novalidate>
+          <div class="form-row">
+            <div class="form-group"><label>First Name *</label><input type="text" name="firstName" required placeholder="First" /></div>
+            <div class="form-group"><label>Last Name *</label><input type="text" name="lastName" required placeholder="Last" /></div>
+          </div>
+          <div class="form-group"><label>Email Address *</label><input type="email" name="email" required placeholder="you@email.com" /></div>
+          <div class="form-group"><label>Phone Number *</label><input type="tel" name="phone" required placeholder="(208) 870-4279" /></div>
+          <div class="form-group">
+            <label>Preferred Area</label>
+            <select name="area">
+              <option value="">Select area</option>
+              <option>Boise</option><option>Eagle</option><option>Meridian</option>
+              <option>Nampa / Caldwell</option><option>Star</option><option>Kuna</option>
+              <option>Emmett</option><option>Middleton</option><option>Mountain Home</option>
+              <option>New Plymouth</option><option>Melba</option><option>Marsing</option>
+              <option>Payette</option><option>Open to suggestions</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Price Range</label>
+            <select name="budget">
+              <option value="">Select range</option>
+              <option>Under $250,000</option><option>$250K – $350K</option>
+              <option>$350K – $450K</option><option>$450K – $600K</option>
+              <option>$600K – $800K</option><option>$800K+</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg form-submit">Connect With Clint →</button>
+          <p class="form-privacy">No spam. <a href="privacy.html">Privacy Policy</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IDX placeholder -->
+<section class="section idx-section">
+  <div class="container">
+    <div class="section-header centered">
+      <span class="section-label">Browse Listings</span>
+      <h2>Homes for Sale in Idaho</h2>
+    </div>
+    <div class="idx-placeholder">
+      <div class="idx-placeholder-icon">🏘️</div>
+      <h3>Full MLS Search Coming Soon</h3>
+      <p>We're integrating Showcase IDX for real-time listing search with saved searches, alerts, and map views.</p>
+      <span class="idx-badge">🔗 Powered by Showcase IDX</span>
+    </div>
+  </div>
+</section>
+
+<!-- Steps -->
+<section class="section" style="background:var(--gray-light);">
+  <div class="container">
+    <div class="section-header centered">
+      <span class="section-label">How It Works</span>
+      <h2>The CWRE Idaho Buying Process</h2>
+      <p>A clear, step-by-step path from search to keys in hand.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card"><div class="step-num">1</div><div class="step-icon">💬</div><h4>Free Consultation</h4><p>We start with a conversation about your goals, timeline, and budget so we can build the right strategy for you.</p></div>
+      <div class="step-card"><div class="step-num">2</div><div class="step-icon">🏦</div><h4>Get Pre-Approved</h4><p>We'll connect you with trusted local lenders to get pre-approved so you can shop with confidence and act fast.</p></div>
+      <div class="step-card"><div class="step-num">3</div><div class="step-icon">🔍</div><h4>Find Your Home</h4><p>We search MLS and off-market listings, schedule showings, and help you evaluate every property objectively.</p></div>
+      <div class="step-card"><div class="step-num">4</div><div class="step-icon">📝</div><h4>Make an Offer</h4><p>When you find the one, we craft a strong, competitive offer backed by market data and negotiation expertise.</p></div>
+      <div class="step-card"><div class="step-num">5</div><div class="step-icon">🔬</div><h4>Inspection &amp; Due Diligence</h4><p>We coordinate inspections, review reports, and negotiate repairs or credits to protect your investment.</p></div>
+      <div class="step-card"><div class="step-num">6</div><div class="step-icon">🎉</div><h4>Close &amp; Move In</h4><p>We guide you through closing, handle every detail, and hand you the keys to your new Idaho home.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="container" style="max-width:800px;">
+    <div class="section-header centered">
+      <span class="section-label">Common Questions</span>
+      <h2>Buyer FAQ</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item"><h4>Do I need to be pre-approved before I start looking?</h4><p>It's not required, but we strongly recommend it. Pre-approval gives you a clear budget and shows sellers you're a serious buyer — especially important in a competitive Idaho market.</p></div>
+      <div class="faq-item"><h4>How much does it cost to use a buyer's agent?</h4><p>In most transactions, the seller pays both agents' commissions, so buyer representation through CWRE Idaho typically costs you nothing out of pocket. We'll explain the current structure clearly upfront.</p></div>
+      <div class="faq-item"><h4>How long does it take to buy a home in Idaho?</h4><p>From starting your search to closing, the process typically takes 30–90 days depending on market conditions, your flexibility, and financing. We'll give you a realistic timeline from day one.</p></div>
+      <div class="faq-item"><h4>What areas do you cover?</h4><p>We serve 13 communities across Southwest Idaho — including Boise, Eagle, Meridian, Nampa, Caldwell, Star, Kuna, Emmett, Middleton, Mountain Home, New Plymouth, Melba, Marsing, and Payette.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-brand-text">CWRE Idaho</span>
+        <span class="footer-brand-sub">Clint Walker Real Estate</span>
+        <p class="footer-bio">Serving the Treasure Valley and Southwest Idaho.</p>
+        <div class="footer-contact-item">📞 <a href="tel:+12088704279">(208) 870-4279</a></div>
+        <div class="footer-contact-item">✉️ <a href="mailto:clintwalkeridaho@gmail.com">clintwalkeridaho@gmail.com</a></div>
+      </div>
+      <div><span class="footer-heading">Navigation</span>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li><li><a href="buyers.html">Buy</a></li>
+          <li><a href="sellers.html">Sell</a></li><li><a href="communities/index.html">Communities</a></li>
+          <li><a href="blog/index.html">Market Updates</a></li><li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+      <div><span class="footer-heading">Communities</span>
+        <ul class="footer-links">
+          <li><a href="communities/boise.html">Boise</a></li><li><a href="communities/eagle.html">Eagle</a></li>
+          <li><a href="communities/meridian.html">Meridian</a></li><li><a href="communities/index.html">View All →</a></li>
+        </ul>
+      </div>
+      <div class="footer-newsletter"><span class="footer-heading">Monthly Market Report</span>
+        <p>Get Idaho real estate updates delivered monthly.</p>
+        <form class="newsletter-form" novalidate>
+          <input type="email" placeholder="Email address" required />
+          <button type="submit">Subscribe Free →</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 CWRE Idaho · Clint Walker Real Estate. All rights reserved.</span>
+      <div class="footer-bottom-links"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Clint Walker | CWRE Idaho</title>
+  <meta name="description" content="Meet Clint Walker — Idaho real estate expert serving buyers and sellers across the Treasure Valley and Southwest Idaho." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .about-page-grid { display: grid; grid-template-columns: 380px 1fr; gap: 5rem; align-items: start; }
+    .about-sidebar { position: sticky; top: 100px; }
+    .agent-card { background: var(--white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); }
+    .agent-card-photo { height: 380px; background: linear-gradient(135deg,#123a78,#194d9b); display: flex; align-items: center; justify-content: center; font-size: 7rem; color: rgba(255,255,255,0.2); }
+    .agent-card-info { padding: 1.75rem; }
+    .agent-card-info h2 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+    .agent-card-title { font-size: 0.85rem; color: var(--gold); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; display: block; margin-bottom: 1rem; }
+    .agent-card-contact { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.25rem; }
+    .agent-contact-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; color: var(--text-light); }
+    .agent-contact-row a { color: var(--navy); font-weight: 500; }
+    .agent-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .agent-badge { background: var(--gray-light); color: var(--text); font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.75rem; border-radius: 50px; }
+    .about-content h2 { margin-bottom: 1rem; }
+    .about-content p { font-size: 1.02rem; line-height: 1.75; margin-bottom: 1.25rem; }
+    .about-content h3 { margin: 2rem 0 0.75rem; font-size: 1.25rem; }
+    .values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    .value-card { background: var(--gray-light); border-radius: var(--radius); padding: 1.25rem; }
+    .value-card-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .value-card h4 { margin-bottom: 0.4rem; color: var(--text); }
+    .value-card p { font-size: 0.88rem; margin: 0; }
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; background: var(--navy); border-radius: var(--radius-lg); padding: 2rem; margin: 2rem 0; text-align: center; }
+    .stat-item strong { display: block; font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--white); }
+    .stat-item span { font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+    @media (max-width: 900px) {
+      .about-page-grid { grid-template-columns: 1fr; }
+      .about-sidebar { position: static; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .values-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav" role="navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">CW</div>
+      <div class="nav-logo-text">
+        <span class="nav-logo-main">CWRE Idaho</span>
+        <span class="nav-logo-sub">Clint Walker Real Estate</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li class="nav-dropdown"><a href="communities/index.html">Communities</a>
+        <ul class="dropdown-menu">
+          <li><a href="communities/boise.html">Boise</a></li>
+          <li><a href="communities/eagle.html">Eagle</a></li>
+          <li><a href="communities/meridian.html">Meridian</a></li>
+          <li><a href="communities/nampa-caldwell.html">Nampa &amp; Caldwell</a></li>
+          <li><a href="communities/index.html">View All →</a></li>
+        </ul>
+      </li>
+      <li><a href="buyers.html">Buy</a></li>
+      <li><a href="sellers.html">Sell</a></li>
+      <li><a href="blog/index.html">Market Updates</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-cta"><a href="contact.html" class="btn btn-gold">Get in Touch</a></div>
+    <button class="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span>About</div>
+    <h1>About Clint Walker</h1>
+    <p>Your trusted Idaho real estate partner — built on local knowledge, honest guidance, and real results.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="about-page-grid">
+
+      <aside class="about-sidebar">
+        <div class="agent-card">
+          <div class="agent-card-photo">🏔️</div>
+          <div class="agent-card-info">
+            <h2>Clint Walker</h2>
+            <span class="agent-card-title">REALTOR® | CWRE Idaho</span>
+            <div class="agent-card-contact">
+              <div class="agent-contact-row">📞 <a href="tel:+12088704279">(208) 870-4279</a></div>
+              <div class="agent-contact-row">✉️ <a href="mailto:clintwalkeridaho@gmail.com">clintwalkeridaho@gmail.com</a></div>
+              <div class="agent-contact-row">📍 Boise, Idaho</div>
+            </div>
+            <div class="agent-badges">
+              <span class="agent-badge">🏆 Top Producer</span>
+              <span class="agent-badge">REALTOR®</span>
+              <span class="agent-badge">Buyer Specialist</span>
+              <span class="agent-badge">Seller Specialist</span>
+              <span class="agent-badge">Relocation</span>
+            </div>
+            <div style="margin-top:1.25rem;">
+              <a href="contact.html" class="btn btn-primary" style="width:100%;justify-content:center;">Contact Clint →</a>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="about-content">
+        <span class="section-label">My Story</span>
+        <h2>Idaho Real Estate, Done Right</h2>
+        <p>
+          I grew up watching Idaho grow — from quiet farming communities to one of the
+          fastest-growing states in the nation. That growth is exciting, but it also
+          means buyers and sellers need an agent who understands the land, the people,
+          and the market at a deeper level than a quick Google search can provide.
+        </p>
+        <p>
+          That's what CWRE Idaho is built on. With over 15 years of experience serving
+          buyers and sellers across the Treasure Valley and Southwest Idaho, I've
+          helped hundreds of families find their place in this beautiful state —
+          whether that's a first home in Meridian, a rural retreat near Emmett,
+          or a long-awaited upgrade in Eagle.
+        </p>
+        <p>
+          My approach is simple: I listen first. Every client has a unique situation,
+          unique goals, and a unique timeline. I'm not here to push you into a deal —
+          I'm here to make sure the deal you make is the right one for you.
+        </p>
+
+        <div class="stats-row">
+          <div class="stat-item"><strong>500+</strong><span>Homes Sold</span></div>
+          <div class="stat-item"><strong>15+</strong><span>Years Experience</span></div>
+          <div class="stat-item"><strong>13</strong><span>Communities</span></div>
+          <div class="stat-item"><strong>⭐ 5.0</strong><span>Client Rating</span></div>
+        </div>
+
+        <h3>Why CWRE Idaho?</h3>
+        <p>
+          There are a lot of real estate agents in Idaho. What sets CWRE Idaho apart
+          is genuine local knowledge and a commitment to your outcome — not just
+          the commission check. I track market trends in every community I serve,
+          publish monthly reports so you're never in the dark, and bring a data-driven
+          approach to pricing, negotiating, and timing your transaction.
+        </p>
+
+        <div class="values-grid">
+          <div class="value-card">
+            <div class="value-card-icon">🎯</div>
+            <h4>Local Expertise</h4>
+            <p>Deep knowledge of every community from Boise to Payette — schools, neighborhoods, growth patterns, and market nuances.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-card-icon">📊</div>
+            <h4>Data-Driven Strategy</h4>
+            <p>Every pricing recommendation and negotiation strategy is backed by real market data, not guesswork.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-card-icon">🤝</div>
+            <h4>Honest Guidance</h4>
+            <p>I'll tell you what you need to hear — including when to walk away from a deal that isn't right for you.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-card-icon">⚡</div>
+            <h4>Responsive Communication</h4>
+            <p>Real estate moves fast. I'm available, responsive, and proactive so you never miss an opportunity.</p>
+          </div>
+        </div>
+
+        <h3>A Note on Community</h3>
+        <p>
+          Idaho isn't just where I work — it's home. I believe in giving back to the
+          communities that have given so much to me and my family. From supporting
+          local schools to volunteering with community organizations across the
+          Treasure Valley, being a good neighbor matters as much to me as being a
+          great agent.
+        </p>
+        <p>
+          When you work with CWRE Idaho, you're not just getting a transaction
+          professional — you're getting someone who genuinely cares about this
+          state and wants to see every client thrive in it.
+        </p>
+
+        <div style="margin-top:2rem; display:flex; gap:1rem; flex-wrap:wrap;">
+          <a href="contact.html" class="btn btn-primary btn-lg">Start a Conversation →</a>
+          <a href="communities/index.html" class="btn btn-outline btn-lg">Explore Communities</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-brand-text">CWRE Idaho</span>
+        <span class="footer-brand-sub">Clint Walker Real Estate</span>
+        <p class="footer-bio">Serving the Treasure Valley and Southwest Idaho with honest, expert real estate guidance.</p>
+        <div class="footer-contact-item">📞 <a href="tel:+12088704279">(208) 870-4279</a></div>
+        <div class="footer-contact-item">✉️ <a href="mailto:clintwalkeridaho@gmail.com">clintwalkeridaho@gmail.com</a></div>
+      </div>
+      <div>
+        <span class="footer-heading">Navigation</span>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="buyers.html">Buy a Home</a></li>
+          <li><a href="sellers.html">Sell Your Home</a></li>
+          <li><a href="communities/index.html">Communities</a></li>
+          <li><a href="blog/index.html">Market Updates</a></li>
+          <li><a href="about.html">About Clint</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-heading">Communities</span>
+        <ul class="footer-links">
+          <li><a href="communities/boise.html">Boise</a></li>
+          <li><a href="communities/eagle.html">Eagle</a></li>
+          <li><a href="communities/meridian.html">Meridian</a></li>
+          <li><a href="communities/nampa-caldwell.html">Nampa &amp; Caldwell</a></li>
+          <li><a href="communities/index.html">View All →</a></li>
+        </ul>
+      </div>
+      <div class="footer-newsletter">
+        <span class="footer-heading">Monthly Market Report</span>
+        <p>Get Idaho real estate updates delivered monthly.</p>
+        <form class="newsletter-form" novalidate>
+          <input type="email" placeholder="Email address" aria-label="Email" required />
+          <button type="submit">Subscribe Free →</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 CWRE Idaho · Clint Walker Real Estate. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

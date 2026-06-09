@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CWRE Idaho | Clint Walker Real Estate — Your Idaho Home Expert</title>
+  <meta name="description" content="Clint Walker Real Estate Idaho — helping buyers and sellers across the Treasure Valley and beyond. Expert local knowledge, proven results." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════ -->
+<nav class="site-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="CWRE Idaho Home">
+      <div class="nav-logo-icon">CW</div>
+      <div class="nav-logo-text">
+        <span class="nav-logo-main">CWRE Idaho</span>
+        <span class="nav-logo-sub">Clint Walker Real Estate</span>
+      </div>
+    </a>
+
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li>
+      <li class="nav-dropdown">
+        <a href="communities/index.html">Communities</a>
+        <ul class="dropdown-menu" role="list">
+          <li><a href="communities/boise.html">Boise</a></li>
+          <li><a href="communities/eagle.html">Eagle</a></li>
+          <li><a href="communities/meridian.html">Meridian</a></li>
+          <li><a href="communities/nampa-caldwell.html">Nampa &amp; Caldwell</a></li>
+          <li><a href="communities/star.html">Star</a></li>
+          <li><a href="communities/middleton.html">Middleton</a></li>
+          <li><a href="communities/kuna.html">Kuna</a></li>
+          <li><a href="communities/emmett.html">Emmett</a></li>
+          <li><a href="communities/mountain-home.html">Mountain Home</a></li>
+          <li><a href="communities/new-plymouth.html">New Plymouth</a></li>
+          <li><a href="communities/melba.html">Melba</a></li>
+          <li><a href="communities/marsing.html">Marsing</a></li>
+          <li><a href="communities/payette.html">Payette</a></li>
+        </ul>
+      </li>
+      <li><a href="buyers.html">Buy</a></li>
+      <li><a href="sellers.html">Sell</a></li>
+      <li><a href="blog/index.html">Market Updates</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+    <div class="nav-cta">
+      <a href="contact.html" class="btn btn-gold">Get in Touch</a>
+    </div>
+
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<section class="hero" aria-label="Hero section">
+  <div class="hero-bg" role="presentation"></div>
+  <div class="hero-overlay" role="presentation"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span>🏔️</span> Idaho's Trusted Real Estate Expert
+    </div>
+
+    <h1>Find Your Place<br>in <span>Idaho</span></h1>
+
+    <p class="hero-sub">
+      From Boise's vibrant neighborhoods to quiet valley towns — Clint Walker
+      Real Estate Idaho guides you home with local expertise and honest guidance.
+    </p>
+
+    <div class="hero-actions">
+      <a href="buyers.html" class="btn btn-primary btn-lg">🏠 Explore Homes</a>
+      <a href="sellers.html" class="btn btn-outline-white btn-lg">📊 Get Home Value</a>
+    </div>
+
+    <!-- Search bar (IDX-ready placeholder) -->
+    <div class="hero-search">
+      <form id="hero-search-form" role="search" aria-label="Property search">
+        <div class="search-box">
+          <input
+            type="text"
+            placeholder="Search by city, zip, neighborhood…"
+            aria-label="Search location"
+          />
+          <select aria-label="Property type">
+            <option value="">All Types</option>
+            <option value="buy">For Sale</option>
+            <option value="land">Land</option>
+            <option value="new">New Construction</option>
+          </select>
+          <button type="submit" aria-label="Search">
+            🔍 Search
+          </button>
+        </div>
+      </form>
+      <p class="search-hint">Full listing search powered by IDX — coming soon</p>
+    </div>
+
+    <div class="hero-stats" aria-label="Key stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num">500+</span>
+        <span class="hero-stat-label">Homes Sold</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">13</span>
+        <span class="hero-stat-label">Idaho Communities</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">15+</span>
+        <span class="hero-stat-label">Years Experience</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">⭐ 5.0</span>
+        <span class="hero-stat-label">Client Rating</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator" aria-hidden="true">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     QUICK NAV TILES
+══════════════════════════════════════ -->
+<div class="quick-nav" role="navigation" aria-label="Quick links">
+  <div class="quick-nav-inner">
+    <a href="buyers.html" class="quick-tile">
+      <div class="quick-tile-icon">🏠</div>
+      <span class="quick-tile-title">Buy a Home</span>
+      <span class="quick-tile-sub">Search listings &amp; get buyer guidance</span>
+    </a>
+    <a href="sellers.html" class="quick-tile">
+      <div class="quick-tile-icon">📊</div>
+      <span class="quick-tile-title">Sell Your Home</span>
+      <span class="quick-tile-sub">Free home valuation &amp; market analysis</span>
+    </a>
+    <a href="communities/index.html" class="quick-tile">
+      <div class="quick-tile-icon">📍</div>
+      <span class="quick-tile-title">Explore Communities</span>
+      <span class="quick-tile-sub">Boise, Eagle, Meridian &amp; more</span>
+    </a>
+    <a href="blog/index.html" class="quick-tile">
+      <div class="quick-tile-icon">📈</div>
+      <span class="quick-tile-title">Market Updates</span>
+      <span class="quick-tile-sub">Monthly Idaho real estate reports</span>
+    </a>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     ABOUT INTRO
+══════════════════════════════════════ -->
+<section class="section about-intro" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img-wrap">
+        <!-- Replace with Clint's actual photo -->
+        <div style="
+          border-radius: 18px;
+          width: 100%;
+          aspect-ratio: 4/5;
+          background: linear-gradient(135deg, #123a78 0%, #194d9b 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 6rem;
+          color: rgba(255,255,255,0.25);
+          box-shadow: 0 8px 40px rgba(25,77,155,0.15);
+        ">🏔️</div>
+        <div class="about-img-badge">
+          <strong>15+</strong>
+          <span>Years in Idaho<br>Real Estate</span>
+        </div>
+      </div>
+
+      <div class="about-text">
+        <span class="section-label">About CWRE Idaho</span>
+        <h2>Local Expertise.<br>Real Results.</h2>
+        <p>
+          Clint Walker Real Estate Idaho is built on a simple belief: every buyer
+          and seller deserves an agent who knows the land, the market, and the
+          community as well as they know their own backyard.
+        </p>
+        <p>
+          Whether you're purchasing your first home in Meridian, upsizing in Eagle,
+          or finding rural acreage in Emmett or Payette — CWRE Idaho brings the
+          local knowledge, honest guidance, and tireless work ethic that Idaho
+          families trust.
+        </p>
+
+        <div class="about-features">
+          <div class="about-feature">
+            <div class="about-feature-icon">🏆</div>
+            <div class="about-feature-text">
+              <strong>Top Producer</strong>
+              <span>Consistently ranked among Idaho's best</span>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">📍</div>
+            <div class="about-feature-text">
+              <strong>13 Communities</strong>
+              <span>Deep roots across the Treasure Valley</span>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">🤝</div>
+            <div class="about-feature-text">
+              <strong>Client-First</strong>
+              <span>Your goals guide every decision</span>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">📊</div>
+            <div class="about-feature-text">
+              <strong>Data-Driven</strong>
+              <span>Monthly market reports for every area</span>
+            </div>
+          </div>
+        </div>
+
+        <a href="about.html" class="btn btn-primary">Meet Clint Walker →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     IDX LISTINGS PLACEHOLDER
+══════════════════════════════════════ -->
+<section class="section idx-section" id="listings">
+  <div class="container">
+    <div class="section-header centered">
+      <span class="section-label">Featured Listings</span>
+      <h2>Homes for Sale in Idaho</h2>
+      <p>Browse current listings across the Treasure Valley and surrounding communities.</p>
+    </div>
+
+    <div class="idx-placeholder" role="region" aria-label="Listings area">
+      <div class="idx-placeholder-icon">🏘️</div>
+      <h3>Full Listing Search Coming Soon</h3>
+      <p>
+        We're integrating Showcase IDX to give you real-time access to the
+        full MLS with advanced search filters, saved searches, and instant alerts.
+      </p>
+      <span class="idx-badge">🔗 Powered by Showcase IDX</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     COMMUNITIES
+══════════════════════════════════════ -->
+<section class="section" id="communities" style="background: var(--gray-light);">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Explore Idaho</span>
+      <h2>Communities We Serve</h2>
+      <p>
+        From Boise's urban core to small agricultural towns — CWRE Idaho knows
+        every corner of the Treasure Valley and beyond.
+      </p>
+    </div>
+
+    <div class="communities-grid">
+
+      <a href="communities/boise.html" class="community-card">
+        <div class="community-card-img">
+          <div class="community-card-img-bg" style="background: linear-gradient(135deg,#1a3a7a,#194d9b);"></div>
+          <div class="community-card-overlay"></div>
+          <span class="community-card-name">Boise</span>
+        </div>
+        <div class="community-card-body">
+          <div class="community-card-stats">
+            <div class="community-stat"><strong>$450K</strong><span>Median Price</span></div>
+            <div class="community-stat"><strong>Idaho's Capital</strong><span>City</span></div>
+          </div>
+          <p class="community-card-desc">Idaho's vibrant capital city — arts, culture, the Greenbelt, and strong employment make Boise the Treasure Valley's crown jewel.</p>
+          <span class="community-card-link">Explore Boise <span>→</span></span>
+        </div>
+      </a>
+
+      <a href="communities/eagle.html" class="community-card">
+        <div class="community-card-img">
+          <div class="community-card-img-bg" style="background: linear-gradient(135deg,#1a4a2a,#2d7a45);"></div>
+          <div class="community-card-overlay"></div>
+          <span class="community-card-name">Eagle</span>
+        </div>
+        <div class="community-card-body">
+          <div class="community-card-stats">
+            <div class="community-stat"><strong>$560K</strong><span>Median Price</span></div>
+            <div class="community-stat"><strong>Family-Friendly</strong><span>Suburb</span></div>
+          </div>
+          <p class="community-card-desc">One of Idaho's most desirable suburbs — excellent schools, new development, and a charming downtown make Eagle a top pick for families.</p>
+          <span class="community-card-link">Explore Eagle <span>→</span></span>
+        </div>
+      </a>
+
+      <a href="communities/meridian.html" class="community-card">
+        <div class="community-card-img">
+          <div class="community-card-img-bg" style="background: linear-gradient(135deg,#4a1a6a,#7a35a0);"></div>
+          <div class="community-card-overlay"></div>
+          <span class="community-card-name">Meridian</span>
+        </div>
+        <div class="community-card-body">
+          <div class="community-card-stats">
+            <div class="community-stat"><strong>$425K</strong><span>Median Price</span></div>
+            <div class="community-stat"><strong>Fastest-Growing</strong><span>City</span></div>
+          </div>
+          <p class="community-card-desc">Idaho's fastest-growing city offers modern amenities, top-rated schools, and abundant new construction in sought-after neighborhoods.</p>
+          <span class="community-card-link">Explore Meridian <span>→</span></span>
+        </div>
+      </a>
+
+      <a href="communities/nampa-caldwell.html" class="community-card">
+        <div class="community-card-img">
+          <div class="community-card-img-bg" style="background: linear-gradient(135deg,#5a2a0a,#9b4a1a);"></div>
+          <div class="community-card-overlay"></div>
+          <span class="community-card-name">Nampa &amp; Caldwell</span>
+        </div>
+        <div class="community-card-body">
+          <div class="community-card-stats">
+            <div class="community-stat"><strong>$335K</strong><span>Median Price</span></div>
+            <div class="community-stat"><strong>West Valley</strong><span>Hub</span></div>
+          </div>
+          <p class="community-card-desc">Affordable entry points, growing job centers, and deep community roots define Idaho's west Treasure Valley communities.</p>
+          <span class="community-card-link">Explore Nampa &amp; Caldwell <span>→</span></span>
+        </div>
+      </a>
+
+      <a href="communities/star.html" class="community-card">
+        <div class="community-card-img">
+          <div class="community-card-img-bg" style="background: linear-gradient(135deg,#1a4a5a,#2a7a8a);"></div>
+          <div class="community-card-overlay"></div>
+          <span class="community-card-name">Star</span>
+        </div>
+        <div class="community-card-body">
+          <div class="community-card-stats">
+            <div class="community-stat"><strong>$430K</strong><span>Median Price</span></div>
+            <div class="community-stat"><strong>Small Town</strong><span>Charm</span></div>
+          </div>
+          <p class="community-card-desc">Star's rapid growth brings new neighborhoods and amenities while maintaining its small-town Idaho character and open space.</p>
+          <span class="community-card-link">Explore Star <span>→</span></span>
+        </div>
+      </a>
+
+      <a href="communities/kuna.html" class="community-card">
+        <div class="community-card-img">
+          <div class="community-card-img-bg" style="background: linear-gradient(135deg,#3a1a0a,#6a3520);"></div>
+          <div class="community-card-overlay"></div>
+          <span class="community-card-name">Kuna</span>
+        </div>
+        <div class="community-card-body">
+          <div class="community-card-stats">
+            <div class="community-stat"><strong>$360K</strong><span>Median Price</span></div>
+            <div class="community-stat"><strong>Growing South</strong><span>Valley</span></div>
+          </div>
+          <p class="community-card-desc">South Treasure Valley's hidden gem — affordable homes, quiet neighborhoods, and close proximity to Boise via I-84.</p>
+          <span class="community-card-link">Explore Kuna <span>→</span></span>
+        </div>
+      </a>
+
+      <a href="communities/emmett.html" class="community-card">
+        <div class="community-card-img">
+          <div class="community-card-img-bg" style="background: linear-gradient(135deg,#2a4a1a,#4a7a2a);"></div>
+          <div class="community-card-overlay"></div>
+          <span class="community-card-name">Emmett</span>
+        </div>
+        <div class="community-card-body">
+          <div class="community-card-stats">
+            <div class="community-stat"><strong>$290K</strong><span>Median Price</span></div>
+            <div class="community-stat"><strong>Gem County</strong><span>Seat</span></div>
+          </div>
+          <p class="community-card-desc">Nestled in the beautiful Payette River valley, Emmett offers rural character, orchards, and affordable acreage properties.</p>
+          <span class="community-card-link">Explore Emmett <span>→</span></span>
+        </div>
+      </a>
+
+      <a href="communities/middleton.html" class="community-card">
+        <div class="community-card-img">
+          <div class="community-card-img-bg" style="background: linear-gradient(135deg,#1a3a5a,#2a5a8a);"></div>
+          <div class="community-card-overlay"></div>
+          <span class="community-card-name">Middleton</span>
+        </div>
+        <div class="community-card-body">
+          <div class="community-card-stats">
+            <div class="community-stat"><strong>$385K</strong><span>Median Price</span></div>
+            <div class="community-stat"><strong>Canyon County</strong><span>Gem</span></div>
+          </div>
+          <p class="community-card-desc">A growing community with newer subdivisions, good schools, and easy access to both Nampa and Boise along the Boise River corridor.</p>
+          <span class="community-card-link">Explore Middleton <span>→</span></span>
+        </div>
+      </a>
+
+      <a href="communities/index.html" class="community-card" style="background: var(--navy);">
+        <div class="community-card-img" style="background: linear-gradient(135deg,#0d2e60,#194d9b); height: 100%; min-height: 200px; display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+          🗺️
+        </div>
+        <div class="community-card-body">
+          <p class="community-card-desc" style="color: var(--text-light);">Plus Mountain Home, New Plymouth, Melba, Marsing, Payette &amp; more across Southwest Idaho.</p>
+          <span class="community-card-link">View All Communities <span>→</span></span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     LEAD CAPTURE CTA
+══════════════════════════════════════ -->
+<section class="section lead-cta" id="contact-cta">
+  <div class="container">
+    <div class="lead-cta-inner">
+      <div class="lead-cta-text">
+        <span class="section-label" style="color: var(--gold-light);">Start Your Journey</span>
+        <h2>Ready to Buy or<br>Sell in Idaho?</h2>
+        <p>
+          Tell us a little about what you're looking for and a CWRE Idaho
+          specialist will reach out within one business day — no pressure,
+          just honest local expertise.
+        </p>
+        <div class="lead-cta-perks">
+          <div class="lead-perk">
+            <div class="lead-perk-icon">✓</div>
+            Free, no-obligation consultation
+          </div>
+          <div class="lead-perk">
+            <div class="lead-perk-icon">✓</div>
+            Personalized Idaho market analysis
+          </div>
+          <div class="lead-perk">
+            <div class="lead-perk-icon">✓</div>
+            Access to off-market and new listings
+          </div>
+          <div class="lead-perk">
+            <div class="lead-perk-icon">✓</div>
+            Expert negotiation &amp; guidance from offer to close
+          </div>
+        </div>
+      </div>
+
+      <div class="lead-form-card">
+        <h3>Let's Connect</h3>
+        <p>Fill out the form and we'll be in touch shortly.</p>
+        <form id="contact-form" action="#" method="post" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cf-first">First Name *</label>
+              <input type="text" id="cf-first" name="firstName" required placeholder="John" />
+            </div>
+            <div class="form-group">
+              <label for="cf-last">Last Name *</label>
+              <input type="text" id="cf-last" name="lastName" required placeholder="Smith" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cf-email">Email Address *</label>
+            <input type="email" id="cf-email" name="email" required placeholder="john@email.com" />
+          </div>
+          <div class="form-group">
+            <label for="cf-phone">Phone Number *</label>
+            <input type="tel" id="cf-phone" name="phone" required placeholder="(208) 555-0100" />
+          </div>
+          <div class="form-group">
+            <label for="cf-type">I'm looking to…</label>
+            <select id="cf-type" name="type">
+              <option value="">Select one</option>
+              <option value="buy">Buy a home</option>
+              <option value="sell">Sell my home</option>
+              <option value="both">Buy &amp; Sell</option>
+              <option value="invest">Invest in property</option>
+              <option value="other">Just have questions</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg form-submit">
+            Get My Free Consultation →
+          </button>
+          <p class="form-privacy">
+            By submitting, you agree to our
+            <a href="privacy.html">Privacy Policy</a>.
+            We never share your information.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     BLOG / MARKET UPDATES
+══════════════════════════════════════ -->
+<section class="section blog-section" id="blog">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Stay Informed</span>
+      <h2>Idaho Market Updates &amp; News</h2>
+      <p>Monthly insights on real estate trends, community news, and buying or selling tips from Clint Walker.</p>
+    </div>
+
+    <div class="blog-grid">
+
+      <a href="blog/june-2025-market-report.html" class="blog-card">
+        <div class="blog-card-img">
+          <div style="width:100%;height:100%;background:linear-gradient(135deg,#0d2e60,#194d9b);display:flex;align-items:center;justify-content:center;font-size:3rem;">📊</div>
+          <span class="blog-card-tag">Market Report</span>
+        </div>
+        <div class="blog-card-body">
+          <div class="blog-card-meta">
+            <span>June 2025</span> · <span>5 min read</span>
+          </div>
+          <h3>June 2025 Treasure Valley Market Report</h3>
+          <p>Inventory levels, median prices, and what buyers and sellers need to know heading into summer in the Boise metro area.</p>
+          <span class="blog-card-read-more">Read More →</span>
+        </div>
+      </a>
+
+      <a href="blog/buying-in-eagle-idaho.html" class="blog-card">
+        <div class="blog-card-img">
+          <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a4a2a,#2d7a45);display:flex;align-items:center;justify-content:center;font-size:3rem;">🏡</div>
+          <span class="blog-card-tag">Buyer Guide</span>
+        </div>
+        <div class="blog-card-body">
+          <div class="blog-card-meta">
+            <span>May 2025</span> · <span>7 min read</span>
+          </div>
+          <h3>Why Buyers Are Choosing Eagle, Idaho in 2025</h3>
+          <p>Eagle's school ratings, new developments, and lifestyle make it one of Idaho's most sought-after communities for growing families.</p>
+          <span class="blog-card-read-more">Read More →</span>
+        </div>
+      </a>
+
+      <a href="blog/selling-your-home-tips.html" class="blog-card">
+        <div class="blog-card-img">
+          <div style="width:100%;height:100%;background:linear-gradient(135deg,#4a1a0a,#8a3520);display:flex;align-items:center;justify-content:center;font-size:3rem;">🔑</div>
+          <span class="blog-card-tag">Seller Tips</span>
+        </div>
+        <div class="blog-card-body">
+          <div class="blog-card-meta">
+            <span>April 2025</span> · <span>6 min read</span>
+          </div>
+          <h3>5 Things Idaho Sellers Should Do Before Listing</h3>
+          <p>Small investments before you list can mean thousands more at closing. Here's what CWRE Idaho recommends for every seller in today's market.</p>
+          <span class="blog-card-read-more">Read More →</span>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="view-all-wrap">
+      <a href="blog/index.html" class="btn btn-outline">View All Market Updates →</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     TESTIMONIALS
+══════════════════════════════════════ -->
+<section class="section testimonials" id="testimonials">
+  <div class="container">
+    <div class="section-header centered">
+      <span class="section-label">Client Stories</span>
+      <h2>What Idaho Families Say</h2>
+    </div>
+
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <p class="testimonial-text">
+          "Clint made buying our first home in Meridian feel easy and stress-free.
+          He knew every neighborhood, every school district, and fought hard to get
+          us the best price. We couldn't be happier."
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">JM</div>
+          <div>
+            <span class="testimonial-name">Jake &amp; Mia R.</span>
+            <span class="testimonial-location">First-time buyers · Meridian</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <p class="testimonial-text">
+          "We sold our Eagle home in 6 days for above asking price. Clint's
+          marketing strategy and staging advice made all the difference. Highly
+          recommend CWRE Idaho to anyone selling."
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">SB</div>
+          <div>
+            <span class="testimonial-name">Sandra B.</span>
+            <span class="testimonial-location">Home seller · Eagle</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </div>
+        <p class="testimonial-text">
+          "We relocated from out of state and Clint helped us understand every
+          community from Kuna to Star. He was patient, thorough, and genuinely
+          cared about finding the right fit — not just closing a deal."
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">TK</div>
+          <div>
+            <span class="testimonial-name">Tom &amp; Karen H.</span>
+            <span class="testimonial-location">Relocation buyers · Kuna</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <span class="footer-brand-text">CWRE Idaho</span>
+        <span class="footer-brand-sub">Clint Walker Real Estate</span>
+        <p class="footer-bio">
+          Serving the Treasure Valley and Southwest Idaho with honest,
+          expert real estate guidance. Whether you're buying, selling, or
+          exploring — CWRE Idaho is your local partner.
+        </p>
+        <div class="footer-contact-item">📞 <a href="tel:+12088704279">(208) 870-4279</a></div>
+        <div class="footer-contact-item">✉️ <a href="mailto:clintwalkeridaho@gmail.com">clintwalkeridaho@gmail.com</a></div>
+        <div class="footer-contact-item">📍 Boise, Idaho</div>
+      </div>
+
+      <div>
+        <span class="footer-heading">Navigation</span>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="buyers.html">Buy a Home</a></li>
+          <li><a href="sellers.html">Sell Your Home</a></li>
+          <li><a href="communities/index.html">Communities</a></li>
+          <li><a href="blog/index.html">Market Updates</a></li>
+          <li><a href="about.html">About Clint</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <span class="footer-heading">Communities</span>
+        <ul class="footer-links">
+          <li><a href="communities/boise.html">Boise</a></li>
+          <li><a href="communities/eagle.html">Eagle</a></li>
+          <li><a href="communities/meridian.html">Meridian</a></li>
+          <li><a href="communities/nampa-caldwell.html">Nampa &amp; Caldwell</a></li>
+          <li><a href="communities/star.html">Star</a></li>
+          <li><a href="communities/kuna.html">Kuna</a></li>
+          <li><a href="communities/emmett.html">Emmett</a></li>
+          <li><a href="communities/middleton.html">Middleton</a></li>
+          <li><a href="communities/index.html">+ 5 More →</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-newsletter">
+        <span class="footer-heading">Monthly Market Report</span>
+        <p>Get Idaho real estate market updates delivered to your inbox every month.</p>
+        <form class="newsletter-form" novalidate>
+          <input type="text" placeholder="Your name" aria-label="Name" />
+          <input type="email" placeholder="Email address" aria-label="Email" required />
+          <button type="submit">Subscribe Free →</button>
+        </form>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 CWRE Idaho · Clint Walker Real Estate. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════
+     LEAD GATE MODAL
+══════════════════════════════════════ -->
+<div id="lead-gate-modal" class="lead-gate-modal" role="dialog" aria-modal="true" aria-labelledby="lead-gate-title">
+  <div class="lead-gate-card">
+    <div class="lead-gate-icon">🔑</div>
+    <h3 id="lead-gate-title">Unlock Full Access</h3>
+    <p>Create your free account to view listing details, save searches, and get personalized alerts.</p>
+
+    <div class="lead-gate-perks">
+      <div class="lead-gate-perk"><span>🏠</span> View full listing details &amp; photos</div>
+      <div class="lead-gate-perk"><span>🔔</span> Save searches &amp; get instant alerts</div>
+      <div class="lead-gate-perk"><span>📊</span> Access neighborhood market data</div>
+    </div>
+
+    <form id="lead-gate-form" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="lg-first">First Name *</label>
+          <input type="text" id="lg-first" name="firstName" required placeholder="First" />
+        </div>
+        <div class="form-group">
+          <label for="lg-last">Last Name *</label>
+          <input type="text" id="lg-last" name="lastName" required placeholder="Last" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="lg-email">Email Address *</label>
+        <input type="email" id="lg-email" name="email" required placeholder="you@email.com" />
+      </div>
+      <div class="form-group">
+        <label for="lg-phone">Phone Number *</label>
+        <input type="tel" id="lg-phone" name="phone" required placeholder="(208) 870-4279" />
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg form-submit">
+        Create Free Account →
+      </button>
+      <p class="form-privacy">No spam, ever. <a href="privacy.html">Privacy Policy</a></p>
+    </form>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs sed -i '' 's|\\(208\\) 555-0000|\\(208\\) 870-4279|g')",
+      "Bash(xargs sed -i '' 's|clint@cwreidaho.com|clintwalkeridaho@gmail.com|g')",
+      "Bash(xargs sed -i '' 's|href=\"tel:+12085550000\"|href=\"tel:+12088704279\"|g')",
+      "Bash(xargs sed -i '' 's|href=\"mailto:clint@cwreidaho.com\"|href=\"mailto:clintwalkeridaho@gmail.com\"|g')"
+    ]
+  }
+}
