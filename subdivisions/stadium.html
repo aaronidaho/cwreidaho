@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Stadium — Interactive Plat Map | CWRE Idaho</title>
+  <meta name="description" content="View The Stadium subdivision Phase One interactive plat map — click any lot to see status, builder, and floor plan. New home lots in Idaho." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    /* ── (same styles as lakehaven.html) ── */
+    .plat-page { display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start; }
+    .plat-sidebar { position: sticky; top: 90px; }
+    .plat-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+    .filter-btn {
+      padding: 0.45rem 1.1rem; border-radius: 50px; font-size: 0.82rem; font-weight: 600;
+      border: 2px solid transparent; cursor: pointer; transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+    }
+    .filter-btn.all { background: var(--navy); color: white; }
+    .filter-btn.available { background: #dcfce7; color: #15803d; border-color: #86efac; }
+    .filter-btn.spec { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
+    .filter-btn.reserved { background: #ffedd5; color: #c2410c; border-color: #fdba74; }
+    .filter-btn.sold { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
+    .filter-btn.active, .filter-btn:hover { opacity: 0.85; transform: scale(1.03); }
+    .filter-btn .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+    .filter-btn.available .dot { background: #22c55e; }
+    .filter-btn.spec .dot { background: #3b82f6; }
+    .filter-btn.reserved .dot { background: #f97316; }
+    .filter-btn.sold .dot { background: #ef4444; }
+    .map-wrap {
+      position: relative; overflow: hidden; border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md); background: #f0f0f0; cursor: grab;
+      user-select: none; touch-action: none;
+    }
+    .map-wrap:active { cursor: grabbing; }
+    .map-inner { transform-origin: 0 0; transition: transform 0.05s linear; width: 100%; position: relative; display: block; }
+    .map-inner img { width: 100%; display: block; pointer-events: none; }
+    .lot-pin {
+      position: absolute; width: 26px; height: 26px; border-radius: 50%;
+      transform: translate(-50%, -50%); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; color: white;
+      border: 2px solid rgba(255,255,255,0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+      transition: transform 0.15s, box-shadow 0.15s; z-index: 10;
+    }
+    .lot-pin:hover { transform: translate(-50%, -50%) scale(1.45); box-shadow: 0 4px 16px rgba(0,0,0,0.45); z-index: 20; }
+    .lot-pin.available { background: #22c55e; }
+    .lot-pin.spec     { background: #3b82f6; }
+    .lot-pin.reserved { background: #f97316; }
+    .lot-pin.sold     { background: #ef4444; }
+    .lot-pin.filtered-out { opacity: 0.15; pointer-events: none; }
+    .lot-pin.selected { transform: translate(-50%, -50%) scale(1.5); box-shadow: 0 0 0 3px white, 0 4px 20px rgba(0,0,0,0.5); z-index: 30; }
+    .zoom-controls { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+    .zoom-btn {
+      padding: 0.5rem 1.1rem; border-radius: var(--radius); font-size: 0.88rem; font-weight: 600;
+      background: var(--gray-light); color: var(--text); border: 1px solid var(--gray); cursor: pointer; transition: background 0.15s;
+    }
+    .zoom-btn:hover { background: var(--gray); }
+    .zoom-hint { font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem; }
+    .lot-detail-card { background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; }
+    .lot-detail-header { padding: 1.25rem 1.5rem; background: var(--navy); color: white; }
+    .lot-detail-header h3 { color: white; font-size: 1.3rem; margin-bottom: 0.2rem; }
+    .status-badge { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.25rem 0.75rem; border-radius: 50px; }
+    .status-badge.available { background: #dcfce7; color: #15803d; }
+    .status-badge.spec     { background: #dbeafe; color: #1d4ed8; }
+    .status-badge.reserved { background: #ffedd5; color: #c2410c; }
+    .status-badge.sold     { background: #fee2e2; color: #b91c1c; }
+    .lot-detail-body { padding: 1.5rem; }
+    .lot-detail-row { display: flex; flex-direction: column; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-light); }
+    .lot-detail-row:last-child { border: none; margin-bottom: 0; padding-bottom: 0; }
+    .lot-detail-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-dark); margin-bottom: 0.2rem; }
+    .lot-detail-value { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+    .lot-detail-empty { padding: 3rem 1.5rem; text-align: center; color: var(--text-light); }
+    .lot-detail-empty .empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .inventory-section { margin-top: 3rem; }
+    .inventory-table-wrap { overflow-x: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow); }
+    .inventory-table { width: 100%; border-collapse: collapse; }
+    .inventory-table th { background: var(--navy); color: white; padding: 0.85rem 1rem; text-align: left; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+    .inventory-table td { padding: 0.8rem 1rem; font-size: 0.9rem; border-bottom: 1px solid var(--gray-light); }
+    .inventory-table tr:last-child td { border-bottom: none; }
+    .inventory-table tr:hover td { background: var(--gray-light); }
+    .inventory-table tr { cursor: pointer; }
+    .tbl-status { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; font-weight: 700; padding: 0.2rem 0.65rem; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .tbl-status.available { background: #dcfce7; color: #15803d; }
+    .tbl-status.spec     { background: #dbeafe; color: #1d4ed8; }
+    .tbl-status.reserved { background: #ffedd5; color: #c2410c; }
+    .tbl-status.sold     { background: #fee2e2; color: #b91c1c; }
+    .tbl-status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; display: block; }
+    @media (max-width: 900px) { .plat-page { grid-template-columns: 1fr; } .plat-sidebar { position: static; } }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav" role="navigation">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-icon">CW</div>
+      <div class="nav-logo-text">
+        <span class="nav-logo-main">CWRE Idaho</span>
+        <span class="nav-logo-sub">Clint Walker Real Estate</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../buyers.html">Buy</a></li>
+      <li><a href="../sellers.html">Sell</a></li>
+      <li><a href="../communities/index.html">Communities</a></li>
+      <li><a href="index.html" class="active">Subdivisions</a></li>
+      <li><a href="../blog/index.html">Market Updates</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-cta"><a href="../contact.html" class="btn btn-gold">Get in Touch</a></div>
+    <button class="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container page-hero-inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="index.html">Subdivisions</a><span>/</span>The Stadium</div>
+    <h1>The Stadium — Phase One</h1>
+    <p>Click any lot on the plat map to view status, builder, and floor plan. Use scroll/pinch to zoom, drag to pan.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="plat-page">
+
+      <!-- LEFT: Map -->
+      <div class="plat-main">
+        <div class="plat-filters">
+          <button class="filter-btn all active" data-filter="all">All Lots</button>
+          <button class="filter-btn available" data-filter="available"><span class="dot"></span> Available</button>
+          <button class="filter-btn spec" data-filter="spec"><span class="dot"></span> Spec Build</button>
+          <button class="filter-btn reserved" data-filter="reserved"><span class="dot"></span> Reserved</button>
+          <button class="filter-btn sold" data-filter="sold"><span class="dot"></span> Sold</button>
+        </div>
+
+        <div class="map-wrap" id="mapWrap">
+          <div class="map-inner" id="mapInner">
+            <img src="../images/stadium-plat-web.jpg" alt="The Stadium Phase One Plat Map" id="platImg" />
+
+            <!-- ═══════════════════════════════════════
+                 LOT PINS — positions are % of image (left%, top%)
+                 Status is set from LOT_DATA below
+                 ═══════════════════════════════════════ -->
+
+            <!-- Block 1 — upper right, curving section -->
+            <div class="lot-pin sold"      data-lot="1"  style="left:55%;top:18%">1</div>
+            <div class="lot-pin sold"      data-lot="2"  style="left:62%;top:16%">2</div>
+            <div class="lot-pin available" data-lot="3"  style="left:69%;top:17%">3</div>
+            <div class="lot-pin available" data-lot="4"  style="left:76%;top:20%">4</div>
+            <div class="lot-pin available" data-lot="5"  style="left:82%;top:25%">5</div>
+            <div class="lot-pin spec"      data-lot="6"  style="left:86%;top:31%">6</div>
+            <div class="lot-pin spec"      data-lot="7"  style="left:88%;top:38%">7</div>
+            <div class="lot-pin spec"      data-lot="8"  style="left:86%;top:45%">8</div>
+            <div class="lot-pin spec"      data-lot="9"  style="left:81%;top:51%">9</div>
+            <div class="lot-pin spec"      data-lot="10" style="left:75%;top:55%">10</div>
+
+            <!-- Block 2 — left/center section -->
+            <div class="lot-pin sold"      data-lot="11" style="left:37%;top:29%">11</div>
+            <div class="lot-pin spec"      data-lot="12" style="left:32%;top:37%">12</div>
+            <div class="lot-pin spec"      data-lot="13" style="left:40%;top:36%">13</div>
+            <div class="lot-pin spec"      data-lot="14" style="left:36%;top:45%">14</div>
+            <div class="lot-pin spec"      data-lot="15" style="left:45%;top:43%">15</div>
+            <div class="lot-pin available" data-lot="16" style="left:52%;top:41%">16</div>
+
+            <!-- Block 3 — lower center/right -->
+            <div class="lot-pin available" data-lot="17" style="left:51%;top:63%">17</div>
+            <div class="lot-pin available" data-lot="18" style="left:58%;top:61%">18</div>
+            <div class="lot-pin available" data-lot="19" style="left:65%;top:61%">19</div>
+            <div class="lot-pin available" data-lot="20" style="left:72%;top:62%">20</div>
+            <div class="lot-pin available" data-lot="21" style="left:59%;top:69%">21</div>
+            <div class="lot-pin available" data-lot="22" style="left:66%;top:69%">22</div>
+            <div class="lot-pin available" data-lot="23" style="left:73%;top:69%">23</div>
+
+            <!-- Block 4 — lower right corner -->
+            <div class="lot-pin sold"      data-lot="24" style="left:80%;top:67%">24</div>
+            <div class="lot-pin sold"      data-lot="25" style="left:87%;top:65%">25</div>
+            <div class="lot-pin sold"      data-lot="26" style="left:87%;top:73%">26</div>
+            <div class="lot-pin sold"      data-lot="27" style="left:80%;top:75%">27</div>
+            <div class="lot-pin available" data-lot="28" style="left:92%;top:62%">28</div>
+            <div class="lot-pin available" data-lot="29" style="left:92%;top:70%">29</div>
+          </div>
+        </div>
+
+        <div class="zoom-controls">
+          <button class="zoom-btn" id="zoomIn">＋ Zoom In</button>
+          <button class="zoom-btn" id="zoomOut">－ Zoom Out</button>
+          <button class="zoom-btn" id="zoomReset">↺ Reset</button>
+        </div>
+        <p class="zoom-hint">💡 Scroll to zoom · Drag to pan · Click a lot for details</p>
+      </div>
+
+      <!-- RIGHT: Detail Panel -->
+      <div class="plat-sidebar">
+        <div class="lot-detail-card" id="lotDetailCard">
+          <div class="lot-detail-empty" id="lotDetailEmpty">
+            <div class="empty-icon">📍</div>
+            <p><strong>Click any lot</strong> on the map to view its status, assigned builder, and floor plan.</p>
+          </div>
+          <div id="lotDetailContent" style="display:none;">
+            <div class="lot-detail-header" id="detailHeader">
+              <h3 id="detailTitle">Lot —</h3>
+              <span class="status-badge" id="detailBadge"></span>
+            </div>
+            <div class="lot-detail-body">
+              <div class="lot-detail-row">
+                <span class="lot-detail-label">Status</span>
+                <span class="lot-detail-value" id="detailStatus">—</span>
+              </div>
+              <div class="lot-detail-row">
+                <span class="lot-detail-label">Builder</span>
+                <span class="lot-detail-value" id="detailBuilder">—</span>
+              </div>
+              <div class="lot-detail-row">
+                <span class="lot-detail-label">Floor Plan</span>
+                <span class="lot-detail-value" id="detailFloorPlan">—</span>
+              </div>
+              <div class="lot-detail-row">
+                <span class="lot-detail-label">Sq Footage</span>
+                <span class="lot-detail-value" id="detailSqft">—</span>
+              </div>
+              <div class="lot-detail-row">
+                <span class="lot-detail-label">Notes</span>
+                <span class="lot-detail-value" id="detailNotes" style="font-weight:400;font-size:0.88rem;">—</span>
+              </div>
+              <a href="../contact.html" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:0.5rem;">
+                Inquire About This Lot →
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:1.25rem; background:var(--gray-light); border-radius:var(--radius-lg); padding:1.25rem;">
+          <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray-dark);margin-bottom:0.75rem;">Availability Summary</div>
+          <div id="summaryStats" style="display:flex;flex-direction:column;gap:0.5rem;"></div>
+        </div>
+
+        <div style="margin-top:1.25rem;">
+          <a href="tel:+12088704279" class="btn btn-gold" style="width:100%;justify-content:center;">📞 Call Clint — (208) 870-4279</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Inventory Table -->
+    <div class="inventory-section">
+      <h2 style="margin-bottom:1.5rem;">Lot Inventory — Phase One</h2>
+      <div class="inventory-table-wrap">
+        <table class="inventory-table" id="inventoryTable">
+          <thead>
+            <tr>
+              <th>Lot #</th>
+              <th>Status</th>
+              <th>Builder</th>
+              <th>Floor Plan</th>
+              <th>Sq Ft</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-brand-text">CWRE Idaho</span>
+        <span class="footer-brand-sub">Clint Walker Real Estate</span>
+        <p class="footer-bio">Serving the Treasure Valley and Southwest Idaho.</p>
+        <div class="footer-contact-item">📞 <a href="tel:+12088704279">(208) 870-4279</a></div>
+        <div class="footer-contact-item">✉️ <a href="mailto:clintwalkeridaho@gmail.com">clintwalkeridaho@gmail.com</a></div>
+      </div>
+      <div><span class="footer-heading">Navigation</span>
+        <ul class="footer-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../buyers.html">Buy</a></li>
+          <li><a href="../sellers.html">Sell</a></li>
+          <li><a href="../communities/index.html">Communities</a></li>
+          <li><a href="index.html">Subdivisions</a></li>
+          <li><a href="../blog/index.html">Market Updates</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div><span class="footer-heading">Subdivisions</span>
+        <ul class="footer-links">
+          <li><a href="lakehaven.html">Lakehaven Estates</a></li>
+          <li><a href="stadium.html">The Stadium</a></li>
+        </ul>
+      </div>
+      <div class="footer-newsletter">
+        <span class="footer-heading">Monthly Market Report</span>
+        <p>Idaho real estate updates monthly.</p>
+        <form class="newsletter-form" novalidate>
+          <input type="email" placeholder="Email address" required />
+          <button type="submit">Subscribe Free →</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 CWRE Idaho · Clint Walker Real Estate. All rights reserved.</span>
+      <div class="footer-bottom-links"><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+// ══════════════════════════════════════════════════
+//  THE STADIUM PHASE ONE — LOT DATA
+//  Edit this object to update any lot's info.
+//  Status pulled from plat map coloring:
+//  Red = sold, Blue = spec, Green = available, Orange = reserved
+// ══════════════════════════════════════════════════
+const LOT_DATA = {
+   1: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+   2: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+   3: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+   4: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+   5: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+   6: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+   7: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+   8: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+   9: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  10: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  11: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  12: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  13: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  14: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  15: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  16: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  17: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  18: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  19: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  20: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  21: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  22: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  23: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  24: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  25: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  26: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  27: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  28: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  29: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+};
+
+const STATUS_LABEL = { available: "Available", spec: "Spec Build", reserved: "Reserved", sold: "Sold" };
+
+document.querySelectorAll('.lot-pin').forEach(pin => {
+  const num = parseInt(pin.dataset.lot);
+  const d = LOT_DATA[num];
+  if (!d) return;
+  pin.className = 'lot-pin ' + d.status;
+  pin.textContent = num;
+});
+
+const tbody = document.getElementById('inventoryBody');
+Object.entries(LOT_DATA).forEach(([num, d]) => {
+  const tr = document.createElement('tr');
+  tr.dataset.lot = num;
+  tr.innerHTML = `
+    <td><strong>Lot ${num}</strong></td>
+    <td><span class="tbl-status ${d.status}">${STATUS_LABEL[d.status]}</span></td>
+    <td>${d.builder || '—'}</td>
+    <td>${d.floorPlan || '—'}</td>
+    <td>${d.sqft || '—'}</td>
+    <td style="font-size:0.82rem;color:var(--text-light)">${d.notes || '—'}</td>
+  `;
+  tr.addEventListener('click', () => selectLot(num));
+  tbody.appendChild(tr);
+});
+
+function buildSummary() {
+  const counts = { available: 0, spec: 0, reserved: 0, sold: 0 };
+  Object.values(LOT_DATA).forEach(d => counts[d.status]++);
+  const labels = { available: '🟢 Available', spec: '🔵 Spec Build', reserved: '🟠 Reserved', sold: '🔴 Sold' };
+  const el = document.getElementById('summaryStats');
+  el.innerHTML = Object.entries(counts).map(([s, c]) =>
+    `<div style="display:flex;justify-content:space-between;font-size:0.9rem;">
+       <span style="color:var(--text-light)">${labels[s]}</span>
+       <strong>${c}</strong>
+     </div>`
+  ).join('');
+}
+buildSummary();
+
+let selectedPin = null;
+function selectLot(num) {
+  const d = LOT_DATA[num];
+  if (!d) return;
+  if (selectedPin) selectedPin.classList.remove('selected');
+  selectedPin = document.querySelector(`.lot-pin[data-lot="${num}"]`);
+  if (selectedPin) selectedPin.classList.add('selected');
+  document.getElementById('lotDetailEmpty').style.display = 'none';
+  document.getElementById('lotDetailContent').style.display = 'block';
+  document.getElementById('detailTitle').textContent = 'Lot ' + num;
+  const badge = document.getElementById('detailBadge');
+  badge.textContent = STATUS_LABEL[d.status];
+  badge.className = 'status-badge ' + d.status;
+  document.getElementById('detailStatus').textContent = STATUS_LABEL[d.status];
+  document.getElementById('detailBuilder').textContent = d.builder || '—';
+  document.getElementById('detailFloorPlan').textContent = d.floorPlan || '—';
+  document.getElementById('detailSqft').textContent = d.sqft || '—';
+  document.getElementById('detailNotes').textContent = d.notes || '—';
+}
+
+document.querySelectorAll('.lot-pin').forEach(pin => {
+  pin.addEventListener('click', () => selectLot(parseInt(pin.dataset.lot)));
+});
+
+let currentFilter = 'all';
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentFilter = btn.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.lot-pin').forEach(pin => {
+      const status = LOT_DATA[parseInt(pin.dataset.lot)]?.status;
+      pin.classList.toggle('filtered-out', currentFilter !== 'all' && status !== currentFilter);
+    });
+    document.querySelectorAll('#inventoryBody tr').forEach(row => {
+      const num = parseInt(row.dataset.lot);
+      const status = LOT_DATA[num]?.status;
+      row.style.display = (currentFilter === 'all' || status === currentFilter) ? '' : 'none';
+    });
+  });
+});
+
+(function() {
+  const wrap = document.getElementById('mapWrap');
+  const inner = document.getElementById('mapInner');
+  let scale = 1, minScale = 0.5, maxScale = 5;
+  let tx = 0, ty = 0;
+  let dragging = false, startX, startY, startTx, startTy;
+  function clamp(val, min, max) { return Math.min(Math.max(val, min), max); }
+  function apply() { inner.style.transition = 'none'; inner.style.transform = `translate(${tx}px,${ty}px) scale(${scale})`; }
+  wrap.addEventListener('wheel', e => {
+    e.preventDefault();
+    const rect = wrap.getBoundingClientRect();
+    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    const delta = e.deltaY < 0 ? 1.12 : 0.89;
+    const newScale = clamp(scale * delta, minScale, maxScale);
+    tx = mx - (mx - tx) * (newScale / scale);
+    ty = my - (my - ty) * (newScale / scale);
+    scale = newScale; apply();
+  }, { passive: false });
+  wrap.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('lot-pin')) return;
+    dragging = true; startX = e.clientX; startY = e.clientY; startTx = tx; startTy = ty;
+  });
+  window.addEventListener('mousemove', e => {
+    if (!dragging) return; tx = startTx + (e.clientX - startX); ty = startTy + (e.clientY - startY); apply();
+  });
+  window.addEventListener('mouseup', () => { dragging = false; });
+  let lastDist = null;
+  wrap.addEventListener('touchstart', e => {
+    if (e.touches.length === 1 && !e.target.classList.contains('lot-pin')) {
+      dragging = true; startX = e.touches[0].clientX; startY = e.touches[0].clientY; startTx = tx; startTy = ty;
+    }
+  }, { passive: true });
+  wrap.addEventListener('touchmove', e => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      if (lastDist) { scale = clamp(scale * (d / lastDist), minScale, maxScale); apply(); }
+      lastDist = d;
+    } else if (dragging) { tx = startTx + (e.touches[0].clientX - startX); ty = startTy + (e.touches[0].clientY - startY); apply(); }
+  }, { passive: false });
+  wrap.addEventListener('touchend', () => { dragging = false; lastDist = null; });
+  document.getElementById('zoomIn').addEventListener('click', () => { scale = clamp(scale * 1.3, minScale, maxScale); apply(); });
+  document.getElementById('zoomOut').addEventListener('click', () => { scale = clamp(scale * 0.77, minScale, maxScale); apply(); });
+  document.getElementById('zoomReset').addEventListener('click', () => {
+    scale = 1; tx = 0; ty = 0;
+    inner.style.transition = 'transform 0.3s ease';
+    inner.style.transform = 'translate(0,0) scale(1)';
+  });
+})();
+</script>
+</body>
+</html>
