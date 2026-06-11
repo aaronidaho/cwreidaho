@@ -145,46 +145,47 @@
             <img src="../images/stadium-plat-web.jpg" alt="The Stadium Phase One Plat Map" id="platImg" />
 
             <!-- ═══════════════════════════════════════
-                 LOT PINS — positions are % of image (left%, top%)
-                 Status is set from LOT_DATA below
+                 LOT PINS — positions read directly from plat image
+                 left% / top% = center of lot on the 2000×2000 web image
+                 Colors: RED outline = sold, BLUE outline = spec build
                  ═══════════════════════════════════════ -->
 
-            <!-- Block 1 — upper right, curving section -->
-            <div class="lot-pin sold"      data-lot="1"  style="left:55%;top:18%">1</div>
-            <div class="lot-pin sold"      data-lot="2"  style="left:62%;top:16%">2</div>
-            <div class="lot-pin available" data-lot="3"  style="left:69%;top:17%">3</div>
-            <div class="lot-pin available" data-lot="4"  style="left:76%;top:20%">4</div>
-            <div class="lot-pin available" data-lot="5"  style="left:82%;top:25%">5</div>
-            <div class="lot-pin spec"      data-lot="6"  style="left:86%;top:31%">6</div>
-            <div class="lot-pin spec"      data-lot="7"  style="left:88%;top:38%">7</div>
-            <div class="lot-pin spec"      data-lot="8"  style="left:86%;top:45%">8</div>
-            <div class="lot-pin spec"      data-lot="9"  style="left:81%;top:51%">9</div>
-            <div class="lot-pin spec"      data-lot="10" style="left:75%;top:55%">10</div>
+            <!-- Block 2 upper column (Serenity Lane, north to south) -->
+            <div class="lot-pin sold"      data-lot="1"  style="left:35%;top:14%">1</div>
+            <div class="lot-pin spec"      data-lot="2"  style="left:37%;top:20%">2</div>
+            <div class="lot-pin spec"      data-lot="3"  style="left:37%;top:27%">3</div>
+            <div class="lot-pin sold"      data-lot="4"  style="left:36%;top:35%">4</div>
+            <div class="lot-pin spec"      data-lot="5"  style="left:38%;top:42%">5</div>
+            <div class="lot-pin spec"      data-lot="6"  style="left:38%;top:50%">6</div>
+            <div class="lot-pin spec"      data-lot="7"  style="left:38%;top:57%">7</div>
 
-            <!-- Block 2 — left/center section -->
-            <div class="lot-pin sold"      data-lot="11" style="left:37%;top:29%">11</div>
-            <div class="lot-pin spec"      data-lot="12" style="left:32%;top:37%">12</div>
-            <div class="lot-pin spec"      data-lot="13" style="left:40%;top:36%">13</div>
-            <div class="lot-pin spec"      data-lot="14" style="left:36%;top:45%">14</div>
-            <div class="lot-pin spec"      data-lot="15" style="left:45%;top:43%">15</div>
-            <div class="lot-pin available" data-lot="16" style="left:52%;top:41%">16</div>
+            <!-- Block 1 west column (north to south) -->
+            <div class="lot-pin spec"      data-lot="8"  style="left:48%;top:16%">8</div>
+            <div class="lot-pin spec"      data-lot="9"  style="left:48%;top:22%">9</div>
+            <div class="lot-pin spec"      data-lot="10" style="left:47%;top:29%">10</div>
+            <div class="lot-pin spec"      data-lot="11" style="left:47%;top:35%">11</div>
+            <div class="lot-pin spec"      data-lot="12" style="left:46%;top:42%">12</div>
 
-            <!-- Block 3 — lower center/right -->
-            <div class="lot-pin available" data-lot="17" style="left:51%;top:63%">17</div>
-            <div class="lot-pin available" data-lot="18" style="left:58%;top:61%">18</div>
-            <div class="lot-pin available" data-lot="19" style="left:65%;top:61%">19</div>
-            <div class="lot-pin available" data-lot="20" style="left:72%;top:62%">20</div>
-            <div class="lot-pin available" data-lot="21" style="left:59%;top:69%">21</div>
-            <div class="lot-pin available" data-lot="22" style="left:66%;top:69%">22</div>
-            <div class="lot-pin available" data-lot="23" style="left:73%;top:69%">23</div>
+            <!-- Block 1 east column (north to south along Commerce Court Way) -->
+            <div class="lot-pin sold"      data-lot="13" style="left:69%;top:16%">13</div>
+            <div class="lot-pin spec"      data-lot="14" style="left:69%;top:19%">14</div>
+            <div class="lot-pin spec"      data-lot="15" style="left:69%;top:24%">15</div>
+            <div class="lot-pin spec"      data-lot="16" style="left:69%;top:29%">16</div>
+            <div class="lot-pin spec"      data-lot="17" style="left:68%;top:35%">17</div>
+            <div class="lot-pin spec"      data-lot="18" style="left:68%;top:40%">18</div>
 
-            <!-- Block 4 — lower right corner -->
-            <div class="lot-pin sold"      data-lot="24" style="left:80%;top:67%">24</div>
-            <div class="lot-pin sold"      data-lot="25" style="left:87%;top:65%">25</div>
-            <div class="lot-pin sold"      data-lot="26" style="left:87%;top:73%">26</div>
-            <div class="lot-pin sold"      data-lot="27" style="left:80%;top:75%">27</div>
-            <div class="lot-pin available" data-lot="28" style="left:92%;top:62%">28</div>
-            <div class="lot-pin available" data-lot="29" style="left:92%;top:70%">29</div>
+            <!-- Block 1 lower section (Triple Crown Pl, west to east) -->
+            <div class="lot-pin spec"      data-lot="19" style="left:46%;top:55%">19</div>
+            <div class="lot-pin spec"      data-lot="20" style="left:51%;top:55%">20</div>
+            <div class="lot-pin spec"      data-lot="21" style="left:56%;top:55%">21</div>
+            <div class="lot-pin spec"      data-lot="22" style="left:61%;top:51%">22</div>
+            <div class="lot-pin spec"      data-lot="23" style="left:67%;top:51%">23</div>
+            <div class="lot-pin sold"      data-lot="24" style="left:67%;top:60%">24</div>
+            <div class="lot-pin spec"      data-lot="25" style="left:73%;top:60%">25</div>
+            <div class="lot-pin available" data-lot="26" style="left:79%;top:53%">26</div>
+            <div class="lot-pin sold"      data-lot="27" style="left:81%;top:61%">27</div>
+            <div class="lot-pin spec"      data-lot="28" style="left:75%;top:68%">28</div>
+            <div class="lot-pin spec"      data-lot="29" style="left:70%;top:73%">29</div>
           </div>
         </div>
 
@@ -324,35 +325,39 @@
 //  Red = sold, Blue = spec, Green = available, Orange = reserved
 // ══════════════════════════════════════════════════
 const LOT_DATA = {
-   1: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-   2: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-   3: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-   4: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-   5: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-   6: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-   7: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-   8: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-   9: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  10: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  11: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  12: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  13: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  14: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  15: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  16: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  17: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  18: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  19: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  20: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  21: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  22: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  23: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  24: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  25: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  26: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  27: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  28: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
-  29: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "" },
+  // Block 2 upper column (Serenity Lane, north to south)
+   1: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD", notes: "Block 2 — sold per plat" },
+   2: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.08 AC", notes: "Block 2" },
+   3: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.22 AC", notes: "Block 2" },
+   4: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.39 AC", notes: "Block 2 — sold per plat" },
+   5: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD",     notes: "Block 2" },
+   6: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD",     notes: "Block 2" },
+   7: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD",     notes: "Block 2" },
+  // Block 1 west column (north to south)
+   8: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.20 AC", notes: "Block 1" },
+   9: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.20 AC", notes: "Block 1" },
+  10: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD",     notes: "Block 1" },
+  11: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.25 AC", notes: "Block 1" },
+  12: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD",     notes: "Block 1" },
+  // Block 1 east column — Commerce Court Way (north to south)
+  13: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.25 AC", notes: "Block 1 — sold per plat" },
+  14: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.44 AC", notes: "Block 1" },
+  15: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.11 AC", notes: "Block 1" },
+  16: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.06 AC", notes: "Block 1" },
+  17: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.01 AC", notes: "Block 1" },
+  18: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD",     notes: "Block 1" },
+  // Block 1 lower section — Triple Crown Pl (west to east)
+  19: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD",     notes: "Block 2 — Triple Crown area" },
+  20: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD",     notes: "Block 2 — Triple Crown area" },
+  21: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD",     notes: "Block 2 — Triple Crown area" },
+  22: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD",     notes: "Block 1 — Triple Crown area" },
+  23: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD",     notes: "Block 1 — Triple Crown area" },
+  24: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "TBD",     notes: "Block 1 — sold per plat" },
+  25: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "TBD",     notes: "Block 1" },
+  26: { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "2.75 AC", notes: "Block 1 — large available lot" },
+  27: { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.01 AC", notes: "Block 1 — sold per plat" },
+  28: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.01 AC", notes: "Block 1" },
+  29: { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.01 AC", notes: "Block 1" },
 };
 
 const STATUS_LABEL = { available: "Available", spec: "Spec Build", reserved: "Reserved", sold: "Sold" };

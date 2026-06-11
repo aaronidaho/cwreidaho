@@ -191,51 +191,53 @@
             <img src="../images/lakehaven-plat-web.jpg" alt="Lakehaven Estates Plat Map" id="platImg" />
 
             <!-- ═══════════════════════════════════════
-                 LOT PINS — positions are % of image (left%, top%)
-                 Update status/builder/floorPlan in the JS data below
+                 LOT PINS — positions read from plat map image
+                 left% / top% = center of lot on the 2000×2000 web image
                  ═══════════════════════════════════════ -->
 
-            <!-- Diagonal Block — upper rows -->
-            <div class="lot-pin available" data-lot="1"  style="left:34%;top:22%">1</div>
-            <div class="lot-pin available" data-lot="2"  style="left:41%;top:21%">2</div>
-            <div class="lot-pin available" data-lot="3"  style="left:28%;top:28%">3</div>
-            <div class="lot-pin available" data-lot="4"  style="left:35%;top:27%">4</div>
-            <div class="lot-pin available" data-lot="5"  style="left:42%;top:26%">5</div>
-            <div class="lot-pin available" data-lot="6"  style="left:23%;top:34%">6</div>
-            <div class="lot-pin available" data-lot="7"  style="left:30%;top:33%">7</div>
-            <div class="lot-pin available" data-lot="8"  style="left:37%;top:32%">8</div>
-            <div class="lot-pin available" data-lot="9"  style="left:44%;top:31%">9</div>
-            <div class="lot-pin available" data-lot="10" style="left:18%;top:40%">10</div>
-            <div class="lot-pin available" data-lot="11" style="left:25%;top:39%">11</div>
-            <div class="lot-pin available" data-lot="12" style="left:32%;top:38%">12</div>
-            <div class="lot-pin available" data-lot="13" style="left:39%;top:37%">13</div>
-            <div class="lot-pin available" data-lot="14" style="left:46%;top:36%">14</div>
-            <div class="lot-pin available" data-lot="15" style="left:15%;top:47%">15</div>
-            <div class="lot-pin available" data-lot="16" style="left:22%;top:46%">16</div>
-            <div class="lot-pin available" data-lot="17" style="left:29%;top:45%">17</div>
-            <div class="lot-pin available" data-lot="18" style="left:36%;top:44%">18</div>
-            <div class="lot-pin available" data-lot="19" style="left:43%;top:43%">19</div>
-            <div class="lot-pin available" data-lot="20" style="left:16%;top:54%">20</div>
-            <div class="lot-pin available" data-lot="21" style="left:23%;top:53%">21</div>
-            <div class="lot-pin available" data-lot="22" style="left:30%;top:52%">22</div>
+            <!-- Koa Lane WEST column — lots 1–11 (1=bottom near Chateau Place, 11=near cul-de-sac) -->
+            <div class="lot-pin available" data-lot="1"  style="left:3%;top:68%">1</div>
+            <div class="lot-pin available" data-lot="2"  style="left:4%;top:64%">2</div>
+            <div class="lot-pin available" data-lot="3"  style="left:5%;top:61%">3</div>
+            <div class="lot-pin available" data-lot="4"  style="left:8%;top:57%">4</div>
+            <div class="lot-pin available" data-lot="5"  style="left:12%;top:53%">5</div>
+            <div class="lot-pin available" data-lot="6"  style="left:16%;top:50%">6</div>
+            <div class="lot-pin available" data-lot="7"  style="left:19%;top:46%">7</div>
+            <div class="lot-pin available" data-lot="8"  style="left:23%;top:43%">8</div>
+            <div class="lot-pin available" data-lot="9"  style="left:26%;top:39%">9</div>
+            <div class="lot-pin available" data-lot="10" style="left:30%;top:35%">10</div>
+            <div class="lot-pin available" data-lot="11" style="left:33%;top:31%">11</div>
 
-            <!-- Bottom horizontal rows -->
-            <div class="lot-pin available" data-lot="23" style="left:17%;top:70%">23</div>
-            <div class="lot-pin available" data-lot="24" style="left:24%;top:70%">24</div>
-            <div class="lot-pin available" data-lot="25" style="left:31%;top:70%">25</div>
-            <div class="lot-pin available" data-lot="26" style="left:38%;top:70%">26</div>
-            <div class="lot-pin available" data-lot="27" style="left:45%;top:70%">27</div>
-            <div class="lot-pin available" data-lot="28" style="left:52%;top:70%">28</div>
-            <div class="lot-pin available" data-lot="29" style="left:17%;top:77%">29</div>
-            <div class="lot-pin available" data-lot="30" style="left:24%;top:77%">30</div>
-            <div class="lot-pin available" data-lot="31" style="left:31%;top:77%">31</div>
-            <div class="lot-pin available" data-lot="32" style="left:38%;top:77%">32</div>
-            <div class="lot-pin available" data-lot="33" style="left:45%;top:77%">33</div>
-            <div class="lot-pin available" data-lot="34" style="left:52%;top:77%">34</div>
+            <!-- Cul-de-sac area & connecting road — lots 12–21 -->
+            <div class="lot-pin available" data-lot="12" style="left:42%;top:35%">12</div>
+            <div class="lot-pin available" data-lot="13" style="left:43%;top:39%">13</div>
+            <div class="lot-pin available" data-lot="14" style="left:53%;top:21%">14</div>
+            <div class="lot-pin available" data-lot="15" style="left:50%;top:29%">15</div>
+            <div class="lot-pin available" data-lot="16" style="left:47%;top:35%">16</div>
+            <div class="lot-pin available" data-lot="17" style="left:46%;top:41%">17</div>
+            <div class="lot-pin available" data-lot="18" style="left:44%;top:44%">18</div>
+            <div class="lot-pin available" data-lot="19" style="left:39%;top:27%">19</div>
+            <div class="lot-pin available" data-lot="20" style="left:36%;top:28%">20</div>
+            <div class="lot-pin available" data-lot="21" style="left:37%;top:30%">21</div>
 
-            <!-- Upper right outlier lots -->
-            <div class="lot-pin available" data-lot="35" style="left:63%;top:22%">35</div>
-            <div class="lot-pin available" data-lot="36" style="left:74%;top:32%">36</div>
+            <!-- Koa Lane EAST column — lots 22–30 (22=near cul-de-sac, 30=bottom) -->
+            <div class="lot-pin available" data-lot="22" style="left:40%;top:34%">22</div>
+            <div class="lot-pin available" data-lot="23" style="left:38%;top:37%">23</div>
+            <div class="lot-pin available" data-lot="24" style="left:36%;top:40%">24</div>
+            <div class="lot-pin available" data-lot="25" style="left:35%;top:43%">25</div>
+            <div class="lot-pin available" data-lot="26" style="left:33%;top:46%">26</div>
+            <div class="lot-pin available" data-lot="27" style="left:31%;top:49%">27</div>
+            <div class="lot-pin available" data-lot="28" style="left:29%;top:52%">28</div>
+            <div class="lot-pin available" data-lot="29" style="left:27%;top:55%">29</div>
+            <div class="lot-pin available" data-lot="30" style="left:26%;top:58%">30</div>
+
+            <!-- Lake Haven Lane arc — lots 31–36 (left to right above the road) -->
+            <div class="lot-pin available" data-lot="31" style="left:51%;top:68%">31</div>
+            <div class="lot-pin available" data-lot="32" style="left:46%;top:68%">32</div>
+            <div class="lot-pin available" data-lot="33" style="left:42%;top:69%">33</div>
+            <div class="lot-pin available" data-lot="34" style="left:37%;top:69%">34</div>
+            <div class="lot-pin available" data-lot="35" style="left:33%;top:69%">35</div>
+            <div class="lot-pin available" data-lot="36" style="left:28%;top:68%">36</div>
           </div>
         </div>
 
