@@ -1,7 +1,11 @@
 /* =============================================
    CWRE Idaho — Main Stylesheet
-   Colors: #194d9b (navy), #ffffff (white), #cdced2 (gray)
+   Colors: #194d9b (navy), #c8a84b (gold), #cdced2 (gray)
+   Fonts: Playfair Display · Barlow Condensed · Oswald · Cormorant Garamond · Inter
    ============================================= */
+
+/* ── Google Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Oswald:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 
 :root {
   --navy:       #194d9b;
@@ -50,16 +54,31 @@ h1, h2, h3, h4, h5 {
 h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
 h2 { font-size: clamp(1.6rem, 3.5vw, 2.5rem); }
 h3 { font-size: clamp(1.2rem, 2.5vw, 1.6rem); }
-h4 { font-size: 1.15rem; font-family: 'Inter', sans-serif; font-weight: 600; }
+h4 { font-size: 1.15rem; font-family: 'Barlow Condensed', 'Inter', sans-serif; font-weight: 700; letter-spacing: 0.03em; }
 p { color: var(--text-light); }
+
+/* Oswald — section labels, overlines, nav */
 .section-label {
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--gold);
   display: block;
   margin-bottom: 0.5rem;
+}
+
+/* Cormorant Garamond — elegant accent text */
+.accent-text, blockquote, .pullquote {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+}
+
+/* Barlow Condensed — display numbers, stat callouts */
+.stat-number, .hero-stat-number {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
 }
 
 /* ── Layout ── */
@@ -141,46 +160,19 @@ p { color: var(--text-light); }
 .nav-logo {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
   text-decoration: none;
-}
-.nav-logo-icon {
-  width: 42px;
-  height: 42px;
-  background: var(--navy);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 1rem;
-  font-weight: 800;
-  font-family: 'Inter', sans-serif;
   flex-shrink: 0;
 }
-.nav-logo-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
+.nav-logo-img {
+  height: 46px;
+  width: auto;
+  display: block;
+  background: white;
+  border-radius: 8px;
+  padding: 4px 10px;
+  transition: opacity var(--transition);
 }
-.nav-logo-main {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--white);
-  transition: color var(--transition);
-}
-.nav-logo-sub {
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.7);
-  transition: color var(--transition);
-}
-.site-nav.scrolled .nav-logo-main { color: var(--navy); }
-.site-nav.scrolled .nav-logo-sub { color: var(--gray-dark); }
-.site-nav.scrolled .nav-logo-icon { background: var(--navy); }
+.nav-logo-img:hover { opacity: 0.9; }
 
 .nav-links {
   display: flex;
@@ -189,8 +181,11 @@ p { color: var(--text-light); }
 }
 .nav-links a {
   padding: 0.5rem 0.9rem;
-  font-size: 0.9rem;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
   font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: rgba(255,255,255,0.9);
   border-radius: 6px;
   transition: all var(--transition);
@@ -1019,6 +1014,72 @@ p { color: var(--text-light); }
 .footer-bottom-links { display: flex; gap: 1.25rem; }
 .footer-bottom-links a { color: rgba(255,255,255,0.4); transition: color var(--transition); }
 .footer-bottom-links a:hover { color: var(--gold-light); }
+
+/* ── Footer brokerage line ── */
+.footer-brokerage {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  margin-top: 0.25rem;
+}
+.footer-brokerage img {
+  height: 32px;
+  width: auto;
+  opacity: 0.85;
+  filter: brightness(0) invert(1);
+}
+.footer-brokerage span {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+}
+
+/* ── Brokerage bar (home page top) ── */
+.brokerage-bar {
+  background: var(--navy-dark);
+  padding: 0.45rem 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+.brokerage-bar img {
+  height: 26px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+.brokerage-bar span {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+
+/* ── Subdivision logos ── */
+.sub-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: var(--navy);
+  min-height: 110px;
+}
+.sub-logo img { height: 80px; width: auto; }
+
+.page-hero-logo {
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+.page-hero-logo img { height: 100px; width: auto; }
 
 /* ── Lead Gate Modal ── */
 .lead-gate-modal {
