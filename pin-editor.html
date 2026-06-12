@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pin Editor — CWRE Idaho Plat Maps</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f1f5f9; color: #1e293b; height: 100vh; display: flex; flex-direction: column; }
+
+    /* ── Header ── */
+    .header {
+      background: #194d9b; color: white; padding: 0.75rem 1.25rem;
+      display: flex; align-items: center; gap: 1.25rem; flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .header h1 { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.02em; white-space: nowrap; }
+    .header h1 span { opacity: 0.6; font-weight: 400; font-size: 0.85rem; margin-left: 0.5rem; }
+    .map-tabs { display: flex; gap: 0.4rem; }
+    .map-tab {
+      padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.82rem; font-weight: 600;
+      border: 2px solid rgba(255,255,255,0.35); background: transparent; color: white;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .map-tab.active { background: white; color: #194d9b; border-color: white; }
+    .map-tab:hover:not(.active) { background: rgba(255,255,255,0.15); }
+    .header-spacer { flex: 1; }
+    .btn-copy {
+      padding: 0.5rem 1.3rem; border-radius: 50px; font-size: 0.85rem; font-weight: 700;
+      background: #c8a84b; color: white; border: none; cursor: pointer; transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .btn-copy:hover { background: #b8963a; }
+    .btn-copy.copied { background: #22c55e; }
+    .btn-undo {
+      padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.82rem; font-weight: 600;
+      background: rgba(255,255,255,0.15); color: white; border: 2px solid rgba(255,255,255,0.3);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .btn-undo:hover { background: rgba(255,255,255,0.25); }
+    .btn-undo:disabled { opacity: 0.35; cursor: default; }
+
+    /* ── Layout ── */
+    .editor-body { display: flex; flex: 1; overflow: hidden; }
+
+    /* ── Map area ── */
+    .map-area {
+      flex: 1; overflow: auto; position: relative; background: #cbd5e1;
+      display: flex; align-items: flex-start; justify-content: flex-start;
+    }
+    .map-wrap {
+      position: relative; display: inline-block; flex-shrink: 0;
+      line-height: 0;
+    }
+    .map-wrap img { display: block; max-width: none; }
+    .pin {
+      position: absolute; border-radius: 50%;
+      transform: translate(-50%, -50%);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; color: white;
+      border: 2px solid rgba(255,255,255,0.9);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      cursor: grab; user-select: none;
+      transition: box-shadow 0.12s, transform 0.12s;
+      z-index: 10;
+    }
+    .pin:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.5); z-index: 20; }
+    .pin.dragging { cursor: grabbing; transform: translate(-50%,-50%) scale(1.3); z-index: 100; box-shadow: 0 6px 24px rgba(0,0,0,0.5); }
+    .pin.selected { box-shadow: 0 0 0 3px white, 0 4px 18px rgba(0,0,0,0.55); z-index: 30; }
+    .pin.moved::after {
+      content: ''; position: absolute; top: -3px; right: -3px;
+      width: 8px; height: 8px; border-radius: 50%; background: #facc15;
+      border: 1.5px solid white;
+    }
+    .pin.available { background: #22c55e; }
+    .pin.spec      { background: #3b82f6; }
+    .pin.sold      { background: #ef4444; }
+    .pin.reserved  { background: #f97316; }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 300px; flex-shrink: 0; background: white;
+      border-left: 1px solid #e2e8f0; display: flex; flex-direction: column;
+      overflow-y: auto;
+    }
+    .sidebar-section { padding: 1.1rem 1.25rem; border-bottom: 1px solid #f1f5f9; }
+    .sidebar-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 0.5rem; }
+    .selected-info { display: flex; flex-direction: column; gap: 0.4rem; }
+    .selected-lot { font-size: 1.3rem; font-weight: 700; color: #194d9b; }
+    .selected-coords { font-size: 0.95rem; font-family: "SF Mono", "Fira Code", monospace; color: #475569; }
+    .selected-status { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; font-weight: 700; padding: 0.2rem 0.65rem; border-radius: 50px; text-transform: uppercase; }
+    .selected-status.available { background: #dcfce7; color: #15803d; }
+    .selected-status.spec { background: #dbeafe; color: #1d4ed8; }
+    .selected-status.sold { background: #fee2e2; color: #b91c1c; }
+    .selected-status.reserved { background: #ffedd5; color: #c2410c; }
+    .empty-state { color: #94a3b8; font-size: 0.88rem; text-align: center; padding: 1rem 0; }
+    .nudge-controls { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.35rem; margin-top: 0.75rem; }
+    .nudge-controls .row { grid-column: 1 / -1; display: flex; justify-content: center; }
+    .nudge-btn {
+      padding: 0.4rem 0; border-radius: 8px; font-size: 0.78rem; font-weight: 700;
+      background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;
+      cursor: pointer; transition: background 0.12s; text-align: center;
+    }
+    .nudge-btn:hover { background: #e2e8f0; }
+    .nudge-hint { font-size: 0.72rem; color: #94a3b8; margin-top: 0.4rem; text-align: center; }
+
+    .pin-list { flex: 1; overflow-y: auto; }
+    .pin-list-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.55rem 1.25rem; cursor: pointer;
+      border-bottom: 1px solid #f8fafc; transition: background 0.1s;
+      font-size: 0.88rem;
+    }
+    .pin-list-item:hover { background: #f8fafc; }
+    .pin-list-item.active { background: #eff6ff; }
+    .pin-list-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+    .pin-list-dot.available { background: #22c55e; }
+    .pin-list-dot.spec { background: #3b82f6; }
+    .pin-list-dot.sold { background: #ef4444; }
+    .pin-list-dot.reserved { background: #f97316; }
+    .pin-list-label { flex: 1; font-weight: 600; }
+    .pin-list-coords { font-size: 0.75rem; font-family: monospace; color: #94a3b8; }
+    .moved-badge { font-size: 0.65rem; font-weight: 700; background: #fef9c3; color: #854d0e; padding: 0.1rem 0.4rem; border-radius: 50px; }
+
+    .instructions { padding: 1rem 1.25rem; background: #f8fafc; font-size: 0.8rem; color: #64748b; line-height: 1.6; }
+    .instructions strong { color: #334155; }
+    .instructions ul { margin-left: 1.1rem; margin-top: 0.3rem; }
+
+    /* zoom controls */
+    .zoom-bar {
+      display: flex; gap: 0.4rem; align-items: center;
+      padding: 0.5rem 1.25rem; background: white; border-bottom: 1px solid #f1f5f9;
+    }
+    .zoom-label { font-size: 0.75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+    .zoom-btn {
+      padding: 0.3rem 0.75rem; border-radius: 8px; font-size: 0.82rem; font-weight: 700;
+      background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; cursor: pointer; transition: background 0.12s;
+    }
+    .zoom-btn:hover { background: #e2e8f0; }
+    .zoom-val { font-size: 0.82rem; font-weight: 700; color: #334155; min-width: 3rem; text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Pin Editor <span>CWRE Idaho</span></h1>
+  <div class="map-tabs">
+    <button class="map-tab active" onclick="loadMap('lakehaven')">Lakehaven Estates</button>
+    <button class="map-tab" onclick="loadMap('stadium')">The Stadium</button>
+  </div>
+  <div class="header-spacer"></div>
+  <button class="btn-undo" id="undoBtn" onclick="undo()" disabled>↩ Undo</button>
+  <button class="btn-copy" id="copyBtn" onclick="copyCode()">Copy Code</button>
+</div>
+
+<div class="editor-body">
+
+  <div class="map-area" id="mapArea">
+    <div class="map-wrap" id="mapWrap">
+      <img id="platImg" src="" alt="Plat Map" draggable="false" />
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="zoom-bar">
+      <span class="zoom-label">Zoom</span>
+      <button class="zoom-btn" onclick="setZoom(zoom - 0.25)">−</button>
+      <span class="zoom-val" id="zoomVal">100%</span>
+      <button class="zoom-btn" onclick="setZoom(zoom + 0.25)">+</button>
+      <button class="zoom-btn" onclick="setZoom(1)">Reset</button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Selected Pin</div>
+      <div id="selectedPanel">
+        <div class="empty-state">Click or drag a pin to select it</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">All Pins</div>
+    </div>
+    <div class="pin-list" id="pinList"></div>
+
+    <div class="instructions">
+      <strong>How to use:</strong>
+      <ul>
+        <li>Drag a pin to move it</li>
+        <li>Click a pin or list item to select</li>
+        <li>Use arrow nudge buttons for fine-tuning</li>
+        <li>Yellow dot = moved from original</li>
+        <li>Hit <strong>Copy Code</strong> when done, then send to Claude</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  PIN DATA
+// ─────────────────────────────────────────────
+const MAPS = {
+  lakehaven: {
+    image: 'images/lakehaven-plat-web.jpg',
+    title: 'Lakehaven Estates',
+    pins: [
+      { key:'5',  label:'5',  status:'available', left:15, top:64 },
+      { key:'6',  label:'6',  status:'available', left:17, top:61 },
+      { key:'7',  label:'7',  status:'available', left:20, top:57 },
+      { key:'8',  label:'8',  status:'available', left:26, top:54 },
+      { key:'9',  label:'9',  status:'available', left:27, top:48 },
+      { key:'10', label:'10', status:'available', left:29, top:44 },
+      { key:'11', label:'11', status:'available', left:33, top:41 },
+      { key:'12', label:'12', status:'available', left:38, top:39 },
+      { key:'13', label:'13', status:'available', left:39, top:34 },
+      { key:'14', label:'14', status:'available', left:50, top:25 },
+      { key:'16', label:'16', status:'available', left:55, top:39 },
+      { key:'29', label:'29', status:'available', left:44, top:41 },
+      { key:'28', label:'28', status:'available', left:43, top:44 },
+      { key:'27', label:'27', status:'available', left:39, top:46 },
+      { key:'26', label:'26', status:'available', left:38, top:53 },
+      { key:'24', label:'24', status:'available', left:32, top:58 },
+      { key:'23', label:'23', status:'available', left:28, top:62 },
+      { key:'22', label:'22', status:'available', left:19, top:64 },
+      { key:'21', label:'21', status:'available', left:16, top:66 },
+      { key:'37', label:'37', status:'available', left:23, top:68 },
+      { key:'36', label:'36', status:'available', left:28, top:68 },
+      { key:'35', label:'35', status:'available', left:33, top:68 },
+      { key:'34', label:'34', status:'available', left:38, top:68 },
+      { key:'33', label:'33', status:'available', left:43, top:68 },
+      { key:'32', label:'32', status:'available', left:47, top:68 },
+      { key:'31', label:'31', status:'available', left:57, top:69 },
+      { key:'30', label:'30', status:'available', left:64, top:69 },
+      { key:'17', label:'17', status:'available', left:70, top:69 },
+    ]
+  },
+  stadium: {
+    image: 'images/stadium-plat-web.jpg',
+    title: 'The Stadium',
+    pins: [
+      // Block 2 upper column
+      { key:'B2-5',  label:'5',  status:'spec', left:34, top:19 },
+      { key:'B2-4',  label:'4',  status:'spec', left:35, top:26 },
+      { key:'B2-3',  label:'3',  status:'spec', left:35, top:33 },
+      { key:'B2-2',  label:'2',  status:'sold', left:34, top:40 },
+      // Block 1 entry column
+      { key:'B1-10', label:'10', status:'spec', left:50, top:22 },
+      { key:'B1-9',  label:'9',  status:'spec', left:51, top:30 },
+      { key:'B1-8',  label:'8',  status:'spec', left:41, top:36 },
+      { key:'B1-7',  label:'7',  status:'spec', left:40, top:43 },
+      { key:'B1-6',  label:'6',  status:'spec', left:39, top:48 },
+      { key:'B1-5',  label:'5',  status:'spec', left:31, top:54 },
+      { key:'B1-4',  label:'4',  status:'spec', left:35, top:60 },
+      { key:'B1-3',  label:'3',  status:'spec', left:32, top:66 },
+      // Block 1 Commerce Comet Way
+      { key:'B1-28', label:'28', status:'sold', left:63, top:16 },
+      { key:'B1-27', label:'27', status:'spec', left:66, top:21 },
+      { key:'B1-26', label:'26', status:'spec', left:66, top:27 },
+      { key:'B1-25', label:'25', status:'spec', left:66, top:33 },
+      { key:'B1-24', label:'24', status:'spec', left:66, top:39 },
+      { key:'B1-23', label:'23', status:'spec', left:65, top:45 },
+      // Block 1 center
+      { key:'B1-22', label:'22', status:'spec', left:66, top:50 },
+      { key:'B1-21', label:'21', status:'spec', left:58, top:57 },
+      { key:'B1-20', label:'20', status:'spec', left:69, top:61 },
+      { key:'B1-19', label:'19', status:'spec', left:75, top:66 },
+      // Block 1 Commerce Court Way
+      { key:'B1-18', label:'18', status:'sold', left:85, top:58 },
+      { key:'B1-17', label:'17', status:'spec', left:85, top:64 },
+      { key:'B1-16', label:'16', status:'spec', left:84, top:68 },
+      { key:'B1-15', label:'15', status:'spec', left:81, top:72 },
+      { key:'B1-14', label:'14', status:'spec', left:80, top:77 },
+      { key:'B1-13', label:'13', status:'spec', left:83, top:80 },
+      // Block 2 lower-right
+      { key:'B2-12', label:'12', status:'spec', left:54, top:64 },
+      { key:'B2-11', label:'11', status:'spec', left:54, top:70 },
+      { key:'B2-10', label:'10', status:'spec', left:57, top:74 },
+      { key:'B2-9',  label:'9',  status:'spec', left:61, top:78 },
+      { key:'B2-8',  label:'8',  status:'spec', left:61, top:81 },
+      { key:'B2-7',  label:'7',  status:'spec', left:67, top:81 },
+      { key:'B2-6',  label:'6',  status:'spec', left:72, top:87 },
+    ]
+  }
+};
+
+// ─────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────
+let currentMap = 'lakehaven';
+let pins = [];          // working copy: [{key, label, status, left, top, origLeft, origTop}]
+let selectedKey = null;
+let history = [];       // stack of pin snapshots for undo
+let zoom = 1;
+
+// ─────────────────────────────────────────────
+//  LOAD MAP
+// ─────────────────────────────────────────────
+function loadMap(mapId) {
+  currentMap = mapId;
+  const mapDef = MAPS[mapId];
+  pins = mapDef.pins.map(p => ({ ...p, origLeft: p.left, origTop: p.top }));
+  selectedKey = null;
+  history = [];
+  document.getElementById('undoBtn').disabled = true;
+
+  document.querySelectorAll('.map-tab').forEach(t => t.classList.toggle('active', t.textContent.trim().toLowerCase().includes(mapId === 'lakehaven' ? 'lakehaven' : 'stadium')));
+
+  document.getElementById('platImg').src = mapDef.image;
+  document.getElementById('platImg').onload = renderPins;
+  if (document.getElementById('platImg').complete) renderPins();
+
+  renderPinList();
+  renderSelectedPanel();
+}
+
+// ─────────────────────────────────────────────
+//  ZOOM
+// ─────────────────────────────────────────────
+function setZoom(z) {
+  zoom = Math.min(Math.max(z, 0.25), 4);
+  const img = document.getElementById('platImg');
+  const naturalW = img.naturalWidth || 2000;
+  const naturalH = img.naturalHeight || 2000;
+  img.style.width  = (naturalW * zoom) + 'px';
+  img.style.height = (naturalH * zoom) + 'px';
+  document.getElementById('zoomVal').textContent = Math.round(zoom * 100) + '%';
+  updatePinSizes();
+}
+
+function updatePinSizes() {
+  const sz = Math.round(Math.max(20, Math.min(36, 26 * zoom)));
+  const fs = Math.round(Math.max(8, Math.min(13, 9 * zoom)));
+  document.querySelectorAll('.pin').forEach(el => {
+    el.style.width  = sz + 'px';
+    el.style.height = sz + 'px';
+    el.style.fontSize = fs + 'px';
+  });
+}
+
+// ─────────────────────────────────────────────
+//  RENDER PINS
+// ─────────────────────────────────────────────
+function renderPins() {
+  const wrap = document.getElementById('mapWrap');
+  wrap.querySelectorAll('.pin').forEach(e => e.remove());
+  pins.forEach(p => {
+    const el = document.createElement('div');
+    el.className = `pin ${p.status}${p.key === selectedKey ? ' selected' : ''}${isMoved(p) ? ' moved' : ''}`;
+    el.style.left = p.left + '%';
+    el.style.top  = p.top  + '%';
+    el.style.width  = '26px';
+    el.style.height = '26px';
+    el.style.fontSize = '9px';
+    el.dataset.key = p.key;
+    el.title = `${MAPS[currentMap].title} — ${pinDisplayName(p)}\nleft: ${p.left}%  top: ${p.top}%`;
+    el.textContent = p.label;
+    el.addEventListener('mousedown', onPinMouseDown);
+    el.addEventListener('click', (e) => { e.stopPropagation(); selectPin(p.key); });
+    wrap.appendChild(el);
+  });
+  updatePinSizes();
+}
+
+function isMoved(p) {
+  return p.left !== p.origLeft || p.top !== p.origTop;
+}
+
+function pinDisplayName(p) {
+  if (p.key.startsWith('B1-') || p.key.startsWith('B2-')) {
+    const [blk, num] = p.key.split('-');
+    return `${blk === 'B1' ? 'Block 1' : 'Block 2'}, Lot ${num}`;
+  }
+  return `Lot ${p.key}`;
+}
+
+// ─────────────────────────────────────────────
+//  SELECTION
+// ─────────────────────────────────────────────
+function selectPin(key) {
+  selectedKey = key;
+  document.querySelectorAll('.pin').forEach(el => el.classList.toggle('selected', el.dataset.key === key));
+  document.querySelectorAll('.pin-list-item').forEach(el => el.classList.toggle('active', el.dataset.key === key));
+  renderSelectedPanel();
+  scrollPinIntoView(key);
+}
+
+function scrollPinIntoView(key) {
+  const item = document.querySelector(`.pin-list-item[data-key="${key}"]`);
+  if (item) item.scrollIntoView({ block: 'nearest' });
+}
+
+function renderSelectedPanel() {
+  const panel = document.getElementById('selectedPanel');
+  if (!selectedKey) {
+    panel.innerHTML = '<div class="empty-state">Click or drag a pin to select it</div>';
+    return;
+  }
+  const p = pins.find(x => x.key === selectedKey);
+  if (!p) return;
+  panel.innerHTML = `
+    <div class="selected-info">
+      <div class="selected-lot">${pinDisplayName(p)}</div>
+      <div class="selected-coords">left: <b>${p.left}%</b> &nbsp; top: <b>${p.top}%</b></div>
+      <span class="selected-status ${p.status}">${p.status}</span>
+      ${isMoved(p) ? '<div style="font-size:0.75rem;color:#854d0e;margin-top:0.2rem;">⚡ Moved from original</div>' : ''}
+    </div>
+    <div class="nudge-controls">
+      <div class="row"><button class="nudge-btn" onclick="nudge(0,-1)">▲</button></div>
+      <button class="nudge-btn" onclick="nudge(-1,0)">◀</button>
+      <button class="nudge-btn" onclick="nudge(0,1)">▼</button>
+      <button class="nudge-btn" onclick="nudge(1,0)">▶</button>
+    </div>
+    <div class="nudge-hint">Arrow buttons move 1% at a time</div>
+  `;
+}
+
+// ─────────────────────────────────────────────
+//  PIN LIST
+// ─────────────────────────────────────────────
+function renderPinList() {
+  const list = document.getElementById('pinList');
+  list.innerHTML = '';
+  pins.forEach(p => {
+    const item = document.createElement('div');
+    item.className = `pin-list-item${p.key === selectedKey ? ' active' : ''}`;
+    item.dataset.key = p.key;
+    item.innerHTML = `
+      <div class="pin-list-dot ${p.status}"></div>
+      <div class="pin-list-label">${pinDisplayName(p)}</div>
+      ${isMoved(p) ? '<span class="moved-badge">moved</span>' : ''}
+      <div class="pin-list-coords">${p.left}%, ${p.top}%</div>
+    `;
+    item.addEventListener('click', () => { selectPin(p.key); scrollToPinOnMap(p.key); });
+    list.appendChild(item);
+  });
+}
+
+function scrollToPinOnMap(key) {
+  const pinEl = document.querySelector(`.pin[data-key="${key}"]`);
+  if (pinEl) pinEl.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+}
+
+// ─────────────────────────────────────────────
+//  DRAG
+// ─────────────────────────────────────────────
+let dragging = null;
+
+function onPinMouseDown(e) {
+  if (e.button !== 0) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const key = e.currentTarget.dataset.key;
+  selectPin(key);
+  pushHistory();
+
+  const img = document.getElementById('platImg');
+  const rect = img.getBoundingClientRect();
+
+  dragging = {
+    key,
+    startMouseX: e.clientX,
+    startMouseY: e.clientY,
+    imgRect: rect,
+  };
+  e.currentTarget.classList.add('dragging');
+
+  window.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('mouseup', onMouseUp);
+}
+
+function onMouseMove(e) {
+  if (!dragging) return;
+  const img = document.getElementById('platImg');
+  const rect = img.getBoundingClientRect();
+
+  const rawLeft = ((e.clientX - rect.left) / rect.width)  * 100;
+  const rawTop  = ((e.clientY - rect.top)  / rect.height) * 100;
+  const left = Math.round(Math.min(Math.max(rawLeft, 0), 100));
+  const top  = Math.round(Math.min(Math.max(rawTop,  0), 100));
+
+  const p = pins.find(x => x.key === dragging.key);
+  if (p) {
+    p.left = left;
+    p.top  = top;
+    const el = document.querySelector(`.pin[data-key="${dragging.key}"]`);
+    if (el) {
+      el.style.left = left + '%';
+      el.style.top  = top  + '%';
+      el.classList.toggle('moved', isMoved(p));
+      el.title = `${MAPS[currentMap].title} — ${pinDisplayName(p)}\nleft: ${p.left}%  top: ${p.top}%`;
+    }
+    renderSelectedPanel();
+    refreshPinListItem(dragging.key);
+  }
+}
+
+function onMouseUp() {
+  if (dragging) {
+    document.querySelector(`.pin[data-key="${dragging.key}"]`)?.classList.remove('dragging');
+    dragging = null;
+  }
+  window.removeEventListener('mousemove', onMouseMove);
+  window.removeEventListener('mouseup', onMouseUp);
+}
+
+// ─────────────────────────────────────────────
+//  NUDGE (1% steps)
+// ─────────────────────────────────────────────
+function nudge(dx, dy) {
+  if (!selectedKey) return;
+  pushHistory();
+  const p = pins.find(x => x.key === selectedKey);
+  if (!p) return;
+  p.left = Math.min(Math.max(p.left + dx, 0), 100);
+  p.top  = Math.min(Math.max(p.top  + dy, 0), 100);
+  const el = document.querySelector(`.pin[data-key="${selectedKey}"]`);
+  if (el) {
+    el.style.left = p.left + '%';
+    el.style.top  = p.top  + '%';
+    el.classList.toggle('moved', isMoved(p));
+  }
+  renderSelectedPanel();
+  refreshPinListItem(selectedKey);
+}
+
+function refreshPinListItem(key) {
+  const p = pins.find(x => x.key === key);
+  const item = document.querySelector(`.pin-list-item[data-key="${key}"]`);
+  if (!p || !item) return;
+  item.querySelector('.pin-list-coords').textContent = `${p.left}%, ${p.top}%`;
+  const badge = item.querySelector('.moved-badge');
+  if (isMoved(p) && !badge) {
+    const lb = document.createElement('span');
+    lb.className = 'moved-badge';
+    lb.textContent = 'moved';
+    item.insertBefore(lb, item.querySelector('.pin-list-coords'));
+  } else if (!isMoved(p) && badge) {
+    badge.remove();
+  }
+}
+
+// ─────────────────────────────────────────────
+//  UNDO
+// ─────────────────────────────────────────────
+function pushHistory() {
+  history.push(pins.map(p => ({ ...p })));
+  document.getElementById('undoBtn').disabled = false;
+}
+
+function undo() {
+  if (!history.length) return;
+  pins = history.pop();
+  document.getElementById('undoBtn').disabled = history.length === 0;
+  renderPins();
+  renderPinList();
+  renderSelectedPanel();
+}
+
+// ─────────────────────────────────────────────
+//  COPY CODE
+// ─────────────────────────────────────────────
+function copyCode() {
+  const isStadium = currentMap === 'stadium';
+  let lines = [];
+
+  if (isStadium) {
+    // Group by section for readability
+    const groups = [
+      { label: 'Block 2 upper column (north to south)', keys: ['B2-5','B2-4','B2-3','B2-2'] },
+      { label: 'Block 1 entry column (north to south, near Goodson Rd)', keys: ['B1-10','B1-9','B1-8','B1-7','B1-6','B1-5','B1-4','B1-3'] },
+      { label: 'Block 1 Commerce Comet Way (top column, north to south)', keys: ['B1-28','B1-27','B1-26','B1-25','B1-24','B1-23'] },
+      { label: 'Block 1 center / transition', keys: ['B1-22','B1-21','B1-20','B1-19'] },
+      { label: 'Block 1 Commerce Court Way (lower-right, north to south)', keys: ['B1-18','B1-17','B1-16','B1-15','B1-14','B1-13'] },
+      { label: 'Block 2 lower-right column (north to south)', keys: ['B2-12','B2-11','B2-10','B2-9','B2-8','B2-7','B2-6'] },
+    ];
+    groups.forEach(g => {
+      lines.push(`            <!-- ${g.label} -->`);
+      g.keys.forEach(k => {
+        const p = pins.find(x => x.key === k);
+        if (!p) return;
+        const pad = p.label.length <= 2 ? ' ' : '';
+        lines.push(`            <div class="lot-pin ${p.status}" data-lot="${p.key}" ${pad}style="left:${p.left}%;top:${p.top}%">${p.label}</div>`);
+      });
+      lines.push('');
+    });
+  } else {
+    // Lakehaven — simple list
+    lines.push('            <!-- Lot pins — positions set in pin-editor.html -->');
+    pins.forEach(p => {
+      const padKey = p.key.padEnd(2);
+      lines.push(`            <div class="lot-pin ${p.status}" data-lot="${padKey}" style="left:${p.left}%;top:${p.top}%">${p.label}</div>`);
+    });
+  }
+
+  const text = lines.join('\n').trimEnd();
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy Code'; btn.classList.remove('copied'); }, 2500);
+  }).catch(() => {
+    // Fallback: show in a prompt
+    prompt('Copy this code:', text);
+  });
+}
+
+// ─────────────────────────────────────────────
+//  KEYBOARD SHORTCUTS
+// ─────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (!selectedKey) return;
+  const step = e.shiftKey ? 5 : 1;
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); nudge(-step, 0); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); nudge( step, 0); }
+  if (e.key === 'ArrowUp')    { e.preventDefault(); nudge(0, -step); }
+  if (e.key === 'ArrowDown')  { e.preventDefault(); nudge(0,  step); }
+  if ((e.metaKey || e.ctrlKey) && e.key === 'z') { e.preventDefault(); undo(); }
+});
+
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
+loadMap('lakehaven');
+</script>
+</body>
+</html>
