@@ -107,13 +107,22 @@ const LeadGate = (function () {
   if (!slides.length) return;
   let current = 0;
 
+  slides[0].classList.add('active');
+
   function nextSlide() {
-    slides[current].classList.remove('active');
-    current = (current + 1) % slides.length;
-    slides[current].classList.add('active');
+    const next = (current + 1) % slides.length;
+    // Add active to next first (crossfade in)
+    slides[next].style.animation = 'none';
+    slides[next].offsetHeight; // force reflow to restart animation
+    slides[next].style.animation = '';
+    slides[next].classList.add('active');
+    // After crossfade completes, remove previous
+    const prev = current;
+    current = next;
+    setTimeout(() => slides[prev].classList.remove('active'), 1200);
   }
 
-  setInterval(nextSlide, 6000); // rotate every 6 seconds
+  setInterval(nextSlide, 6000);
 })();
 
 // ── 60-Second Forced Registration ──
