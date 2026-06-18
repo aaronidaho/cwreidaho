@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search Idaho Homes | CWRE Idaho — Clint Walker Real Estate</title>
+  <meta name="description" content="Search homes for sale across the Treasure Valley and Southwest Idaho. Powered by Intermountain MLS via CWRE Idaho." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Password Gate Overlay ── */
+    #pwd-gate {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 20, 45, 0.97);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    #pwd-gate.hidden { display: none; }
+    .pwd-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 2.5rem;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+    }
+    .pwd-logo { height: 60px; margin: 0 auto 1.25rem; display: block; }
+    .pwd-card h2 { font-size: 1.4rem; margin-bottom: 0.5rem; color: #1c2833; }
+    .pwd-card p { font-size: 0.9rem; color: #4a5568; margin-bottom: 1.5rem; line-height: 1.6; }
+    .pwd-input {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border: 1.5px solid #cdced2;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .pwd-input:focus { border-color: #194d9b; }
+    .pwd-btn {
+      width: 100%;
+      background: #C9972B;
+      color: #fff;
+      border: none;
+      padding: 0.9rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .pwd-btn:hover { background: #B5852A; }
+    .pwd-error {
+      color: #dc2626;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+    .pwd-note {
+      font-size: 0.78rem;
+      color: #8e9099;
+      margin-top: 1rem;
+      line-height: 1.5;
+    }
+
+    /* ── Search page layout ── */
+    .search-page-header {
+      background: var(--navy-dark);
+      padding: 9.5rem 0 2rem;
+    }
+    .search-page-header h1 {
+      color: #fff;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      margin-bottom: 0.5rem;
+    }
+    .search-page-header p { color: rgba(255,255,255,0.75); font-size: 0.95rem; }
+
+    .search-filters {
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 1.25rem 0;
+      position: sticky;
+      top: 118px;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .filter-row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .filter-row input,
+    .filter-row select {
+      padding: 0.65rem 1rem;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: #333;
+      background: #fff;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .filter-row input { flex: 1; min-width: 200px; }
+    .filter-row input:focus,
+    .filter-row select:focus { border-color: #194d9b; }
+    .filter-row .btn-search-apply {
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      padding: 0.65rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .filter-row .btn-search-apply:hover { background: #B5852A; }
+
+    .results-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .results-layout { grid-template-columns: 1fr; }
+      .results-sidebar { display: none; }
+    }
+
+    .results-sidebar {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: sticky;
+      top: 172px;
+    }
+    .sidebar-section { margin-bottom: 1.5rem; }
+    .sidebar-section h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #8e9099;
+      margin-bottom: 0.75rem;
+    }
+    .sidebar-section label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.88rem;
+      color: #4a5568;
+      margin-bottom: 0.4rem;
+      cursor: pointer;
+    }
+    .price-range { display: flex; gap: 0.5rem; align-items: center; }
+    .price-range input {
+      flex: 1;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      width: 100%;
+    }
+    .price-range span { font-size: 0.8rem; color: #8e9099; }
+
+    .results-main {}
+    .results-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .results-count {
+      font-size: 0.92rem;
+      color: #4a5568;
+    }
+    .results-count strong { color: #1c2833; }
+    .sort-select {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      color: #333;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    /* Listing grid */
+    .listings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .listing-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      color: inherit;
+    }
+    .listing-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    }
+    .listing-img {
+      height: 200px;
+      background: linear-gradient(135deg, #0d2b4e, #194d9b);
+      position: relative;
+      overflow: hidden;
+    }
+    .listing-img img { width: 100%; height: 100%; object-fit: cover; }
+    .listing-status {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #22c55e;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 50px;
+    }
+    .listing-status.pending { background: #f97316; }
+    .listing-body { padding: 1.1rem; }
+    .listing-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #1c2833;
+      margin-bottom: 0.25rem;
+    }
+    .listing-address {
+      font-size: 0.88rem;
+      color: #4a5568;
+      margin-bottom: 0.6rem;
+      line-height: 1.4;
+    }
+    .listing-meta {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.8rem;
+      color: #8e9099;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 0.6rem;
+      margin-top: 0.6rem;
+    }
+    .listing-meta span { display: flex; align-items: center; gap: 0.3rem; }
+
+    /* IDX Placeholder state */
+    .idx-pending {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 2rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      border: 2px dashed #e0e0e0;
+    }
+    .idx-pending h3 { color: #1c2833; margin-bottom: 0.75rem; font-size: 1.2rem; }
+    .idx-pending p { font-size: 0.92rem; color: #4a5568; max-width: 480px; margin: 0 auto 1.5rem; line-height: 1.7; }
+    .idx-badge-row { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+    .idx-badge {
+      background: #0d2b4e;
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+    }
+
+    /* MLS Disclaimer */
+    .mls-disclaimer {
+      background: #f4f5f7;
+      border-top: 1px solid #e5e7eb;
+      padding: 1.5rem 0;
+      margin-top: 3rem;
+    }
+    .mls-disclaimer p {
+      font-size: 0.75rem;
+      color: #8e9099;
+      line-height: 1.6;
+      max-width: 900px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- IDX Brokerage Compliance -->
+<div class="brokerage-topbar">
+  <img src="images/mountain-realty-logo.png" alt="Mountain Realty LLC" />
+  <span>Licensed under Mountain Realty LLC &mdash; A Licensed Idaho Brokerage</span>
+</div>
+
+<nav class="site-nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="CWRE Idaho Home">
+      <div class="brand-logo-area">
+        <img src="images/cwre-logo.png" alt="CWRE Idaho" class="navbar-logo-img" />
+        <div class="brand-name-text">
+          <span class="brand-name-main">Clint Walker Real Estate</span>
+          <span class="brand-name-sub">Idaho</span>
+        </div>
+      </div>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li>
+      <li class="nav-dropdown">
+        <a href="communities/index.html">Communities</a>
+        <ul class="dropdown-menu" role="list">
+          <li><a href="communities/boise.html">Boise</a></li>
+          <li><a href="communities/eagle.html">Eagle</a></li>
+          <li><a href="communities/meridian.html">Meridian</a></li>
+          <li><a href="communities/nampa-caldwell.html">Nampa &amp; Caldwell</a></li>
+          <li><a href="communities/star.html">Star</a></li>
+          <li><a href="communities/middleton.html">Middleton</a></li>
+          <li><a href="communities/kuna.html">Kuna</a></li>
+          <li><a href="communities/emmett.html">Emmett</a></li>
+          <li><a href="communities/mountain-home.html">Mountain Home</a></li>
+          <li><a href="communities/new-plymouth.html">New Plymouth</a></li>
+          <li><a href="communities/melba.html">Melba</a></li>
+          <li><a href="communities/marsing.html">Marsing</a></li>
+          <li><a href="communities/payette.html">Payette</a></li>
+        </ul>
+      </li>
+      <li><a href="buyers.html">Buy</a></li>
+      <li><a href="sellers.html">Sell</a></li>
+      <li><a href="subdivisions/index.html">Subdivisions</a></li>
+      <li><a href="blog/index.html">Market Updates</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="contact.html" class="btn btn-gold">Get in Touch</a>
+    </div>
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════
+     PASSWORD GATE (removed after IDX approval)
+══════════════════════════════════════ -->
+<div id="pwd-gate">
+  <div class="pwd-card">
+    <img src="images/cwre-logo.png" alt="CWRE Idaho" class="pwd-logo" />
+    <h2>MLS Listing Search</h2>
+    <p>This page is password protected during our IDX review period.<br>Contact Clint for access or enter the reviewer password below.</p>
+    <input type="password" id="pwd-input" class="pwd-input" placeholder="Enter password" autocomplete="off" />
+    <button class="pwd-btn" onclick="checkPassword()">Access Listings</button>
+    <p class="pwd-error" id="pwd-error">Incorrect password. Please try again.</p>
+    <p class="pwd-note">
+      IMLS reviewers: password is <strong>cwreidx2026</strong><br>
+      This gate will be removed upon IDX approval.
+    </p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SEARCH PAGE HEADER
+══════════════════════════════════════ -->
+<div class="search-page-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span>Search Listings</div>
+    <h1>Idaho MLS Listings</h1>
+    <p>Live listing data from Intermountain MLS — Treasure Valley and Southwest Idaho</p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SEARCH FILTERS BAR
+══════════════════════════════════════ -->
+<div class="search-filters">
+  <div class="container">
+    <div class="filter-row">
+      <input type="text" placeholder="City, zip, address, or neighborhood…" id="location-filter" />
+      <select id="type-filter">
+        <option value="">All Types</option>
+        <option value="residential">Residential</option>
+        <option value="land">Land / Lots</option>
+        <option value="new">New Construction</option>
+        <option value="multi">Multi-Family</option>
+      </select>
+      <select id="beds-filter">
+        <option value="">Beds</option>
+        <option value="1">1+</option>
+        <option value="2">2+</option>
+        <option value="3">3+</option>
+        <option value="4">4+</option>
+        <option value="5">5+</option>
+      </select>
+      <select id="baths-filter">
+        <option value="">Baths</option>
+        <option value="1">1+</option>
+        <option value="2">2+</option>
+        <option value="3">3+</option>
+      </select>
+      <select id="price-filter">
+        <option value="">Max Price</option>
+        <option value="200000">$200K</option>
+        <option value="300000">$300K</option>
+        <option value="400000">$400K</option>
+        <option value="500000">$500K</option>
+        <option value="750000">$750K</option>
+        <option value="1000000">$1M+</option>
+      </select>
+      <button class="btn-search-apply">Search</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     RESULTS AREA
+══════════════════════════════════════ -->
+<section class="section" style="padding-top: 0;">
+  <div class="container">
+    <div class="results-layout">
+
+      <!-- Sidebar filters -->
+      <aside class="results-sidebar">
+        <div class="sidebar-section">
+          <h4>Price Range</h4>
+          <div class="price-range">
+            <input type="text" placeholder="Min" />
+            <span>–</span>
+            <input type="text" placeholder="Max" />
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <h4>Property Type</h4>
+          <label><input type="checkbox" checked /> Single Family</label>
+          <label><input type="checkbox" /> Condo / Townhome</label>
+          <label><input type="checkbox" /> Land / Lots</label>
+          <label><input type="checkbox" /> New Construction</label>
+          <label><input type="checkbox" /> Multi-Family</label>
+        </div>
+        <div class="sidebar-section">
+          <h4>Bedrooms</h4>
+          <label><input type="radio" name="beds" /> Any</label>
+          <label><input type="radio" name="beds" /> 2+</label>
+          <label><input type="radio" name="beds" /> 3+</label>
+          <label><input type="radio" name="beds" /> 4+</label>
+          <label><input type="radio" name="beds" /> 5+</label>
+        </div>
+        <div class="sidebar-section">
+          <h4>Communities</h4>
+          <label><input type="checkbox" /> Boise</label>
+          <label><input type="checkbox" /> Eagle</label>
+          <label><input type="checkbox" /> Meridian</label>
+          <label><input type="checkbox" /> Nampa / Caldwell</label>
+          <label><input type="checkbox" /> Star</label>
+          <label><input type="checkbox" /> Kuna</label>
+          <label><input type="checkbox" /> Emmett</label>
+          <label><input type="checkbox" /> Middleton</label>
+        </div>
+      </aside>
+
+      <!-- Main results -->
+      <main id="results-main" class="results-main">
+        <div class="results-toolbar">
+          <span class="results-count">Connecting to <strong>Intermountain MLS</strong> via Bridge API…</span>
+          <select class="sort-select">
+            <option>Newest First</option>
+            <option>Price: Low to High</option>
+            <option>Price: High to Low</option>
+            <option>Most Bedrooms</option>
+          </select>
+        </div>
+
+        <div class="listings-grid" id="listings-grid">
+          <!-- IDX Bridge API will populate this grid once credentials are active -->
+          <div class="idx-pending">
+            <h3>Live MLS Data — Bridge API Integration</h3>
+            <p>
+              This page is structured and ready to receive live listing data from
+              Intermountain MLS via the Bridge Interactive Web API. Listings will
+              populate automatically once the IMLS IDX feed is approved and the
+              Bridge API credentials are connected.
+            </p>
+            <div class="idx-badge-row">
+              <span class="idx-badge">Intermountain MLS</span>
+              <span class="idx-badge">Bridge Interactive API</span>
+              <span class="idx-badge">CWRE Idaho — Mountain Realty LLC</span>
+            </div>
+          </div>
+        </div>
+      </main>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- MLS Required Disclaimer -->
+<div class="mls-disclaimer">
+  <div class="container">
+    <p>
+      <strong>MLS Disclaimer:</strong> Based on information from Intermountain MLS as of
+      <span id="disclaimer-date"></span>. All data, including all measurements and calculations
+      of area, is obtained from various sources and has not been, and will not be, verified by
+      broker or MLS. All information should be independently reviewed and verified for accuracy.
+      Properties may or may not be listed by the office/agent presenting the information.
+      © <span id="disclaimer-year"></span> Intermountain MLS. All rights reserved.
+      Listing information is provided for consumers' personal, non-commercial use and may not
+      be used for any purpose other than to identify prospective properties consumers may be
+      interested in purchasing. Data deemed reliable but not guaranteed.
+    </p>
+    <p style="margin-top:0.5rem;">
+      CWRE Idaho is a licensed real estate brokerage operating under
+      <strong>Mountain Realty LLC</strong>, a licensed Idaho real estate brokerage.
+      All listings are subject to prior sale, change or withdrawal.
+    </p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-brand-text">CWRE Idaho</span>
+        <span class="footer-brand-sub">Clint Walker Real Estate</span>
+        <p class="footer-bio">Serving the Treasure Valley and Southwest Idaho.</p>
+        <div class="footer-contact-item">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clip-rule="evenodd"/></svg>
+          <a href="tel:+12088704279">(208) 870-4279</a>
+        </div>
+        <div class="footer-contact-item">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
+          <a href="mailto:clintwalkeridaho@gmail.com">clintwalkeridaho@gmail.com</a>
+        </div>
+      </div>
+      <div>
+        <span class="footer-heading">Navigation</span>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="buyers.html">Buy a Home</a></li>
+          <li><a href="sellers.html">Sell Your Home</a></li>
+          <li><a href="communities/index.html">Communities</a></li>
+          <li><a href="search.html">Search Listings</a></li>
+          <li><a href="blog/index.html">Market Updates</a></li>
+          <li><a href="about.html">About Clint</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="footer-heading">Legal</span>
+        <ul class="footer-links">
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Use</a></li>
+        </ul>
+      </div>
+      <div class="footer-newsletter">
+        <span class="footer-heading">Monthly Market Report</span>
+        <p>Idaho real estate updates monthly.</p>
+        <form class="newsletter-form" novalidate>
+          <input type="email" placeholder="Email address" required />
+          <button type="submit">Subscribe Free →</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-brokerage">
+      <div class="footer-brokerage-logo">
+        <img src="images/mountain-realty-logo.png" alt="Mountain Realty LLC" />
+      </div>
+      <span>Licensed under Mountain Realty LLC</span>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 CWRE Idaho · Clint Walker Real Estate. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  // ── Password Gate ──
+  const GATE_KEY = 'cwre_idx_access';
+  const CORRECT_PASSWORD = 'cwreidx2026';
+
+  function checkPassword() {
+    const val = document.getElementById('pwd-input').value;
+    if (val === CORRECT_PASSWORD) {
+      sessionStorage.setItem(GATE_KEY, '1');
+      document.getElementById('pwd-gate').classList.add('hidden');
+    } else {
+      document.getElementById('pwd-error').style.display = 'block';
+    }
+  }
+
+  // Allow Enter key
+  document.getElementById('pwd-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkPassword();
+  });
+
+  // Check if already authenticated this session
+  if (sessionStorage.getItem(GATE_KEY)) {
+    document.getElementById('pwd-gate').classList.add('hidden');
+  }
+
+  // MLS disclaimer date
+  const now = new Date();
+  document.getElementById('disclaimer-date').textContent =
+    now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  document.getElementById('disclaimer-year').textContent = now.getFullYear();
+</script>
+
+  <!-- UserWay ADA Accessibility Widget — replace ACCOUNT_ID after signing up at userway.org -->
+  <script>
+    (function(d){
+      var s = d.createElement("script");
+      s.setAttribute("data-account", "ACCOUNT_ID");
+      s.setAttribute("src", "https://cdn.userway.org/widget.js");
+      (d.body || d.head).appendChild(s);
+    })(document)
+  </script>
+</body>
+</html>

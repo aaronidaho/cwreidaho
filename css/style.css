@@ -136,6 +136,32 @@ p { color: var(--text-light); line-height: 1.7; }
 }
 .btn-lg { padding: 1.1rem 2.5rem; font-size: 1.05rem; border-radius: 12px; }
 
+/* ── IDX Brokerage Compliance Strip (fixed, top of every page) ── */
+.brokerage-topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 30px;
+  background: #0a1e38;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 1001;
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+.brokerage-topbar img {
+  height: 18px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.75;
+}
+
 /* ── Brand name text (next to logo) ── */
 .brand-logo-area {
   display: flex;
@@ -174,7 +200,7 @@ p { color: var(--text-light); line-height: 1.7; }
 /* ── Navigation ── */
 .site-nav {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 30px; left: 0; right: 0;
   z-index: 1000;
   background: #0D2B4E;
   transition: all 0.3s ease;
@@ -321,7 +347,7 @@ p { color: var(--text-light); line-height: 1.7; }
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 120px 24px 60px;
+  padding: 150px 24px 60px;
   max-width: 800px;
   width: 100%;
 }
@@ -1169,7 +1195,7 @@ p { color: var(--text-light); line-height: 1.7; }
 /* ── Page Hero (inner pages) ── */
 .page-hero {
   background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
-  padding: 8rem 0 4rem;
+  padding: 9.5rem 0 4rem;
   position: relative;
   overflow: hidden;
 }

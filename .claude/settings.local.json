@@ -4,7 +4,23 @@
       "Bash(xargs sed -i '' 's|\\(208\\) 555-0000|\\(208\\) 870-4279|g')",
       "Bash(xargs sed -i '' 's|clint@cwreidaho.com|clintwalkeridaho@gmail.com|g')",
       "Bash(xargs sed -i '' 's|href=\"tel:+12085550000\"|href=\"tel:+12088704279\"|g')",
-      "Bash(xargs sed -i '' 's|href=\"mailto:clint@cwreidaho.com\"|href=\"mailto:clintwalkeridaho@gmail.com\"|g')"
+      "Bash(xargs sed -i '' 's|href=\"mailto:clint@cwreidaho.com\"|href=\"mailto:clintwalkeridaho@gmail.com\"|g')",
+      "Bash(sips -c 5000 5000 \"/Users/aaronedwards/Desktop/CWRE Website Project/images/LakeHaven Plat.png\" --out \"/tmp/lh_tr.png\" --cropOffset 2500 5500)",
+      "Bash(sips -z 1800 1800 \"/tmp/lh_tr.png\" --out \"/tmp/lh_tr_sm.jpg\")",
+      "Bash(sips -c 5000 5000 \"/Users/aaronedwards/Desktop/CWRE Website Project/images/LakeHaven Plat.png\" --out \"/tmp/lh_d1.png\" --cropOffset 4000 2500)",
+      "Bash(sips -z 1800 1800 \"/tmp/lh_d1.png\" --out \"/tmp/lh_d1_sm.jpg\")",
+      "Bash(sips -c 7000 5000 --cropOffset 3500 1500 \"/Users/aaronedwards/Desktop/CWRE Website Project/images/LakeHaven Plat.png\" --out lh_diag.jpg)",
+      "Bash(sips -Z 1600 lh_diag.jpg)",
+      "Bash(sips -c 2000 8000 --cropOffset 9200 1500 \"/Users/aaronedwards/Desktop/CWRE Website Project/images/LakeHaven Plat.png\" --out lh_arc3.jpg)",
+      "Bash(sips -Z 1800 lh_arc3.jpg)",
+      "Bash(sips -c 2800 4500 --cropOffset 3200 4500 \"/Users/aaronedwards/Desktop/CWRE Website Project/images/LakeHaven Plat.png\" --out lh_top.jpg)",
+      "Bash(sips -c 4000 2400 --cropOffset 3500 1800 \"/Users/aaronedwards/Desktop/CWRE Website Project/images/LakeHaven Plat.png\" --out lh_lc1.jpg)",
+      "Bash(sips -Z 1400 lh_lc1.jpg)",
+      "Bash(sips -c 3500 3000 --cropOffset 7500 500 \"/Users/aaronedwards/Desktop/CWRE Website Project/images/LakeHaven Plat.png\" --out lh_lc2.jpg)",
+      "Bash(sips -Z 1400 lh_lc2.jpg)",
+      "Bash(sips -c 5500 3000 --cropOffset 3500 3500 \"/Users/aaronedwards/Desktop/CWRE Website Project/images/LakeHaven Plat.png\" --out lh_rc2.jpg)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
