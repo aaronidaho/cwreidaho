@@ -1124,8 +1124,6 @@ p { color: var(--text-light); line-height: 1.7; }
   min-height: 110px;
 }
 .sub-logo img { height: 80px; width: auto; }
-.sub-logo.sub-logo-light { background: transparent; padding: 1.5rem 1.25rem; }
-.sub-logo.sub-logo-light img { height: 110px; }
 
 .page-hero-logo {
   margin-bottom: 1rem;
