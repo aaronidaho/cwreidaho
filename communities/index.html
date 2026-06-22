@@ -17,8 +17,76 @@
   </script>
   <script src="https://d2w6u17ngtanmy.cloudfront.net/scripts/my-buying-buddy.5.0.js.gz"></script>
   <!-- End Buying Buddy Plugin. Copyright 2003-2026 -->
+<style>
+  /* ── Password Gate Overlay ── */
+  #pwd-gate {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 20, 45, 0.97);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  #pwd-gate.hidden { display: none; }
+  .pwd-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2.5rem;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+  }
+  .pwd-logo { height: 60px; margin: 0 auto 1.25rem; display: block; }
+  .pwd-card h2 { font-size: 1.4rem; margin-bottom: 0.5rem; color: #1c2833; }
+  .pwd-card p { font-size: 0.9rem; color: #4a5568; margin-bottom: 1.5rem; line-height: 1.6; }
+  .pwd-input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1.5px solid #cdced2;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .pwd-input:focus { border-color: #194d9b; }
+  .pwd-btn {
+    width: 100%;
+    background: #C9972B;
+    color: #fff;
+    border: none;
+    padding: 0.9rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .pwd-btn:hover { background: #B5852A; }
+  .pwd-error { color: #dc2626; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
+  .pwd-note { font-size: 0.78rem; color: #8e9099; margin-top: 1rem; line-height: 1.5; }
+</style>
 </head>
 <body>
+
+
+<div id="pwd-gate">
+  <div class="pwd-card">
+    <img src="images/cwre-logo.png" alt="CWRE Idaho" class="pwd-logo" />
+    <h2>MLS Listing Search</h2>
+    <p>This page is password protected during our IDX review period.<br>Contact Clint for access or enter the reviewer password below.</p>
+    <input type="password" id="pwd-input" class="pwd-input" placeholder="Enter password" autocomplete="off" />
+    <button class="pwd-btn" onclick="checkPassword()">Access Listings</button>
+    <p class="pwd-error" id="pwd-error">Incorrect password. Please try again.</p>
+    <p class="pwd-note">
+      IMLS reviewers: password is <strong>cwreidx2026</strong><br>
+      This gate will be removed upon IDX approval.
+    </p>
+  </div>
+</div>
 
 <!-- IDX Brokerage Compliance -->
 <div class="brokerage-topbar">
@@ -333,5 +401,30 @@
       (d.body || d.head).appendChild(s);
     })(document)
   </script>
+
+<script>
+  // ── Password Gate ──
+  const GATE_KEY = 'cwre_idx_access';
+  const CORRECT_PASSWORD = 'cwreidx2026';
+
+  function checkPassword() {
+    const val = document.getElementById('pwd-input').value;
+    if (val === CORRECT_PASSWORD) {
+      sessionStorage.setItem(GATE_KEY, '1');
+      document.getElementById('pwd-gate').classList.add('hidden');
+    } else {
+      document.getElementById('pwd-error').style.display = 'block';
+    }
+  }
+
+  document.getElementById('pwd-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkPassword();
+  });
+
+  if (sessionStorage.getItem(GATE_KEY)) {
+    document.getElementById('pwd-gate').classList.add('hidden');
+  }
+</script>
+
 </body>
 </html>
