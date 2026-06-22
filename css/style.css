@@ -1119,11 +1119,9 @@ p { color: var(--text-light); line-height: 1.7; }
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.25rem;
   background: var(--navy);
-  min-height: 110px;
 }
-.sub-logo img { height: 80px; width: auto; }
+.sub-logo img { width: 100%; height: auto; display: block; }
 
 .page-hero-logo {
   margin-bottom: 1rem;
