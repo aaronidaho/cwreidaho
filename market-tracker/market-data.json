@@ -1,0 +1,138 @@
+{
+  "updated": "2026-06-23",
+  "market": "Treasure Valley",
+  "weeks": [
+    {
+      "week": "2026-01-06",
+      "label": "Jan 6",
+      "active_listings": 1842,
+      "new_listings": 312,
+      "pending": 278,
+      "closed": 241,
+      "median_price": 425000,
+      "avg_dom": 34,
+      "list_to_sale": 98.2
+    },
+    {
+      "week": "2026-01-13",
+      "label": "Jan 13",
+      "active_listings": 1879,
+      "new_listings": 348,
+      "pending": 291,
+      "closed": 253,
+      "median_price": 427500,
+      "avg_dom": 33,
+      "list_to_sale": 98.4
+    },
+    {
+      "week": "2026-01-20",
+      "label": "Jan 20",
+      "active_listings": 1903,
+      "new_listings": 361,
+      "pending": 305,
+      "closed": 268,
+      "median_price": 429000,
+      "avg_dom": 32,
+      "list_to_sale": 98.6
+    },
+    {
+      "week": "2026-01-27",
+      "label": "Jan 27",
+      "active_listings": 1921,
+      "new_listings": 374,
+      "pending": 318,
+      "closed": 279,
+      "median_price": 431000,
+      "avg_dom": 31,
+      "list_to_sale": 98.7
+    },
+    {
+      "week": "2026-02-03",
+      "label": "Feb 3",
+      "active_listings": 1956,
+      "new_listings": 389,
+      "pending": 334,
+      "closed": 287,
+      "median_price": 433500,
+      "avg_dom": 30,
+      "list_to_sale": 98.9
+    },
+    {
+      "week": "2026-02-10",
+      "label": "Feb 10",
+      "active_listings": 1988,
+      "new_listings": 401,
+      "pending": 347,
+      "closed": 299,
+      "median_price": 435000,
+      "avg_dom": 29,
+      "list_to_sale": 99.1
+    },
+    {
+      "week": "2026-02-17",
+      "label": "Feb 17",
+      "active_listings": 2014,
+      "new_listings": 418,
+      "pending": 362,
+      "closed": 311,
+      "median_price": 437500,
+      "avg_dom": 28,
+      "list_to_sale": 99.2
+    },
+    {
+      "week": "2026-02-24",
+      "label": "Feb 24",
+      "active_listings": 2041,
+      "new_listings": 432,
+      "pending": 378,
+      "closed": 324,
+      "median_price": 439000,
+      "avg_dom": 27,
+      "list_to_sale": 99.4
+    },
+    {
+      "week": "2026-03-03",
+      "label": "Mar 3",
+      "active_listings": 2089,
+      "new_listings": 451,
+      "pending": 391,
+      "closed": 338,
+      "median_price": 441000,
+      "avg_dom": 27,
+      "list_to_sale": 99.5
+    },
+    {
+      "week": "2026-03-10",
+      "label": "Mar 10",
+      "active_listings": 2134,
+      "new_listings": 467,
+      "pending": 408,
+      "closed": 352,
+      "median_price": 443500,
+      "avg_dom": 26,
+      "list_to_sale": 99.6
+    },
+    {
+      "week": "2026-03-17",
+      "label": "Mar 17",
+      "active_listings": 2178,
+      "new_listings": 482,
+      "pending": 421,
+      "closed": 364,
+      "median_price": 445000,
+      "avg_dom": 25,
+      "list_to_sale": 99.7
+    },
+    {
+      "week": "2026-03-24",
+      "label": "Mar 24",
+      "active_listings": 2203,
+      "new_listings": 495,
+      "pending": 435,
+      "closed": 377,
+      "median_price": 447000,
+      "avg_dom": 25,
+      "list_to_sale": 99.8
+    }
+  ]
+}

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Market Data Update Tool | CWRE Idaho</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #f8f9fc; color: #1c2833; min-height: 100vh; }
+    .header { background: #194d9b; color: #fff; padding: 1.5rem 2rem; }
+    .header h1 { font-size: 1.3rem; font-weight: 700; }
+    .header p { font-size: 0.85rem; opacity: 0.8; margin-top: 0.25rem; }
+    .container { max-width: 720px; margin: 2rem auto; padding: 0 1.5rem; }
+    .card { background: #fff; border-radius: 12px; padding: 1.75rem; box-shadow: 0 2px 12px rgba(25,77,155,0.08); margin-bottom: 1.5rem; }
+    .card h2 { font-size: 1rem; font-weight: 700; color: #194d9b; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .step-badge { background: #194d9b; color: #fff; font-size: 0.72rem; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    label { display: block; font-size: 0.82rem; font-weight: 600; color: #374151; margin-bottom: 0.4rem; }
+    .file-drop {
+      border: 2px dashed #d1d5db;
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #f9fafb;
+      position: relative;
+    }
+    .file-drop:hover, .file-drop.drag-over { border-color: #194d9b; background: #eff6ff; }
+    .file-drop input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+    .file-drop .drop-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .file-drop p { font-size: 0.85rem; color: #6b7280; }
+    .file-drop .file-name { font-weight: 600; color: #194d9b; font-size: 0.9rem; margin-top: 0.5rem; }
+    .field-map { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem; }
+    .field-map select {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      background: #fff;
+    }
+    .field-map select:focus { outline: none; border-color: #194d9b; }
+    .field-label { font-size: 0.78rem; font-weight: 600; color: #374151; margin-bottom: 0.3rem; }
+    .meta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+    .meta-row input {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+    .meta-row input:focus { outline: none; border-color: #194d9b; }
+    .preview-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 0.75rem; }
+    .preview-table th { background: #f3f4f6; padding: 0.5rem 0.75rem; text-align: left; font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; }
+    .preview-table td { padding: 0.5rem 0.75rem; border-top: 1px solid #f0f0f0; }
+    .preview-table tr:hover td { background: #f9fafb; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+    }
+    .btn-primary { background: #194d9b; color: #fff; }
+    .btn-primary:hover { background: #153f82; }
+    .btn-gold { background: #C9972B; color: #fff; }
+    .btn-gold:hover { background: #b5842a; }
+    .btn-outline { background: transparent; border: 1.5px solid #194d9b; color: #194d9b; }
+    .btn-outline:hover { background: #eff6ff; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .action-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.25rem; }
+    .status-msg { font-size: 0.85rem; padding: 0.75rem 1rem; border-radius: 8px; margin-top: 1rem; display: none; }
+    .status-msg.success { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; display: block; }
+    .status-msg.error { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; display: block; }
+    .instructions { background: #eff6ff; border-left: 4px solid #194d9b; border-radius: 6px; padding: 1rem 1.25rem; font-size: 0.83rem; color: #374151; line-height: 1.7; }
+    .instructions strong { color: #194d9b; }
+    code { background: #e5e7eb; padding: 0.1em 0.4em; border-radius: 4px; font-size: 0.82em; }
+    #csv-preview-wrap { display: none; }
+    #download-wrap { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 Market Data Update Tool</h1>
+  <p>CWRE Idaho — Treasure Valley Weekly Market Tracker</p>
+</div>
+
+<div class="container">
+
+  <div class="instructions">
+    <strong>Weekly workflow (5 minutes):</strong><br>
+    1. Export your weekly stats CSV from IMLS &nbsp;→&nbsp;
+    2. Load your current <code>market-data.json</code> &nbsp;→&nbsp;
+    3. Drop in the new CSV &nbsp;→&nbsp;
+    4. Map the columns &nbsp;→&nbsp;
+    5. Download updated JSON &nbsp;→&nbsp;
+    6. Drag into Netlify to replace the old file. Done.
+  </div>
+
+  <!-- Step 1: Load existing JSON -->
+  <div class="card" style="margin-top:1.5rem;">
+    <h2><span class="step-badge">1</span> Load your current market-data.json</h2>
+    <div class="file-drop" id="json-drop">
+      <input type="file" id="json-file" accept=".json" onchange="loadJSON(this)" />
+      <div class="drop-icon">📂</div>
+      <p>Click or drop your <strong>market-data.json</strong> here</p>
+      <div class="file-name" id="json-filename"></div>
+    </div>
+    <div class="status-msg" id="json-status"></div>
+  </div>
+
+  <!-- Step 2: Load CSV -->
+  <div class="card">
+    <h2><span class="step-badge">2</span> Drop in your IMLS CSV export</h2>
+    <p style="font-size:0.83rem;color:#6b7280;margin-bottom:1rem;">Export the weekly stats report from IMLS as CSV. Any column names work — you'll map them in Step 3.</p>
+    <div class="file-drop" id="csv-drop">
+      <input type="file" id="csv-file" accept=".csv" onchange="loadCSV(this)" />
+      <div class="drop-icon">📋</div>
+      <p>Click or drop your <strong>IMLS weekly CSV</strong> here</p>
+      <div class="file-name" id="csv-filename"></div>
+    </div>
+    <div class="status-msg" id="csv-status"></div>
+  </div>
+
+  <!-- Step 3: Map columns -->
+  <div class="card" id="csv-preview-wrap">
+    <h2><span class="step-badge">3</span> Map CSV columns to tracker fields</h2>
+    <p style="font-size:0.83rem;color:#6b7280;margin-bottom:1rem;">Match each tracker field to the correct column from your CSV. Leave as "— skip —" if not available.</p>
+
+    <div class="meta-row">
+      <div>
+        <label>Week date (YYYY-MM-DD)</label>
+        <input type="date" id="week-date" />
+      </div>
+      <div>
+        <label>Week label (shown on chart)</label>
+        <input type="text" id="week-label" placeholder="e.g. Jun 23" />
+      </div>
+    </div>
+
+    <div class="field-map" id="field-map"></div>
+
+    <div id="mapped-preview-wrap" style="display:none;margin-top:1.25rem;">
+      <label style="margin-bottom:0.5rem;">Preview of mapped values</label>
+      <table class="preview-table" id="mapped-preview"></table>
+    </div>
+
+    <div class="action-row">
+      <button class="btn btn-primary" onclick="buildPreview()">Preview Row</button>
+    </div>
+  </div>
+
+  <!-- Step 4: Download -->
+  <div class="card" id="download-wrap">
+    <h2><span class="step-badge">4</span> Download updated market-data.json</h2>
+    <p style="font-size:0.83rem;color:#6b7280;margin-bottom:1rem;">Your new data row has been appended. Download the file and drag it into Netlify to replace the old one.</p>
+    <div style="background:#f3f4f6;border-radius:8px;padding:1rem;font-size:0.82rem;line-height:1.8;color:#374151;">
+      <strong>Weeks in file:</strong> <span id="week-count">—</span><br>
+      <strong>Latest week:</strong> <span id="latest-week">—</span><br>
+      <strong>Latest median price:</strong> <span id="latest-price">—</span>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-gold" onclick="downloadJSON()">⬇ Download market-data.json</button>
+      <a href="market-tracker.html" target="_blank" class="btn btn-outline">Preview Chart →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let currentJSON = null;
+let csvHeaders = [];
+let csvRows = [];
+
+const FIELDS = [
+  { key: 'active_listings', label: 'Active Listings', type: 'int' },
+  { key: 'new_listings',    label: 'New Listings',    type: 'int' },
+  { key: 'pending',         label: 'Pending Sales',   type: 'int' },
+  { key: 'closed',          label: 'Closed Sales',    type: 'int' },
+  { key: 'median_price',    label: 'Median Price ($)', type: 'int' },
+  { key: 'avg_dom',         label: 'Avg Days on Mkt', type: 'float' },
+  { key: 'list_to_sale',    label: 'List-to-Sale %',  type: 'float' },
+];
+
+function showStatus(id, msg, type) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = 'status-msg ' + type;
+}
+
+function loadJSON(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('json-filename').textContent = file.name;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      currentJSON = JSON.parse(e.target.result);
+      if (!currentJSON.weeks || !Array.isArray(currentJSON.weeks)) throw new Error('Invalid format');
+      showStatus('json-status', `✓ Loaded ${currentJSON.weeks.length} weeks of data. Latest: ${currentJSON.weeks[currentJSON.weeks.length-1].label}`, 'success');
+    } catch(err) {
+      showStatus('json-status', '✗ Could not parse JSON. Make sure you loaded the correct market-data.json file.', 'error');
+      currentJSON = null;
+    }
+  };
+  reader.readAsText(file);
+}
+
+function loadCSV(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('csv-filename').textContent = file.name;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const lines = e.target.result.trim().split('\n').map(l => l.trim()).filter(Boolean);
+      if (lines.length < 2) throw new Error('Need at least a header row and one data row');
+      csvHeaders = parseCSVLine(lines[0]);
+      csvRows = lines.slice(1).map(parseCSVLine);
+      showStatus('csv-status', `✓ Loaded ${csvRows.length} row(s) with ${csvHeaders.length} columns: ${csvHeaders.join(', ')}`, 'success');
+      buildFieldMap();
+      document.getElementById('csv-preview-wrap').style.display = 'block';
+      // Auto-set date
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('week-date').value = today;
+      const d = new Date();
+      document.getElementById('week-label').value = d.toLocaleDateString('en-US', {month:'short', day:'numeric'});
+    } catch(err) {
+      showStatus('csv-status', '✗ ' + err.message, 'error');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function parseCSVLine(line) {
+  const result = [];
+  let cur = '', inQuote = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { inQuote = !inQuote; continue; }
+    if (c === ',' && !inQuote) { result.push(cur.trim()); cur = ''; continue; }
+    cur += c;
+  }
+  result.push(cur.trim());
+  return result;
+}
+
+function buildFieldMap() {
+  const container = document.getElementById('field-map');
+  container.innerHTML = '';
+  const opts = ['— skip —', ...csvHeaders].map(h => `<option value="${h}">${h}</option>`).join('');
+
+  FIELDS.forEach(f => {
+    const div = document.createElement('div');
+    // Try to auto-match header names
+    const autoMatch = csvHeaders.findIndex(h =>
+      h.toLowerCase().replace(/[^a-z]/g,'').includes(f.key.replace(/_/g,'').substring(0,6))
+    );
+    const sel = `<select id="map-${f.key}">${opts}</select>`;
+    div.innerHTML = `<div class="field-label">${f.label}</div>${sel}`;
+    container.appendChild(div);
+    if (autoMatch >= 0) {
+      div.querySelector('select').value = csvHeaders[autoMatch];
+    }
+  });
+}
+
+function getRowValue(colName, type) {
+  if (!colName || colName === '— skip —') return null;
+  const idx = csvHeaders.indexOf(colName);
+  if (idx < 0) return null;
+  // Use last row of CSV
+  const raw = csvRows[csvRows.length - 1][idx] || '';
+  const clean = raw.replace(/[$,%]/g, '').replace(/,/g, '').trim();
+  const num = type === 'float' ? parseFloat(clean) : parseInt(clean, 10);
+  return isNaN(num) ? null : num;
+}
+
+function buildPreview() {
+  if (!currentJSON) {
+    alert('Please load your market-data.json first (Step 1).');
+    return;
+  }
+
+  const weekDate = document.getElementById('week-date').value;
+  const weekLabel = document.getElementById('week-label').value;
+  if (!weekDate || !weekLabel) { alert('Please fill in the week date and label.'); return; }
+
+  const newRow = { week: weekDate, label: weekLabel };
+  FIELDS.forEach(f => {
+    const col = document.getElementById('map-' + f.key).value;
+    const val = getRowValue(col, f.type);
+    if (val !== null) newRow[f.key] = val;
+  });
+
+  // Show preview
+  const table = document.getElementById('mapped-preview');
+  table.innerHTML = '<tr>' + Object.keys(newRow).map(k => `<th>${k}</th>`).join('') + '</tr>' +
+    '<tr>' + Object.values(newRow).map(v => `<td>${typeof v === 'number' && v > 999 ? v.toLocaleString() : v}</td>`).join('') + '</tr>';
+  document.getElementById('mapped-preview-wrap').style.display = 'block';
+
+  // Append to JSON
+  const existing = currentJSON.weeks.findIndex(w => w.week === weekDate);
+  if (existing >= 0) {
+    currentJSON.weeks[existing] = newRow;
+  } else {
+    currentJSON.weeks.push(newRow);
+    currentJSON.weeks.sort((a, b) => a.week.localeCompare(b.week));
+  }
+  currentJSON.updated = weekDate;
+
+  const last = currentJSON.weeks[currentJSON.weeks.length - 1];
+  document.getElementById('week-count').textContent = currentJSON.weeks.length;
+  document.getElementById('latest-week').textContent = last.label + ' (' + last.week + ')';
+  document.getElementById('latest-price').textContent = last.median_price ? '$' + last.median_price.toLocaleString() : '—';
+  document.getElementById('download-wrap').style.display = 'block';
+}
+
+function downloadJSON() {
+  if (!currentJSON) return;
+  const blob = new Blob([JSON.stringify(currentJSON, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'market-data.json';
+  a.click();
+}
+
+// Drag-over styling
+['json-drop','csv-drop'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
+  el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+  el.addEventListener('drop', () => el.classList.remove('drag-over'));
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Treasure Valley Weekly Market Tracker | CWRE Idaho</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f8f9fc;
+      color: #1c2833;
+      padding: 1.5rem;
+    }
+    .tracker-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .tracker-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #194d9b;
+      margin-bottom: 0.25rem;
+    }
+    .tracker-header p {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+    .updated-badge {
+      display: inline-block;
+      background: #194d9b;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      margin-top: 0.4rem;
+    }
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .stat-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(25,77,155,0.08);
+      border-top: 3px solid #194d9b;
+    }
+    .stat-card.gold { border-top-color: #C9972B; }
+    .stat-card.green { border-top-color: #22c55e; }
+    .stat-card.red { border-top-color: #ef4444; }
+    .stat-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; margin-bottom: 0.3rem; }
+    .stat-value { font-size: 1.5rem; font-weight: 700; color: #194d9b; line-height: 1; }
+    .stat-card.gold .stat-value { color: #C9972B; }
+    .stat-card.green .stat-value { color: #16a34a; }
+    .stat-card.red .stat-value { color: #dc2626; }
+    .stat-delta { font-size: 0.72rem; color: #9ca3af; margin-top: 0.25rem; }
+    .tab-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 0.4rem 0.9rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .tab-btn:hover { border-color: #194d9b; color: #194d9b; }
+    .tab-btn.active { background: #194d9b; border-color: #194d9b; color: #fff; }
+    .chart-wrap {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1.25rem;
+      box-shadow: 0 2px 8px rgba(25,77,155,0.08);
+    }
+    canvas { max-height: 280px; }
+    .footer-note {
+      font-size: 0.72rem;
+      color: #9ca3af;
+      text-align: center;
+      margin-top: 1rem;
+    }
+    @media (max-width: 540px) {
+      .stat-row { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="tracker-header">
+  <h2>Treasure Valley Weekly Market Tracker</h2>
+  <p>Active listings, new inventory, pending sales, median price &amp; days on market</p>
+  <span class="updated-badge" id="updated-badge">Updated —</span>
+</div>
+
+<div class="stat-row" id="stat-row"></div>
+
+<div class="tab-row">
+  <button class="tab-btn active" onclick="showChart('inventory')">Inventory</button>
+  <button class="tab-btn" onclick="showChart('activity')">Weekly Activity</button>
+  <button class="tab-btn" onclick="showChart('price')">Median Price</button>
+  <button class="tab-btn" onclick="showChart('dom')">Days on Market</button>
+</div>
+
+<div class="chart-wrap">
+  <canvas id="main-chart"></canvas>
+</div>
+
+<p class="footer-note">Data sourced from IMLS. Updated weekly by CWRE Idaho · Clint Walker Real Estate.</p>
+
+<script>
+let chartData = null;
+let mainChart = null;
+let currentView = 'inventory';
+
+function fmt(n) {
+  if (n >= 1000000) return '$' + (n/1000000).toFixed(2) + 'M';
+  if (n >= 1000) return (n >= 100000 ? '$' : '') + n.toLocaleString();
+  return n.toLocaleString();
+}
+
+function fmtPrice(n) {
+  return '$' + (n/1000).toFixed(0) + 'K';
+}
+
+function delta(curr, prev, suffix) {
+  if (prev == null) return '';
+  const d = curr - prev;
+  const sign = d >= 0 ? '+' : '';
+  return sign + d.toLocaleString() + (suffix || '');
+}
+
+function buildStats(weeks) {
+  const last = weeks[weeks.length - 1];
+  const prev = weeks.length > 1 ? weeks[weeks.length - 2] : null;
+  const row = document.getElementById('stat-row');
+  row.innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Active Listings</div>
+      <div class="stat-value">${last.active_listings.toLocaleString()}</div>
+      <div class="stat-delta">${prev ? delta(last.active_listings, prev.active_listings) + ' vs prev week' : 'baseline'}</div>
+    </div>
+    <div class="stat-card gold">
+      <div class="stat-label">Median Price</div>
+      <div class="stat-value">${fmtPrice(last.median_price)}</div>
+      <div class="stat-delta">${prev ? delta(last.median_price, prev.median_price, '') + ' vs prev week' : 'baseline'}</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">Pending Sales</div>
+      <div class="stat-value">${last.pending.toLocaleString()}</div>
+      <div class="stat-delta">${prev ? delta(last.pending, prev.pending) + ' vs prev week' : 'baseline'}</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-label">Avg Days on Mkt</div>
+      <div class="stat-value">${last.avg_dom}</div>
+      <div class="stat-delta">${prev ? delta(last.avg_dom, prev.avg_dom, ' days') + ' vs prev week' : 'baseline'}</div>
+    </div>
+  `;
+}
+
+function getChartConfig(view, weeks) {
+  const labels = weeks.map(w => w.label);
+  const navy = '#194d9b';
+  const gold = '#C9972B';
+  const green = '#22c55e';
+  const red = '#ef4444';
+  const teal = '#0d9488';
+
+  const configs = {
+    inventory: {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Active Listings',
+            data: weeks.map(w => w.active_listings),
+            borderColor: navy,
+            backgroundColor: navy + '18',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+          },
+          {
+            label: 'New Listings',
+            data: weeks.map(w => w.new_listings),
+            borderColor: gold,
+            backgroundColor: 'transparent',
+            borderDash: [5, 3],
+            tension: 0.3,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+          }
+        ]
+      }
+    },
+    activity: {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'New Listings',
+            data: weeks.map(w => w.new_listings),
+            backgroundColor: navy + 'cc',
+            borderRadius: 4,
+          },
+          {
+            label: 'Pending',
+            data: weeks.map(w => w.pending),
+            backgroundColor: gold + 'cc',
+            borderRadius: 4,
+          },
+          {
+            label: 'Closed',
+            data: weeks.map(w => w.closed),
+            backgroundColor: green + 'cc',
+            borderRadius: 4,
+          }
+        ]
+      }
+    },
+    price: {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Median Sale Price',
+          data: weeks.map(w => w.median_price),
+          borderColor: gold,
+          backgroundColor: gold + '18',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+        }]
+      }
+    },
+    dom: {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Avg Days on Market',
+          data: weeks.map(w => w.avg_dom),
+          borderColor: red,
+          backgroundColor: red + '18',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+        }]
+      }
+    }
+  };
+
+  const cfg = configs[view];
+  cfg.options = {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 12 }, boxWidth: 14 } },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const val = ctx.parsed.y;
+            if (view === 'price') return ' $' + val.toLocaleString();
+            if (view === 'dom') return ' ' + val + ' days';
+            return ' ' + val.toLocaleString();
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        ticks: {
+          font: { size: 11 },
+          callback: val => view === 'price' ? '$' + (val/1000).toFixed(0) + 'K' : val.toLocaleString()
+        },
+        grid: { color: '#f0f0f0' }
+      },
+      x: {
+        ticks: { font: { size: 11 } },
+        grid: { display: false }
+      }
+    }
+  };
+
+  return cfg;
+}
+
+function showChart(view) {
+  currentView = view;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  if (mainChart) mainChart.destroy();
+  const ctx = document.getElementById('main-chart').getContext('2d');
+  mainChart = new Chart(ctx, getChartConfig(view, chartData.weeks));
+}
+
+function initChart(view) {
+  if (mainChart) mainChart.destroy();
+  const ctx = document.getElementById('main-chart').getContext('2d');
+  mainChart = new Chart(ctx, getChartConfig(view, chartData.weeks));
+}
+
+fetch('market-data.json?v=' + Date.now())
+  .then(r => r.json())
+  .then(data => {
+    chartData = data;
+    document.getElementById('updated-badge').textContent = 'Updated ' + data.updated;
+    buildStats(data.weeks);
+    initChart('inventory');
+  })
+  .catch(() => {
+    document.querySelector('.tracker-header p').textContent = 'Unable to load market data. Please try again later.';
+  });
+</script>
+</body>
+</html>
