@@ -13,7 +13,6 @@
       color: #1c1c1c;
       padding: 2rem 1.5rem 1.5rem;
     }
-
     .tracker-title {
       text-align: center;
       font-size: 1.75rem;
@@ -22,43 +21,38 @@
       letter-spacing: 0.02em;
       color: #111;
       line-height: 1.15;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.85rem;
     }
-
     .top-legend {
       display: flex;
       justify-content: center;
       gap: 1.5rem;
       flex-wrap: wrap;
-      margin: 0.85rem 0 1.25rem;
+      margin-bottom: 1.25rem;
     }
     .top-legend-item {
       display: flex;
       align-items: center;
       gap: 0.4rem;
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       font-weight: 500;
       color: #333;
     }
     .top-legend-dot {
-      width: 12px;
-      height: 12px;
+      width: 13px;
+      height: 13px;
       border-radius: 50%;
       flex-shrink: 0;
     }
-
     .chart-wrap {
-      position: relative;
       width: 100%;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.75rem;
     }
-    canvas { width: 100% !important; }
-
     .metric-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1.25rem;
-      margin-top: 0.5rem;
+      margin-top: 0.25rem;
     }
     .metric-card {
       display: flex;
@@ -70,10 +64,10 @@
       height: 14px;
       border-radius: 2px;
       flex-shrink: 0;
-      margin-top: 0.2rem;
+      margin-top: 0.15rem;
     }
     .metric-name {
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       font-weight: 700;
       margin-bottom: 0.25rem;
     }
@@ -82,7 +76,6 @@
       color: #555;
       line-height: 1.5;
     }
-
     .footer-note {
       font-size: 0.72rem;
       color: #888;
@@ -90,7 +83,6 @@
       margin-top: 1.25rem;
       font-style: italic;
     }
-
     @media (max-width: 600px) {
       .tracker-title { font-size: 1.25rem; }
       .metric-grid { grid-template-columns: repeat(2, 1fr); }
@@ -110,7 +102,7 @@
 </div>
 
 <div class="chart-wrap">
-  <canvas id="tracker-chart"></canvas>
+  <canvas id="tracker-chart" style="max-height:400px;"></canvas>
 </div>
 
 <div class="metric-grid">
@@ -147,111 +139,127 @@
 <p class="footer-note">*IMLS data for residential properties in Ada &amp; Canyon counties.</p>
 
 <script>
-fetch('market-data.json?v=' + Date.now())
-  .then(r => r.json())
-  .then(data => {
-    const weeks = data.weeks;
-    const labels = weeks.map(w => w.label);
+const WEEKS = [
+  { label: "1/6 - 1/12",   new_listings: 312, new_pending: 278, new_sold: 241, price_reductions: 198 },
+  { label: "1/13 - 1/19",  new_listings: 348, new_pending: 291, new_sold: 253, price_reductions: 221 },
+  { label: "1/20 - 1/26",  new_listings: 361, new_pending: 305, new_sold: 268, price_reductions: 244 },
+  { label: "1/27 - 2/2",   new_listings: 374, new_pending: 318, new_sold: 279, price_reductions: 267 },
+  { label: "2/3 - 2/9",    new_listings: 389, new_pending: 334, new_sold: 287, price_reductions: 289 },
+  { label: "2/10 - 2/16",  new_listings: 401, new_pending: 347, new_sold: 299, price_reductions: 312 },
+  { label: "2/17 - 2/23",  new_listings: 418, new_pending: 362, new_sold: 311, price_reductions: 298 },
+  { label: "2/24 - 3/2",   new_listings: 432, new_pending: 378, new_sold: 324, price_reductions: 281 },
+  { label: "3/3 - 3/9",    new_listings: 451, new_pending: 391, new_sold: 338, price_reductions: 263 },
+  { label: "3/10 - 3/16",  new_listings: 467, new_pending: 408, new_sold: 352, price_reductions: 247 },
+  { label: "3/17 - 3/23",  new_listings: 482, new_pending: 421, new_sold: 364, price_reductions: 231 },
+  { label: "3/24 - 3/30",  new_listings: 495, new_pending: 435, new_sold: 377, price_reductions: 218 }
+];
 
-    const ctx = document.getElementById('tracker-chart').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'New Listings',
-            data: weeks.map(w => w.new_listings),
-            borderColor: '#e05252',
-            backgroundColor: 'transparent',
-            borderWidth: 2.5,
-            tension: 0.4,
-            pointRadius: 3,
-            pointHoverRadius: 6,
-            pointBackgroundColor: '#e05252',
-          },
-          {
-            label: 'New Pending',
-            data: weeks.map(w => w.new_pending),
-            borderColor: '#7c5abf',
-            backgroundColor: 'transparent',
-            borderWidth: 2.5,
-            tension: 0.4,
-            pointRadius: 3,
-            pointHoverRadius: 6,
-            pointBackgroundColor: '#7c5abf',
-          },
-          {
-            label: 'New Sold',
-            data: weeks.map(w => w.new_sold),
-            borderColor: '#3baa6e',
-            backgroundColor: 'transparent',
-            borderWidth: 2.5,
-            tension: 0.4,
-            pointRadius: 3,
-            pointHoverRadius: 6,
-            pointBackgroundColor: '#3baa6e',
-          },
-          {
-            label: 'Price Reductions',
-            data: weeks.map(w => w.price_reductions),
-            borderColor: '#3db3cc',
-            backgroundColor: 'transparent',
-            borderWidth: 2.5,
-            tension: 0.4,
-            pointRadius: 3,
-            pointHoverRadius: 6,
-            pointBackgroundColor: '#3db3cc',
-          }
-        ]
+const ctx = document.getElementById('tracker-chart').getContext('2d');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: WEEKS.map(w => w.label),
+    datasets: [
+      {
+        label: 'New Listings',
+        data: WEEKS.map(w => w.new_listings),
+        borderColor: '#e05252',
+        backgroundColor: 'transparent',
+        borderWidth: 3,
+        tension: 0.4,
+        pointRadius: 4,
+        pointHoverRadius: 7,
+        pointBackgroundColor: '#e05252',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        aspectRatio: 2.2,
-        interaction: { mode: 'index', intersect: false },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: '#fff',
-            borderColor: '#e5e7eb',
-            borderWidth: 1,
-            titleColor: '#111',
-            bodyColor: '#444',
-            padding: 12,
-            callbacks: {
-              label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}`
-            }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: { color: '#f0f0f0' },
-            border: { display: false },
-            ticks: {
-              font: { size: 11 },
-              color: '#888',
-              maxTicksLimit: 6,
-            }
-          },
-          x: {
-            grid: { display: false },
-            border: { display: false },
-            ticks: {
-              font: { size: 10 },
-              color: '#888',
-              maxRotation: 45,
-              minRotation: 30,
-            }
-          }
+      {
+        label: 'New Pending',
+        data: WEEKS.map(w => w.new_pending),
+        borderColor: '#7c5abf',
+        backgroundColor: 'transparent',
+        borderWidth: 3,
+        tension: 0.4,
+        pointRadius: 4,
+        pointHoverRadius: 7,
+        pointBackgroundColor: '#7c5abf',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+      },
+      {
+        label: 'New Sold',
+        data: WEEKS.map(w => w.new_sold),
+        borderColor: '#3baa6e',
+        backgroundColor: 'transparent',
+        borderWidth: 3,
+        tension: 0.4,
+        pointRadius: 4,
+        pointHoverRadius: 7,
+        pointBackgroundColor: '#3baa6e',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+      },
+      {
+        label: 'Price Reductions',
+        data: WEEKS.map(w => w.price_reductions),
+        borderColor: '#3db3cc',
+        backgroundColor: 'transparent',
+        borderWidth: 3,
+        tension: 0.4,
+        pointRadius: 4,
+        pointHoverRadius: 7,
+        pointBackgroundColor: '#3db3cc',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    aspectRatio: 2.4,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#fff',
+        borderColor: '#e5e7eb',
+        borderWidth: 1,
+        titleColor: '#111',
+        bodyColor: '#444',
+        bodySpacing: 5,
+        padding: 12,
+        callbacks: {
+          label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}`
         }
       }
-    });
-  })
-  .catch(() => {
-    document.querySelector('.chart-wrap').innerHTML = '<p style="text-align:center;color:#888;padding:2rem;">Unable to load market data.</p>';
-  });
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: { color: '#eeeeee' },
+        border: { display: false, dash: [4, 4] },
+        ticks: {
+          font: { size: 12 },
+          color: '#999',
+          maxTicksLimit: 6,
+          padding: 8,
+        }
+      },
+      x: {
+        grid: { display: false },
+        border: { display: false },
+        ticks: {
+          font: { size: 11 },
+          color: '#999',
+          maxRotation: 45,
+          minRotation: 30,
+          padding: 4,
+        }
+      }
+    }
+  }
+});
 </script>
 </body>
 </html>
