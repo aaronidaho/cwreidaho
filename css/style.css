@@ -1116,7 +1116,7 @@ p { color: var(--text-light); line-height: 1.7; }
 
 /* ── Subdivision logos ── */
 .sub-logo.sub-logo-fill {
-  height: 360px;
+  height: 130px;
   background: #194d9b;
   display: flex;
   align-items: center;
@@ -1124,7 +1124,7 @@ p { color: var(--text-light); line-height: 1.7; }
   padding: 0 2rem;
   overflow: hidden;
 }
-.sub-logo.sub-logo-fill img { height: 345px; width: auto; display: block; object-fit: contain; }
+.sub-logo.sub-logo-fill img { height: 115px; width: auto; display: block; object-fit: contain; }
 .sub-logo.sub-logo-contain {
   height: 130px;
   background: #194d9b;
