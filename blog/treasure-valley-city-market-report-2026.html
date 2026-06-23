@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Treasure Valley Market Report by City 2024–2026 | CWRE Idaho</title>
+  <meta name="description" content="An interactive breakdown of real estate market data across 8 Treasure Valley cities — median sold prices, days on market, price per sq ft, and more from 35,000+ IMLS listings." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .post-layout { display: grid; grid-template-columns: 1fr 300px; gap: 3.5rem; align-items: start; }
+    .post-sidebar { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 1.5rem; }
+    .sidebar-card { background: var(--white); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow); }
+    .sidebar-card h3 { font-size: 1rem; margin-bottom: 1rem; color: var(--text); }
+    .post-hero-img { border-radius: var(--radius-lg); width: 100%; height: 320px; background: linear-gradient(135deg, #0d2e60, #194d9b); display: flex; align-items: center; justify-content: center; font-size: 6rem; margin-bottom: 2rem; }
+    .post-meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; font-size: 0.85rem; color: var(--gray-dark); }
+    .post-tag { background: var(--navy); color: white; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 50px; }
+    .post-body { font-size: 1.05rem; line-height: 1.8; color: var(--text-light); }
+    .post-body h2 { color: var(--text); margin: 2.5rem 0 1rem; font-size: 1.5rem; }
+    .post-body h3 { color: var(--text); margin: 1.75rem 0 0.6rem; font-size: 1.15rem; }
+    .post-body p { margin-bottom: 1.25rem; }
+    .post-body ul { margin: 1rem 0 1.25rem 1.5rem; list-style: disc; }
+    .post-body ul li { margin-bottom: 0.5rem; }
+    .callout { background: rgba(25,77,155,0.06); border-left: 4px solid var(--navy); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.25rem 1.5rem; margin: 1.75rem 0; }
+    .callout p { margin: 0; font-style: italic; color: var(--text); }
+    .chart-embed { border-radius: var(--radius-lg); overflow: hidden; margin: 2rem 0; box-shadow: var(--shadow-md); }
+    .post-author { display: flex; align-items: center; gap: 1rem; padding: 1.5rem; background: var(--gray-light); border-radius: var(--radius-lg); margin-top: 3rem; }
+    .post-author-avatar { width: 56px; height: 56px; background: var(--navy); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; font-weight: 700; flex-shrink: 0; }
+    .post-author-name { font-weight: 700; color: var(--text); }
+    .post-author-title { font-size: 0.82rem; color: var(--gray-dark); }
+    .related-posts { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+    .related-post-link { display: block; background: var(--gray-light); border-radius: var(--radius); padding: 1rem; text-decoration: none; transition: all var(--transition); }
+    .related-post-link:hover { background: rgba(25,77,155,0.08); }
+    .related-post-link span { font-size: 0.78rem; color: var(--gold); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 0.3rem; }
+    .related-post-link p { font-size: 0.88rem; font-weight: 600; color: var(--text); margin: 0; line-height: 1.4; }
+    @media (max-width: 900px) { .post-layout { grid-template-columns: 1fr; } .post-sidebar { position: static; } .related-posts { grid-template-columns: 1fr; } }
+  </style>
+  <!-- Buying Buddy plugin v5.02; Authorized Domain: cwreidaho.com -->
+  <!-- DO NOT DEFER — must load in page head -->
+  <script src="https://www.mbb2.com/version3/css/theme/acid/0BEmjvJb"></script>
+  <script>var MBB = {"seo":"false","data":{"acid":"0BEmjvJb"}};</script>
+  <script src="https://d2w6u17ngtanmy.cloudfront.net/scripts/my-buying-buddy.5.0.js.gz"></script>
+  <!-- End Buying Buddy Plugin. Copyright 2003-2026 -->
+</head>
+<body>
+
+<div class="brokerage-topbar">
+  <img src="../images/mountain-realty-logo.png" alt="Mountain Realty LLC" />
+  <span>Licensed under Mountain Realty LLC &mdash; A Licensed Idaho Brokerage</span>
+</div>
+
+<nav class="site-nav" role="navigation">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <div class="brand-logo-area">
+        <img src="../images/cwre-logo.png" alt="CWRE Idaho" class="navbar-logo-img" />
+        <div class="brand-name-text">
+          <span class="brand-name-main">Clint Walker Real Estate</span>
+          <span class="brand-name-sub">Idaho</span>
+        </div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../search.html">Search</a></li>
+      <li><a href="../buyers.html">Buy</a></li>
+      <li><a href="../sellers.html">Sell</a></li>
+      <li><a href="../communities/index.html">Communities</a></li>
+      <li><a href="../subdivisions/index.html">Subdivisions</a></li>
+      <li><a href="index.html" class="active">Market Updates</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-cta"><a href="../contact.html" class="btn btn-gold">Get in Touch</a></div>
+    <button class="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container page-hero-inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="index.html">Market Updates</a><span>/</span>City Market Report</div>
+    <h1>Treasure Valley Market Report by City</h1>
+    <p>An interactive look at median prices, days on market, and sales volume across 8 Southwest Idaho cities.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="post-layout">
+
+      <article>
+        <div class="post-hero-img">📊</div>
+
+        <div class="post-meta">
+          <span class="post-tag">Market Report</span>
+          <span>June 2026</span>
+          <span>·</span>
+          <span>35,873 listings analyzed</span>
+          <span>·</span>
+          <span>IMLS data 2024–2026</span>
+        </div>
+
+        <h1 style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--text);margin-bottom:1.5rem;line-height:1.3;">
+          Where Are Prices Headed? A Deep Dive Into Every Major Treasure Valley City
+        </h1>
+
+        <div class="post-body">
+
+          <p>If you've been watching the Treasure Valley real estate market, you know prices vary dramatically depending on which city you're looking at. Eagle and Boise sit at the top end, while Caldwell and Nampa continue to offer some of the best value in the region. But what does the data actually say?</p>
+
+          <p>We pulled 35,873 listings from IMLS covering 2024 through mid-2026 — every single family home transaction across Boise, Meridian, Nampa, Caldwell, Eagle, Star, Kuna, and Middleton — and built an interactive report so you can explore the numbers yourself.</p>
+
+          <div class="callout">
+            <p>Eagle's median sold price of <strong>$910,000</strong> is more than double Caldwell's <strong>$405,000</strong> — yet both cities sit within a 30-minute drive of each other. Understanding those differences is the key to finding the right fit for your budget and lifestyle.</p>
+          </div>
+
+          <h2>Explore the Interactive Charts</h2>
+
+          <p>Use the chart below to compare cities by median sold price, price per square foot, days on market, and total sales volume. Toggle between views using the buttons, and hover over any bar for exact figures.</p>
+
+        </div>
+
+        <!-- Interactive chart embed -->
+        <div class="chart-embed">
+          <iframe
+            src="../market-tracker/city-report.html"
+            width="100%"
+            height="760"
+            frameborder="0"
+            style="border:none;display:block;"
+            title="Treasure Valley Market Report by City"
+          ></iframe>
+        </div>
+
+        <div class="post-body">
+
+          <h2>What the Data Shows</h2>
+
+          <h3>Eagle: The Luxury Leader</h3>
+          <p>With a median sold price of $910,000 and $342/sq ft, Eagle continues to command premium pricing across the valley. Buyers here typically face 47-day average days on market — similar to other cities — which tells you demand has stayed consistent even at higher price points.</p>
+
+          <h3>Boise: High Value, Fast Market</h3>
+          <p>Boise leads in sales volume (7,134 closed sales) and moves the fastest of any major city at just 30 days on market on average — nearly two weeks faster than any other city in the dataset. At $306/sq ft and a median of $539K, Boise remains a high-demand core market.</p>
+
+          <h3>Meridian & Star: The Sweet Spot</h3>
+          <p>Meridian and Star share almost identical price-per-square-foot figures ($269/sq ft), but Star's median comes in higher ($583K vs $538K) due to larger average home sizes. Both cities attract buyers looking for newer construction and suburban amenities without Eagle's price tag.</p>
+
+          <h3>Nampa & Caldwell: The Affordability Play</h3>
+          <p>For buyers watching their budget, Nampa ($425K median, $246/sqft) and Caldwell ($405K median, $238/sqft) offer the most home for the money in the valley. Both have healthy inventory and active listing pipelines — solid options for first-time buyers and investors alike.</p>
+
+          <h3>The Valley-Wide Price Trend</h3>
+          <p>Looking at the quarterly trend, the Treasure Valley hit a soft patch in late 2024 (median dipping to $487K in Q4 2024), recovered through 2025, and is now showing 2026 Q2 as the highest quarter in the dataset at $517,500. The market isn't cooling — it's climbing again.</p>
+
+          <div class="callout">
+            <p>Bottom line: whether you're buying, selling, or investing, the city you choose matters as much as the home itself. <strong>Call Clint or Aaron</strong> to talk through which market fits your goals.</p>
+          </div>
+
+          <h2>Ready to Make a Move?</h2>
+          <p>Clint Walker and Aaron Edwards work across all these markets every day. Whether you're targeting an affordable entry in Caldwell or a luxury property in Eagle, we can give you a current market analysis for any specific neighborhood or price range.</p>
+
+        </div>
+
+        <div class="post-author">
+          <div class="post-author-avatar">CW</div>
+          <div>
+            <div class="post-author-name">Clint Walker &amp; Aaron Edwards</div>
+            <div class="post-author-title">CWRE Idaho · Licensed under Mountain Realty LLC · (208) 870-4279</div>
+          </div>
+        </div>
+
+        <div style="margin-top:2.5rem;">
+          <h3 style="font-size:1rem;font-weight:700;margin-bottom:1rem;color:var(--text);">Related Posts</h3>
+          <div class="related-posts">
+            <a href="june-2025-market-report.html" class="related-post-link">
+              <span>Market Report</span>
+              <p>June 2025 Treasure Valley Market Report</p>
+            </a>
+            <a href="buying-in-eagle-idaho.html" class="related-post-link">
+              <span>Buyer Guide</span>
+              <p>Is Eagle Idaho Right for You?</p>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <aside class="post-sidebar">
+        <div class="sidebar-card">
+          <h3>Talk to Clint or Aaron</h3>
+          <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:1rem;">Get a free market analysis for any Treasure Valley city or neighborhood.</p>
+          <a href="../contact.html" class="btn btn-gold" style="width:100%;text-align:center;display:block;">Get Your Free CMA →</a>
+          <div style="margin-top:1rem;font-size:0.82rem;color:var(--text-light);text-align:center;">
+            <a href="tel:+12088704279" style="color:var(--navy);font-weight:600;">(208) 870-4279</a> · Clint<br>
+            <a href="tel:+12089212195" style="color:var(--navy);font-weight:600;">(208) 921-2195</a> · Aaron
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Key Stats</h3>
+          <ul style="list-style:none;font-size:0.85rem;color:var(--text-light);display:flex;flex-direction:column;gap:0.6rem;">
+            <li>📍 <strong>35,873</strong> listings analyzed</li>
+            <li>🏙️ <strong>8</strong> cities covered</li>
+            <li>💰 Valley median: <strong>$506K</strong></li>
+            <li>📈 Highest: Eagle <strong>$910K</strong></li>
+            <li>💚 Most affordable: Caldwell <strong>$405K</strong></li>
+            <li>⚡ Fastest market: Boise <strong>30 days</strong></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Search Listings by City</h3>
+          <ul style="list-style:none;font-size:0.85rem;display:flex;flex-direction:column;gap:0.4rem;">
+            <li><a href="../search.html" style="color:var(--navy);font-weight:600;">Boise →</a></li>
+            <li><a href="../search.html" style="color:var(--navy);font-weight:600;">Meridian →</a></li>
+            <li><a href="../search.html" style="color:var(--navy);font-weight:600;">Eagle →</a></li>
+            <li><a href="../search.html" style="color:var(--navy);font-weight:600;">Nampa →</a></li>
+            <li><a href="../search.html" style="color:var(--navy);font-weight:600;">Caldwell →</a></li>
+            <li><a href="../search.html" style="color:var(--navy);font-weight:600;">Star →</a></li>
+            <li><a href="../search.html" style="color:var(--navy);font-weight:600;">Kuna →</a></li>
+            <li><a href="../search.html" style="color:var(--navy);font-weight:600;">Middleton →</a></li>
+          </ul>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-brand-text">CWRE Idaho</span>
+        <span class="footer-brand-sub">Clint Walker Real Estate</span>
+        <p class="footer-bio">Serving the Treasure Valley and Southwest Idaho.</p>
+        <div class="footer-contact-item">📞 <a href="tel:+12088704279">(208) 870-4279</a></div>
+        <div class="footer-contact-item">✉️ <a href="mailto:clintwalkeridaho@gmail.com">clintwalkeridaho@gmail.com</a></div>
+        <div class="footer-contact-item">📞 <a href="tel:+12089212195">(208) 921-2195</a></div>
+        <div class="footer-contact-item">✉️ <a href="mailto:aaron@3idaho.com">aaron@3idaho.com</a></div>
+      </div>
+      <div><span class="footer-heading">Navigation</span>
+        <ul class="footer-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../search.html">Search Listings</a></li>
+          <li><a href="../buyers.html">Buy a Home</a></li>
+          <li><a href="../sellers.html">Sell Your Home</a></li>
+          <li><a href="../subdivisions/index.html">Subdivisions</a></li>
+          <li><a href="index.html">Market Updates</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div><span class="footer-heading">Legal</span>
+        <ul class="footer-links">
+          <li><a href="../privacy.html">Privacy Policy</a></li>
+          <li><a href="../terms.html">Terms of Use</a></li>
+        </ul>
+      </div>
+      <div class="footer-newsletter">
+        <span class="footer-heading">Monthly Market Report</span>
+        <p>Idaho real estate updates monthly.</p>
+        <form class="newsletter-form" novalidate>
+          <input type="email" placeholder="Email address" required />
+          <button type="submit">Subscribe Free →</button>
+        </form>
+      </div>
+    </div>
+    <div style="padding:0.5rem 0 0.25rem;"><bb-widget data-type="Disclaimer"></bb-widget></div>
+    <div class="footer-brokerage">
+      <div class="footer-brokerage-logo"><img src="../images/mountain-realty-logo.png" alt="Mountain Realty LLC" /></div>
+      <span>Licensed under Mountain Realty LLC</span>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CWRE Idaho · Clint Walker Real Estate. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../terms.html">Terms of Use</a>
+        <a href="../contact.html">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+  (function(d){
+    var s = d.createElement("script");
+    s.setAttribute("data-account", "ACCOUNT_ID");
+    s.setAttribute("src", "https://cdn.userway.org/widget.js");
+    (d.body || d.head).appendChild(s);
+  })(document)
+</script>
+</body>
+</html>
