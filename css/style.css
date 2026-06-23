@@ -1140,7 +1140,7 @@ p { color: var(--text-light); line-height: 1.7; }
   margin-bottom: 1rem;
   display: inline-block;
 }
-.page-hero-logo img { height: 100px; width: auto; }
+.page-hero-logo img { height: 200px; width: auto; }
 
 /* ── Lead Gate Modal ── */
 .lead-gate-modal {
