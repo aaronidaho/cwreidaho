@@ -9,324 +9,248 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', system-ui, sans-serif;
-      background: #f8f9fc;
-      color: #1c2833;
-      padding: 1.5rem;
+      background: #ffffff;
+      color: #1c1c1c;
+      padding: 2rem 1.5rem 1.5rem;
     }
-    .tracker-header {
+
+    .tracker-title {
       text-align: center;
-      margin-bottom: 1.5rem;
-    }
-    .tracker-header h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #194d9b;
+      font-size: 1.75rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: #111;
+      line-height: 1.15;
       margin-bottom: 0.25rem;
     }
-    .tracker-header p {
-      font-size: 0.85rem;
-      color: #6b7280;
+
+    .top-legend {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin: 0.85rem 0 1.25rem;
     }
-    .updated-badge {
-      display: inline-block;
-      background: #194d9b;
-      color: #fff;
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 0.2rem 0.6rem;
-      border-radius: 20px;
-      margin-top: 0.4rem;
+    .top-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #333;
     }
-    .stat-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.75rem;
+    .top-legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .chart-wrap {
+      position: relative;
+      width: 100%;
       margin-bottom: 1.5rem;
     }
-    .stat-card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 1rem;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(25,77,155,0.08);
-      border-top: 3px solid #194d9b;
+    canvas { width: 100% !important; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-top: 0.5rem;
     }
-    .stat-card.gold { border-top-color: #C9972B; }
-    .stat-card.green { border-top-color: #22c55e; }
-    .stat-card.red { border-top-color: #ef4444; }
-    .stat-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; margin-bottom: 0.3rem; }
-    .stat-value { font-size: 1.5rem; font-weight: 700; color: #194d9b; line-height: 1; }
-    .stat-card.gold .stat-value { color: #C9972B; }
-    .stat-card.green .stat-value { color: #16a34a; }
-    .stat-card.red .stat-value { color: #dc2626; }
-    .stat-delta { font-size: 0.72rem; color: #9ca3af; margin-top: 0.25rem; }
-    .tab-row {
+    .metric-card {
       display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: flex-start;
     }
-    .tab-btn {
-      background: #fff;
-      border: 1.5px solid #e5e7eb;
-      border-radius: 6px;
-      padding: 0.4rem 0.9rem;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: #6b7280;
-      cursor: pointer;
-      transition: all 0.15s;
+    .metric-square {
+      width: 14px;
+      height: 14px;
+      border-radius: 2px;
+      flex-shrink: 0;
+      margin-top: 0.2rem;
     }
-    .tab-btn:hover { border-color: #194d9b; color: #194d9b; }
-    .tab-btn.active { background: #194d9b; border-color: #194d9b; color: #fff; }
-    .chart-wrap {
-      background: #fff;
-      border-radius: 10px;
-      padding: 1.25rem;
-      box-shadow: 0 2px 8px rgba(25,77,155,0.08);
+    .metric-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
     }
-    canvas { max-height: 280px; }
+    .metric-desc {
+      font-size: 0.77rem;
+      color: #555;
+      line-height: 1.5;
+    }
+
     .footer-note {
       font-size: 0.72rem;
-      color: #9ca3af;
+      color: #888;
       text-align: center;
-      margin-top: 1rem;
+      margin-top: 1.25rem;
+      font-style: italic;
     }
-    @media (max-width: 540px) {
-      .stat-row { grid-template-columns: repeat(2, 1fr); }
+
+    @media (max-width: 600px) {
+      .tracker-title { font-size: 1.25rem; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+      .top-legend { gap: 0.75rem; }
     }
   </style>
 </head>
 <body>
 
-<div class="tracker-header">
-  <h2>Treasure Valley Weekly Market Tracker</h2>
-  <p>Active listings, new inventory, pending sales, median price &amp; days on market</p>
-  <span class="updated-badge" id="updated-badge">Updated —</span>
-</div>
+<div class="tracker-title">Treasure Valley<br>Weekly Market Tracker*</div>
 
-<div class="stat-row" id="stat-row"></div>
-
-<div class="tab-row">
-  <button class="tab-btn active" onclick="showChart('inventory')">Inventory</button>
-  <button class="tab-btn" onclick="showChart('activity')">Weekly Activity</button>
-  <button class="tab-btn" onclick="showChart('price')">Median Price</button>
-  <button class="tab-btn" onclick="showChart('dom')">Days on Market</button>
+<div class="top-legend">
+  <div class="top-legend-item"><span class="top-legend-dot" style="background:#e05252;"></span> New Listings</div>
+  <div class="top-legend-item"><span class="top-legend-dot" style="background:#7c5abf;"></span> New Pending</div>
+  <div class="top-legend-item"><span class="top-legend-dot" style="background:#3baa6e;"></span> New Sold</div>
+  <div class="top-legend-item"><span class="top-legend-dot" style="background:#3db3cc;"></span> Price Reductions</div>
 </div>
 
 <div class="chart-wrap">
-  <canvas id="main-chart"></canvas>
+  <canvas id="tracker-chart"></canvas>
 </div>
 
-<p class="footer-note">Data sourced from IMLS. Updated weekly by CWRE Idaho · Clint Walker Real Estate.</p>
+<div class="metric-grid">
+  <div class="metric-card">
+    <span class="metric-square" style="background:#e05252;"></span>
+    <div>
+      <div class="metric-name" style="color:#e05252;">New Listings</div>
+      <div class="metric-desc">Number of residential properties listed on the MLS each week.</div>
+    </div>
+  </div>
+  <div class="metric-card">
+    <span class="metric-square" style="background:#7c5abf;"></span>
+    <div>
+      <div class="metric-name" style="color:#7c5abf;">New Pending</div>
+      <div class="metric-desc">Number of residential properties that went under contract each week.</div>
+    </div>
+  </div>
+  <div class="metric-card">
+    <span class="metric-square" style="background:#3baa6e;"></span>
+    <div>
+      <div class="metric-name" style="color:#3baa6e;">New Sold</div>
+      <div class="metric-desc">Number of residential properties that closed each week.</div>
+    </div>
+  </div>
+  <div class="metric-card">
+    <span class="metric-square" style="background:#3db3cc;"></span>
+    <div>
+      <div class="metric-name" style="color:#3db3cc;">Price Reductions</div>
+      <div class="metric-desc">Number of residential listings that had a price reduction each week.</div>
+    </div>
+  </div>
+</div>
+
+<p class="footer-note">*IMLS data for residential properties in Ada &amp; Canyon counties.</p>
 
 <script>
-let chartData = null;
-let mainChart = null;
-let currentView = 'inventory';
-
-function fmt(n) {
-  if (n >= 1000000) return '$' + (n/1000000).toFixed(2) + 'M';
-  if (n >= 1000) return (n >= 100000 ? '$' : '') + n.toLocaleString();
-  return n.toLocaleString();
-}
-
-function fmtPrice(n) {
-  return '$' + (n/1000).toFixed(0) + 'K';
-}
-
-function delta(curr, prev, suffix) {
-  if (prev == null) return '';
-  const d = curr - prev;
-  const sign = d >= 0 ? '+' : '';
-  return sign + d.toLocaleString() + (suffix || '');
-}
-
-function buildStats(weeks) {
-  const last = weeks[weeks.length - 1];
-  const prev = weeks.length > 1 ? weeks[weeks.length - 2] : null;
-  const row = document.getElementById('stat-row');
-  row.innerHTML = `
-    <div class="stat-card">
-      <div class="stat-label">Active Listings</div>
-      <div class="stat-value">${last.active_listings.toLocaleString()}</div>
-      <div class="stat-delta">${prev ? delta(last.active_listings, prev.active_listings) + ' vs prev week' : 'baseline'}</div>
-    </div>
-    <div class="stat-card gold">
-      <div class="stat-label">Median Price</div>
-      <div class="stat-value">${fmtPrice(last.median_price)}</div>
-      <div class="stat-delta">${prev ? delta(last.median_price, prev.median_price, '') + ' vs prev week' : 'baseline'}</div>
-    </div>
-    <div class="stat-card green">
-      <div class="stat-label">Pending Sales</div>
-      <div class="stat-value">${last.pending.toLocaleString()}</div>
-      <div class="stat-delta">${prev ? delta(last.pending, prev.pending) + ' vs prev week' : 'baseline'}</div>
-    </div>
-    <div class="stat-card red">
-      <div class="stat-label">Avg Days on Mkt</div>
-      <div class="stat-value">${last.avg_dom}</div>
-      <div class="stat-delta">${prev ? delta(last.avg_dom, prev.avg_dom, ' days') + ' vs prev week' : 'baseline'}</div>
-    </div>
-  `;
-}
-
-function getChartConfig(view, weeks) {
-  const labels = weeks.map(w => w.label);
-  const navy = '#194d9b';
-  const gold = '#C9972B';
-  const green = '#22c55e';
-  const red = '#ef4444';
-  const teal = '#0d9488';
-
-  const configs = {
-    inventory: {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'Active Listings',
-            data: weeks.map(w => w.active_listings),
-            borderColor: navy,
-            backgroundColor: navy + '18',
-            fill: true,
-            tension: 0.3,
-            pointRadius: 4,
-            pointHoverRadius: 6,
-          },
-          {
-            label: 'New Listings',
-            data: weeks.map(w => w.new_listings),
-            borderColor: gold,
-            backgroundColor: 'transparent',
-            borderDash: [5, 3],
-            tension: 0.3,
-            pointRadius: 4,
-            pointHoverRadius: 6,
-          }
-        ]
-      }
-    },
-    activity: {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'New Listings',
-            data: weeks.map(w => w.new_listings),
-            backgroundColor: navy + 'cc',
-            borderRadius: 4,
-          },
-          {
-            label: 'Pending',
-            data: weeks.map(w => w.pending),
-            backgroundColor: gold + 'cc',
-            borderRadius: 4,
-          },
-          {
-            label: 'Closed',
-            data: weeks.map(w => w.closed),
-            backgroundColor: green + 'cc',
-            borderRadius: 4,
-          }
-        ]
-      }
-    },
-    price: {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [{
-          label: 'Median Sale Price',
-          data: weeks.map(w => w.median_price),
-          borderColor: gold,
-          backgroundColor: gold + '18',
-          fill: true,
-          tension: 0.3,
-          pointRadius: 4,
-          pointHoverRadius: 6,
-        }]
-      }
-    },
-    dom: {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [{
-          label: 'Avg Days on Market',
-          data: weeks.map(w => w.avg_dom),
-          borderColor: red,
-          backgroundColor: red + '18',
-          fill: true,
-          tension: 0.3,
-          pointRadius: 4,
-          pointHoverRadius: 6,
-        }]
-      }
-    }
-  };
-
-  const cfg = configs[view];
-  cfg.options = {
-    responsive: true,
-    maintainAspectRatio: true,
-    plugins: {
-      legend: { position: 'top', labels: { font: { size: 12 }, boxWidth: 14 } },
-      tooltip: {
-        callbacks: {
-          label: ctx => {
-            const val = ctx.parsed.y;
-            if (view === 'price') return ' $' + val.toLocaleString();
-            if (view === 'dom') return ' ' + val + ' days';
-            return ' ' + val.toLocaleString();
-          }
-        }
-      }
-    },
-    scales: {
-      y: {
-        ticks: {
-          font: { size: 11 },
-          callback: val => view === 'price' ? '$' + (val/1000).toFixed(0) + 'K' : val.toLocaleString()
-        },
-        grid: { color: '#f0f0f0' }
-      },
-      x: {
-        ticks: { font: { size: 11 } },
-        grid: { display: false }
-      }
-    }
-  };
-
-  return cfg;
-}
-
-function showChart(view) {
-  currentView = view;
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  if (mainChart) mainChart.destroy();
-  const ctx = document.getElementById('main-chart').getContext('2d');
-  mainChart = new Chart(ctx, getChartConfig(view, chartData.weeks));
-}
-
-function initChart(view) {
-  if (mainChart) mainChart.destroy();
-  const ctx = document.getElementById('main-chart').getContext('2d');
-  mainChart = new Chart(ctx, getChartConfig(view, chartData.weeks));
-}
-
 fetch('market-data.json?v=' + Date.now())
   .then(r => r.json())
   .then(data => {
-    chartData = data;
-    document.getElementById('updated-badge').textContent = 'Updated ' + data.updated;
-    buildStats(data.weeks);
-    initChart('inventory');
+    const weeks = data.weeks;
+    const labels = weeks.map(w => w.label);
+
+    const ctx = document.getElementById('tracker-chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'New Listings',
+            data: weeks.map(w => w.new_listings),
+            borderColor: '#e05252',
+            backgroundColor: 'transparent',
+            borderWidth: 2.5,
+            tension: 0.4,
+            pointRadius: 3,
+            pointHoverRadius: 6,
+            pointBackgroundColor: '#e05252',
+          },
+          {
+            label: 'New Pending',
+            data: weeks.map(w => w.new_pending),
+            borderColor: '#7c5abf',
+            backgroundColor: 'transparent',
+            borderWidth: 2.5,
+            tension: 0.4,
+            pointRadius: 3,
+            pointHoverRadius: 6,
+            pointBackgroundColor: '#7c5abf',
+          },
+          {
+            label: 'New Sold',
+            data: weeks.map(w => w.new_sold),
+            borderColor: '#3baa6e',
+            backgroundColor: 'transparent',
+            borderWidth: 2.5,
+            tension: 0.4,
+            pointRadius: 3,
+            pointHoverRadius: 6,
+            pointBackgroundColor: '#3baa6e',
+          },
+          {
+            label: 'Price Reductions',
+            data: weeks.map(w => w.price_reductions),
+            borderColor: '#3db3cc',
+            backgroundColor: 'transparent',
+            borderWidth: 2.5,
+            tension: 0.4,
+            pointRadius: 3,
+            pointHoverRadius: 6,
+            pointBackgroundColor: '#3db3cc',
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 2.2,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#fff',
+            borderColor: '#e5e7eb',
+            borderWidth: 1,
+            titleColor: '#111',
+            bodyColor: '#444',
+            padding: 12,
+            callbacks: {
+              label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}`
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: { color: '#f0f0f0' },
+            border: { display: false },
+            ticks: {
+              font: { size: 11 },
+              color: '#888',
+              maxTicksLimit: 6,
+            }
+          },
+          x: {
+            grid: { display: false },
+            border: { display: false },
+            ticks: {
+              font: { size: 10 },
+              color: '#888',
+              maxRotation: 45,
+              minRotation: 30,
+            }
+          }
+        }
+      }
+    });
   })
   .catch(() => {
-    document.querySelector('.tracker-header p').textContent = 'Unable to load market data. Please try again later.';
+    document.querySelector('.chart-wrap').innerHTML = '<p style="text-align:center;color:#888;padding:2rem;">Unable to load market data.</p>';
   });
 </script>
 </body>
