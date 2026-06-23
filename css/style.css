@@ -1115,12 +1115,25 @@ p { color: var(--text-light); line-height: 1.7; }
 }
 
 /* ── Subdivision logos ── */
-.sub-logo { overflow: hidden; }
-/* Lakehaven: image has blue bg baked in — fill the bar edge to edge */
-.sub-logo.sub-logo-fill { height: 130px; }
-.sub-logo.sub-logo-fill img { width: 100%; height: 130px; object-fit: cover; object-position: center center; display: block; }
-/* Stadium: white logo on navy CSS background */
-.sub-logo.sub-logo-contain { height: 130px; background: var(--navy); display: flex; align-items: center; justify-content: center; }
+.sub-logo.sub-logo-fill {
+  height: 130px;
+  background: #194d9b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+  overflow: hidden;
+}
+.sub-logo.sub-logo-fill img { height: 90px; width: auto; display: block; object-fit: contain; }
+.sub-logo.sub-logo-contain {
+  height: 130px;
+  background: #194d9b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+  overflow: hidden;
+}
 .sub-logo.sub-logo-contain img { height: 90px; width: auto; display: block; }
 
 .page-hero-logo {
