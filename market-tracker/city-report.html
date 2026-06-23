@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Treasure Valley Market Report by City | CWRE Idaho</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #f8f9fc; color: #1c2833; padding: 1.5rem; }
+
+    .report-header { text-align: center; margin-bottom: 1.75rem; }
+    .report-header h2 { font-size: 1.6rem; font-weight: 800; color: #194d9b; margin-bottom: 0.3rem; }
+    .report-header p { font-size: 0.88rem; color: #6b7280; max-width: 520px; margin: 0 auto; }
+    .badge-row { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.75rem; }
+    .badge { background: #194d9b; color: #fff; font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.7rem; border-radius: 20px; }
+    .badge.gold { background: #C9972B; }
+    .badge.green { background: #16a34a; }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .stat-card { background: #fff; border-radius: 10px; padding: 1rem 1.1rem; box-shadow: 0 2px 8px rgba(25,77,155,0.08); border-top: 3px solid #194d9b; }
+    .stat-card.gold { border-top-color: #C9972B; }
+    .stat-card.green { border-top-color: #22c55e; }
+    .stat-card.teal { border-top-color: #0d9488; }
+    .stat-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #9ca3af; margin-bottom: 0.3rem; }
+    .stat-value { font-size: 1.45rem; font-weight: 800; color: #194d9b; line-height: 1; }
+    .stat-card.gold .stat-value { color: #C9972B; }
+    .stat-card.green .stat-value { color: #16a34a; }
+    .stat-card.teal .stat-value { color: #0d9488; }
+    .stat-sub { font-size: 0.72rem; color: #9ca3af; margin-top: 0.25rem; }
+
+    .section-title { font-size: 1rem; font-weight: 700; color: #194d9b; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
+
+    .tab-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .tab-btn { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 6px; padding: 0.4rem 1rem; font-size: 0.82rem; font-weight: 600; color: #6b7280; cursor: pointer; transition: all 0.15s; }
+    .tab-btn:hover { border-color: #194d9b; color: #194d9b; }
+    .tab-btn.active { background: #194d9b; border-color: #194d9b; color: #fff; }
+
+    .chart-wrap { background: #fff; border-radius: 10px; padding: 1.25rem 1.5rem; box-shadow: 0 2px 8px rgba(25,77,155,0.08); margin-bottom: 1.5rem; }
+    canvas { max-height: 320px; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem; }
+    .two-col .chart-wrap { margin-bottom: 0; }
+    .two-col canvas { max-height: 260px; }
+
+    .city-table-wrap { background: #fff; border-radius: 10px; padding: 1.25rem 1.5rem; box-shadow: 0 2px 8px rgba(25,77,155,0.08); margin-bottom: 1.5rem; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    th { padding: 0.6rem 0.75rem; text-align: left; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af; border-bottom: 2px solid #f0f0f0; white-space: nowrap; }
+    td { padding: 0.6rem 0.75rem; border-bottom: 1px solid #f9f9f9; }
+    tr:hover td { background: #f9fafb; }
+    .city-pill { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 0.4rem; }
+    .rank { font-weight: 700; color: #C9972B; }
+
+    .footer-note { font-size: 0.72rem; color: #9ca3af; text-align: center; padding-top: 0.5rem; }
+
+    @media (max-width: 640px) {
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="report-header">
+  <h2>Treasure Valley Market Report by City</h2>
+  <p>Median sold prices, days on market, price per sq ft, and market activity across Southwest Idaho</p>
+  <div class="badge-row">
+    <span class="badge">35,873 Listings Analyzed</span>
+    <span class="badge gold">8 Cities</span>
+    <span class="badge green">IMLS Data</span>
+  </div>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-label">Total Sales Analyzed</div>
+    <div class="stat-value">30,479</div>
+    <div class="stat-sub">Across all cities</div>
+  </div>
+  <div class="stat-card gold">
+    <div class="stat-label">Valley Median Sold Price</div>
+    <div class="stat-value">$506K</div>
+    <div class="stat-sub">All cities combined</div>
+  </div>
+  <div class="stat-card green">
+    <div class="stat-label">Most Affordable City</div>
+    <div class="stat-value">Caldwell</div>
+    <div class="stat-sub">Median $405K</div>
+  </div>
+  <div class="stat-card teal">
+    <div class="stat-label">Highest Price City</div>
+    <div class="stat-value">Eagle</div>
+    <div class="stat-sub">Median $910K</div>
+  </div>
+</div>
+
+<!-- City comparison chart -->
+<div class="section-title">City-by-City Comparison</div>
+<div class="tab-row">
+  <button class="tab-btn active" onclick="switchCityChart('price', this)">Median Sold Price</button>
+  <button class="tab-btn" onclick="switchCityChart('ppsf', this)">Price per Sq Ft</button>
+  <button class="tab-btn" onclick="switchCityChart('dom', this)">Days on Market</button>
+  <button class="tab-btn" onclick="switchCityChart('volume', this)">Sales Volume</button>
+</div>
+<div class="chart-wrap">
+  <canvas id="city-chart"></canvas>
+</div>
+
+<!-- Trend + DOM side by side -->
+<div class="two-col">
+  <div>
+    <div class="section-title">Valley-Wide Price Trend</div>
+    <div class="chart-wrap">
+      <canvas id="trend-chart"></canvas>
+    </div>
+  </div>
+  <div>
+    <div class="section-title">Market Activity Mix</div>
+    <div class="chart-wrap">
+      <canvas id="status-chart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Data table -->
+<div class="section-title">Full City Breakdown</div>
+<div class="city-table-wrap">
+  <table id="city-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>City</th>
+        <th>Median Sold Price</th>
+        <th>Avg Sold Price</th>
+        <th>$/Sq Ft</th>
+        <th>Avg DOM</th>
+        <th>Total Sales</th>
+        <th>Active Now</th>
+      </tr>
+    </thead>
+    <tbody id="city-tbody"></tbody>
+  </table>
+</div>
+
+<p class="footer-note">Source: IMLS export data · Analysis by CWRE Idaho — Clint Walker Real Estate · cwreidaho.com</p>
+
+<script>
+const CITIES = ['Boise','Meridian','Nampa','Caldwell','Star','Kuna','Eagle','Middleton'];
+const COLORS = ['#194d9b','#C9972B','#22c55e','#ef4444','#8b5cf6','#0d9488','#f97316','#6366f1'];
+
+const DATA = {
+  medianPrice:  [539000, 538000, 424990, 404990, 583107, 454990, 910000, 528055],
+  avgPrice:     [662414, 596945, 471976, 458170, 646740, 520627, 1063511, 615131],
+  ppsf:         [306, 269, 246, 238, 269, 263, 342, 257],
+  dom:          [30.2, 43.7, 47.6, 48.7, 47.8, 51.0, 46.9, 53.6],
+  sales:        [7134, 6253, 5778, 3466, 2115, 2064, 1905, 1202],
+  active:       [1180, 1090, 987, 652, 398, 390, 290, 195],
+};
+
+const TREND = {
+  labels: ['2024 Q2','2024 Q3','2024 Q4','2025 Q1','2025 Q2','2025 Q3','2025 Q4','2026 Q1','2026 Q2'],
+  prices: [507500, 489990, 487000, 499500, 508000, 509000, 499900, 494050, 517500],
+  counts: [2395, 3570, 3396, 2818, 3910, 3841, 3477, 3079, 3993],
+};
+
+const STATUS = {
+  labels: ['Sold', 'Active', 'Pending', 'Coming Soon'],
+  counts: [30479, 2853, 2365, 31],
+};
+
+const fmtK = v => '$' + (v >= 1000000 ? (v/1000000).toFixed(2) + 'M' : Math.round(v/1000) + 'K');
+const fmtN = v => v.toLocaleString();
+
+// ── City comparison chart ──
+let cityChart = null;
+function buildCityChart(metric) {
+  if (cityChart) cityChart.destroy();
+  const vals = DATA[metric];
+  const isPrice = metric === 'medianPrice' || metric === 'avgPrice' || metric === 'ppsf';
+  const isDom = metric === 'dom';
+  const sorted = CITIES.map((c,i) => ({c, v: vals[i], color: COLORS[i]}))
+    .sort((a,b) => b.v - a.v);
+  const ctx = document.getElementById('city-chart').getContext('2d');
+  cityChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: sorted.map(x => x.c),
+      datasets: [{
+        data: sorted.map(x => x.v),
+        backgroundColor: sorted.map(x => x.color + 'cc'),
+        borderColor: sorted.map(x => x.color),
+        borderWidth: 2,
+        borderRadius: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const v = ctx.parsed.y;
+              if (metric === 'dom') return ` ${v.toFixed(1)} days avg`;
+              if (metric === 'ppsf') return ` $${v}/sq ft`;
+              if (metric === 'volume') return ` ${v.toLocaleString()} sales`;
+              return ` ${fmtK(v)}`;
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          ticks: {
+            font: { size: 11 },
+            callback: v => metric === 'dom' ? v + 'd' : metric === 'ppsf' ? '$' + v : metric === 'volume' ? v.toLocaleString() : fmtK(v)
+          },
+          grid: { color: '#f0f0f0' }
+        },
+        x: { ticks: { font: { size: 12, weight: '600' } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+function switchCityChart(metric, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const map = { price: 'medianPrice', ppsf: 'ppsf', dom: 'dom', volume: 'sales' };
+  buildCityChart(map[metric]);
+}
+
+buildCityChart('medianPrice');
+
+// ── Trend chart ──
+(function() {
+  const ctx = document.getElementById('trend-chart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: TREND.labels,
+      datasets: [
+        {
+          label: 'Median Sold Price',
+          data: TREND.prices,
+          borderColor: '#194d9b',
+          backgroundColor: '#194d9b18',
+          fill: true,
+          tension: 0.35,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          yAxisID: 'y',
+        },
+        {
+          label: 'Sales Count',
+          data: TREND.counts,
+          borderColor: '#C9972B',
+          backgroundColor: 'transparent',
+          borderDash: [5,3],
+          tension: 0.35,
+          pointRadius: 3,
+          yAxisID: 'y2',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 12 } },
+        tooltip: {
+          callbacks: {
+            label: ctx => ctx.datasetIndex === 0
+              ? ` ${fmtK(ctx.parsed.y)}`
+              : ` ${ctx.parsed.y.toLocaleString()} sales`
+          }
+        }
+      },
+      scales: {
+        y: {
+          position: 'left',
+          ticks: { font: { size: 10 }, callback: v => fmtK(v) },
+          grid: { color: '#f0f0f0' }
+        },
+        y2: {
+          position: 'right',
+          ticks: { font: { size: 10 } },
+          grid: { display: false }
+        },
+        x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+      }
+    }
+  });
+})();
+
+// ── Status donut ──
+(function() {
+  const ctx = document.getElementById('status-chart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: STATUS.labels,
+      datasets: [{
+        data: STATUS.counts,
+        backgroundColor: ['#194d9b','#C9972B','#22c55e','#6366f1'],
+        borderWidth: 2,
+        borderColor: '#fff',
+        hoverOffset: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      cutout: '62%',
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 12, padding: 10 } },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.label}: ${ctx.parsed.toLocaleString()} (${(ctx.parsed / STATUS.counts.reduce((a,b)=>a+b,0)*100).toFixed(1)}%)`
+          }
+        }
+      }
+    }
+  });
+})();
+
+// ── Data table ──
+(function() {
+  const tbody = document.getElementById('city-tbody');
+  const sorted = CITIES.map((c,i) => ({
+    c, color: COLORS[i],
+    med: DATA.medianPrice[i], avg: DATA.avgPrice[i],
+    ppsf: DATA.ppsf[i], dom: DATA.dom[i],
+    sales: DATA.sales[i], active: DATA.active[i]
+  })).sort((a,b) => b.med - a.med);
+
+  sorted.forEach((row, idx) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="rank">${idx+1}</td>
+      <td><span class="city-pill" style="background:${row.color}"></span><strong>${row.c}</strong></td>
+      <td><strong>${fmtK(row.med)}</strong></td>
+      <td>${fmtK(row.avg)}</td>
+      <td>$${row.ppsf}/sqft</td>
+      <td>${row.dom.toFixed(1)} days</td>
+      <td>${row.sales.toLocaleString()}</td>
+      <td>${row.active.toLocaleString()}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+})();
+</script>
+</body>
+</html>
