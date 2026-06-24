@@ -169,7 +169,7 @@ p { color: var(--text-light); line-height: 1.7; }
   gap: 12px;
 }
 .navbar-logo-img {
-  height: 56px;
+  height: 80px;
   width: auto;
   display: block;
 }
@@ -217,7 +217,7 @@ p { color: var(--text-light); line-height: 1.7; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 88px;
+  height: 100px;
 }
 .nav-logo {
   display: flex;
