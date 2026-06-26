@@ -140,13 +140,14 @@ p { color: var(--text-light); line-height: 1.7; }
 .brokerage-topbar {
   position: fixed;
   top: 0; left: 0; right: 0;
-  height: 30px;
+  height: 52px;
   background: #0a1e38;
   border-bottom: 1px solid rgba(255,255,255,0.08);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 2px;
   z-index: 1001;
   font-family: 'Oswald', sans-serif;
   font-size: 11px;
@@ -155,6 +156,29 @@ p { color: var(--text-light); line-height: 1.7; }
   text-transform: uppercase;
   color: rgba(255,255,255,0.6);
 }
+.brokerage-topbar-row1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brokerage-topbar-row2 {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: #C9972B;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.brokerage-topbar-row2 a {
+  color: #C9972B;
+  text-decoration: none;
+}
+.brokerage-topbar-row2 a:hover { text-decoration: underline; }
 .brokerage-topbar img {
   height: 18px;
   width: auto;
@@ -200,7 +224,7 @@ p { color: var(--text-light); line-height: 1.7; }
 /* ── Navigation ── */
 .site-nav {
   position: fixed;
-  top: 30px; left: 0; right: 0;
+  top: 52px; left: 0; right: 0;
   z-index: 1000;
   background: #0D2B4E;
   transition: all 0.3s ease;
