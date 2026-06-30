@@ -446,84 +446,9 @@
 </div>
 
 
-<!-- ══════════════════════════════════════
-     RESULTS AREA
-══════════════════════════════════════ -->
 <section class="section" style="padding-top: 0;">
   <div class="container">
-    <div class="results-layout">
-
-      <!-- Sidebar filters -->
-      <aside class="results-sidebar">
-        <div class="sidebar-section">
-          <h4>Price Range</h4>
-          <div class="price-range">
-            <input type="text" placeholder="Min" />
-            <span>–</span>
-            <input type="text" placeholder="Max" />
-          </div>
-        </div>
-        <div class="sidebar-section">
-          <h4>Property Type</h4>
-          <label><input type="checkbox" checked /> Single Family</label>
-          <label><input type="checkbox" /> Condo / Townhome</label>
-          <label><input type="checkbox" /> Land / Lots</label>
-          <label><input type="checkbox" /> New Construction</label>
-          <label><input type="checkbox" /> Multi-Family</label>
-        </div>
-        <div class="sidebar-section">
-          <h4>Bedrooms</h4>
-          <label><input type="radio" name="beds" /> Any</label>
-          <label><input type="radio" name="beds" /> 2+</label>
-          <label><input type="radio" name="beds" /> 3+</label>
-          <label><input type="radio" name="beds" /> 4+</label>
-          <label><input type="radio" name="beds" /> 5+</label>
-        </div>
-        <div class="sidebar-section">
-          <h4>Communities</h4>
-          <label><input type="checkbox" /> Boise</label>
-          <label><input type="checkbox" /> Eagle</label>
-          <label><input type="checkbox" /> Meridian</label>
-          <label><input type="checkbox" /> Nampa / Caldwell</label>
-          <label><input type="checkbox" /> Star</label>
-          <label><input type="checkbox" /> Kuna</label>
-          <label><input type="checkbox" /> Emmett</label>
-          <label><input type="checkbox" /> Middleton</label>
-        </div>
-      </aside>
-
-      <!-- Main results -->
-      <main id="results-main" class="results-main">
-        <div class="results-toolbar">
-          <span class="results-count">Connecting to <strong>Intermountain MLS</strong> via Bridge API…</span>
-          <select class="sort-select">
-            <option>Newest First</option>
-            <option>Price: Low to High</option>
-            <option>Price: High to Low</option>
-            <option>Most Bedrooms</option>
-          </select>
-        </div>
-
-        <div class="listings-grid" id="listings-grid">
-          <!-- IDX Bridge API will populate this grid once credentials are active -->
-          <div class="idx-pending">
-            <h3>Live MLS Data — Bridge API Integration</h3>
-            <p>
-              This page is structured and ready to receive live listing data from
-              Intermountain MLS via the Bridge Interactive Web API. Listings will
-              populate automatically once the IMLS IDX feed is approved and the
-              Bridge API credentials are connected.
-            </p>
-            <div class="idx-badge-row">
-              <span class="idx-badge">Intermountain MLS</span>
-              <span class="idx-badge">Bridge Interactive API</span>
-              <span class="idx-badge">CWRE Idaho — Mountain Realty LLC</span>
-            </div>
-          </div>
-        </div>
-      </main>
-
-    </div>
+    <bb-widget data-type="ListingResults"></bb-widget>
   </div>
 </section>
 
