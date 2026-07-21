@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Treasure Valley Market Reports | CWREIdaho.com</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#f5f5f3;min-height:100vh;padding:40px 16px}
+.wrap{max-width:720px;margin:0 auto}
+.header{text-align:center;margin-bottom:36px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#999;margin-bottom:8px}
+h1{font-size:clamp(22px,4vw,32px);font-weight:800;color:#1a1a1a;letter-spacing:-.01em;line-height:1.2;margin-bottom:6px}
+.sub{font-size:13px;color:#999}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:32px}
+.card{background:#fff;border-radius:12px;padding:22px 20px;box-shadow:0 1px 8px rgba(0,0,0,.07);text-decoration:none;display:block;transition:all .15s;border:1.5px solid transparent}
+.card:hover{border-color:#1a1a1a;transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.10)}
+.card-icon{font-size:24px;margin-bottom:10px}
+.card-title{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:4px}
+.card-sub{font-size:12px;color:#888;line-height:1.5}
+.card.featured{grid-column:1/-1;background:#1a1a1a}
+.card.featured .card-title{color:#fff}
+.card.featured .card-sub{color:#888}
+.updated{text-align:center;font-size:11px;color:#bbb;margin-top:8px}
+.footer{text-align:center;font-size:11px;color:#bbb;padding-top:20px;border-top:1px solid #e8e8e8}
+@media(max-width:480px){.grid{grid-template-columns:1fr}.card.featured{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="eyebrow">CWREIdaho.com — Market Intelligence</div>
+    <h1>Treasure Valley<br>Market Reports</h1>
+    <div class="sub">IMLS data — Ada &amp; Canyon counties &nbsp;|&nbsp; Updated July 19, 2026</div>
+  </div>
+
+  <div class="grid">
+    <a class="card featured" href="tracker_combined.html">
+      <div class="card-icon">📊</div>
+      <div class="card-title">Treasure Valley Weekly Stats</div>
+      <div class="card-sub">Ada + Canyon combined — new listings, pending, sold &amp; price reductions with sell-through rate</div>
+    </a>
+
+    <a class="card" href="tracker_ada.html">
+      <div class="card-icon">🏠</div>
+      <div class="card-title">Ada County Weekly Stats</div>
+      <div class="card-sub">Boise, Meridian, Eagle, Nampa, Star, Kuna &amp; surrounding areas</div>
+    </a>
+
+    <a class="card" href="tracker_canyon.html">
+      <div class="card-icon">🏡</div>
+      <div class="card-title">Canyon County Weekly Stats</div>
+      <div class="card-sub">Caldwell, Nampa, Middleton, Wilder &amp; surrounding areas</div>
+    </a>
+
+    <a class="card" href="absorption_by_price_tier.html">
+      <div class="card-icon">📈</div>
+      <div class="card-title">Absorption Rate by Price Tier</div>
+      <div class="card-sub">Months of supply from $250k to $3M+ — seller's vs buyer's market by price point</div>
+    </a>
+  </div>
+
+  <div class="updated">Data updated weekly. Next update: July 28, 2026.</div>
+
+  <div class="footer">
+    Prepared by Aaron Edwards &nbsp;|&nbsp; <a href="https://cwreidaho.com" style="color:#999">CWREIdaho.com</a> &nbsp;|&nbsp; (208) 921-2195<br>
+    IMLS residential data — Ada &amp; Canyon counties. Deemed reliable but not guaranteed.
+  </div>
+</div>
+</body>
+</html>

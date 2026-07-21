@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Treasure Valley — Absorption Rate by Price Tier</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  background:#f5f5f3;
+  padding:24px 16px;
+  min-height:100vh;
+  color:#111;
+}
+.wrap{max-width:980px;margin:0 auto}
+
+/* HEADER */
+.page-header{text-align:center;margin-bottom:22px}
+.page-eyebrow{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#999;margin-bottom:6px}
+.page-title{font-size:clamp(20px,3.5vw,30px);font-weight:800;letter-spacing:-.01em;text-transform:uppercase;line-height:1.15;margin-bottom:4px}
+.page-sub{font-size:12px;color:#999;margin-bottom:14px}
+
+/* TABS */
+.tabs{display:flex;gap:8px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
+.tab{
+  padding:8px 22px;font-size:13px;font-weight:600;
+  border:1.5px solid #ddd;border-radius:30px;
+  background:#fff;color:#666;cursor:pointer;transition:all .15s;
+}
+.tab:hover{border-color:#999;color:#111}
+.tab.active{background:#111;color:#fff;border-color:#111}
+
+/* LEGEND */
+.market-legend{
+  display:flex;flex-wrap:wrap;gap:10px;
+  justify-content:center;margin-bottom:20px;
+}
+.ml-item{
+  display:flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:600;color:#555;
+  background:#fff;border-radius:20px;
+  padding:5px 12px;border:1px solid #e8e8e8;
+}
+.ml-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+
+/* KPI CARDS */
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.kpi-card{
+  background:#fff;border-radius:10px;
+  padding:14px 16px;text-align:center;
+  box-shadow:0 1px 6px rgba(0,0,0,.06);
+}
+.kpi-val{font-size:clamp(22px,3vw,30px);font-weight:700;line-height:1;margin-bottom:3px}
+.kpi-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#aaa;line-height:1.4}
+.kpi-sub{font-size:11px;color:#bbb;margin-top:3px}
+
+/* CHART CARD */
+.chart-card{
+  background:#fff;border-radius:12px;
+  padding:22px 24px 18px;
+  box-shadow:0 1px 8px rgba(0,0,0,.07);
+  margin-bottom:16px;
+}
+.chart-card-title{
+  font-size:12px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:#999;margin-bottom:16px;
+}
+.chart-wrap{position:relative;height:400px}
+
+/* TABLE */
+.tier-table{
+  background:#fff;border-radius:12px;
+  padding:20px 24px;
+  box-shadow:0 1px 8px rgba(0,0,0,.07);
+  margin-bottom:16px;
+  overflow-x:auto;
+}
+.tier-table table{width:100%;border-collapse:collapse;font-size:12.5px}
+.tier-table th{
+  font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:#aaa;padding:8px 12px;text-align:right;white-space:nowrap;
+  border-bottom:1.5px solid #f0f0f0;
+}
+.tier-table th:first-child{text-align:left}
+.tier-table td{
+  padding:9px 12px;border-bottom:1px solid #f8f8f8;
+  text-align:right;color:#333;font-variant-numeric:tabular-nums;
+}
+.tier-table td:first-child{text-align:left;font-weight:600;color:#111}
+.tier-table tr:last-child td{border-bottom:none}
+.tier-table tr:hover td{background:#fafaf9}
+
+/* MONTHS BADGE */
+.months-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 9px;border-radius:20px;
+  font-size:11px;font-weight:700;
+}
+.hot{background:#FEE2E2;color:#991B1B}       /* <2 months */
+.warm{background:#FEF3C7;color:#92400E}      /* 2-4 months */
+.balanced{background:#D1FAE5;color:#065F46}  /* 4-6 months */
+.cool{background:#DBEAFE;color:#1E40AF}      /* >6 months */
+
+/* MARKET KEY */
+.market-key{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
+  margin-bottom:20px;
+}
+.mk-item{
+  border-radius:8px;padding:10px 12px;text-align:center;
+}
+.mk-item.hot{background:#FEE2E2}
+.mk-item.warm{background:#FEF3C7}
+.mk-item.balanced{background:#D1FAE5}
+.mk-item.cool{background:#DBEAFE}
+.mk-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.mk-label.hot{color:#991B1B}
+.mk-label.warm{color:#92400E}
+.mk-label.balanced{color:#065F46}
+.mk-label.cool{color:#1E40AF}
+.mk-range{font-size:11px;color:#666;margin-top:2px}
+.mk-desc{font-size:10px;color:#888;margin-top:2px}
+
+/* FOOTNOTE */
+.footnote{text-align:center;font-size:10.5px;color:#bbb;padding:12px 0 4px;line-height:1.7}
+
+@media(max-width:580px){
+  .kpi-row{grid-template-columns:repeat(3,1fr)}
+  .market-key{grid-template-columns:repeat(2,1fr)}
+  .chart-wrap{height:300px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="page-eyebrow">IMLS Data — Ada &amp; Canyon Counties</div>
+    <div class="page-title">Treasure Valley<br>Absorption Rate by Price Tier</div>
+    <div class="page-sub">Months of supply = Active listings ÷ avg monthly sales (last 3.75 months) &nbsp;|&nbsp; As of July 19, 2026</div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="setView('combined')">Combined</button>
+    <button class="tab" onclick="setView('ada')">Ada County</button>
+    <button class="tab" onclick="setView('canyon')">Canyon County</button>
+  </div>
+
+  <!-- MARKET KEY -->
+  <div class="market-key">
+    <div class="mk-item hot">
+      <div class="mk-label hot">🔥 Seller's Market</div>
+      <div class="mk-range">Under 2 months</div>
+      <div class="mk-desc">Strong demand, low supply</div>
+    </div>
+    <div class="mk-item warm">
+      <div class="mk-label warm">↑ Lean Seller</div>
+      <div class="mk-range">2 – 4 months</div>
+      <div class="mk-desc">Sellers have the edge</div>
+    </div>
+    <div class="mk-item balanced">
+      <div class="mk-label balanced">⚖ Balanced</div>
+      <div class="mk-range">4 – 6 months</div>
+      <div class="mk-desc">Neither side dominates</div>
+    </div>
+    <div class="mk-item cool">
+      <div class="mk-label cool">❄ Buyer's Market</div>
+      <div class="mk-range">Over 6 months</div>
+      <div class="mk-desc">Buyers have leverage</div>
+    </div>
+  </div>
+
+  <!-- KPI CARDS -->
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <!-- CHART -->
+  <div class="chart-card">
+    <div class="chart-card-title">Months of Supply by Price Tier</div>
+    <div class="chart-wrap"><canvas id="absChart"></canvas></div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="tier-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Price Tier</th>
+          <th>Active Listings</th>
+          <th>Avg Monthly Sales</th>
+          <th>Months of Supply</th>
+          <th>Market Condition</th>
+        </tr>
+      </thead>
+      <tbody id="tierTableBody"></tbody>
+    </table>
+  </div>
+
+  <div class="footnote">
+    *Months of supply = active inventory as of July 19, 2026 ÷ average monthly closed sales (March 1 – June 22, 2026, ~3.75 months).<br>
+    IMLS residential data — Ada &amp; Canyon counties. Prepared by CWREIdaho.com.
+  </div>
+
+</div>
+
+<script>
+const DATA = {
+  combined: {
+    overall: { totalActive: 3057, monthlyAvgSold: 1402, overallMonths: 2.2 },
+    tiers: [
+      {tier:'$250k–$300k', active:14, monthlySold:15.2, months:0.9},
+      {tier:'$300k–$350k', active:41, monthlySold:49.6, months:0.8},
+      {tier:'$350k–$400k', active:150, monthlySold:152.5, months:1.0},
+      {tier:'$400k–$450k', active:363, monthlySold:258.9, months:1.4},
+      {tier:'$450k–$500k', active:360, monthlySold:184.3, months:2.0},
+      {tier:'$500k–$550k', active:296, monthlySold:148.8, months:2.0},
+      {tier:'$550k–$600k', active:305, monthlySold:112.8, months:2.7},
+      {tier:'$600k–$650k', active:179, monthlySold:87.5, months:2.0},
+      {tier:'$650k–$700k', active:177, monthlySold:60.5, months:2.9},
+      {tier:'$700k–$750k', active:123, monthlySold:55.5, months:2.2},
+      {tier:'$750k–$800k', active:141, monthlySold:50.1, months:2.8},
+      {tier:'$800k–$850k', active:84, monthlySold:34.1, months:2.5},
+      {tier:'$850k–$900k', active:125, monthlySold:28.5, months:4.4},
+      {tier:'$900k–$950k', active:62, monthlySold:22.4, months:2.8},
+      {tier:'$950k–$1M', active:90, monthlySold:20.5, months:4.4},
+      {tier:'$1M–$1.1M', active:67, monthlySold:20.3, months:3.3},
+      {tier:'$1.1M–$1.25M', active:112, monthlySold:33.3, months:3.4},
+      {tier:'$1.25M–$1.5M', active:121, monthlySold:26.7, months:4.5},
+      {tier:'$1.5M–$1.6M', active:29, monthlySold:5.9, months:4.9},
+      {tier:'$1.6M–$1.7M', active:26, monthlySold:6.4, months:4.1},
+      {tier:'$1.7M–$1.8M', active:22, monthlySold:2.9, months:7.6},
+      {tier:'$1.8M–$1.9M', active:19, monthlySold:3.7, months:5.1},
+      {tier:'$1.9M–$2M', active:19, monthlySold:2.4, months:7.9},
+      {tier:'$2M–$2.25M', active:23, monthlySold:3.7, months:6.2},
+      {tier:'$2.25M–$2.5M', active:25, monthlySold:3.7, months:6.8},
+      {tier:'$2.5M–$3M', active:45, monthlySold:1.9, months:23.7},
+      {tier:'$3M+', active:36, monthlySold:4.8, months:7.5},
+    ]
+  },
+  ada: {
+    overall: { totalActive: 1911, monthlyAvgSold: 909, overallMonths: 2.1 },
+    tiers: [
+      {tier:'$250k–$300k', active:1, monthlySold:1.9, months:0.5},
+      {tier:'$300k–$350k', active:3, monthlySold:11.5, months:0.3},
+      {tier:'$350k–$400k', active:40, monthlySold:50.9, months:0.8},
+      {tier:'$400k–$450k', active:155, monthlySold:140.5, months:1.1},
+      {tier:'$450k–$500k', active:176, monthlySold:121.3, months:1.5},
+      {tier:'$500k–$550k', active:169, monthlySold:105.3, months:1.6},
+      {tier:'$550k–$600k', active:203, monthlySold:85.1, months:2.4},
+      {tier:'$600k–$650k', active:130, monthlySold:69.1, months:1.9},
+      {tier:'$650k–$700k', active:137, monthlySold:50.7, months:2.7},
+      {tier:'$700k–$750k', active:93, monthlySold:44.3, months:2.1},
+      {tier:'$750k–$800k', active:117, monthlySold:42.7, months:2.7},
+      {tier:'$800k–$850k', active:78, monthlySold:29.9, months:2.6},
+      {tier:'$850k–$900k', active:104, monthlySold:23.2, months:4.5},
+      {tier:'$900k–$950k', active:49, monthlySold:20.3, months:2.4},
+      {tier:'$950k–$1M', active:62, monthlySold:15.2, months:4.1},
+      {tier:'$1M–$1.1M', active:50, monthlySold:17.1, months:2.9},
+      {tier:'$1.1M–$1.25M', active:74, monthlySold:25.6, months:2.9},
+      {tier:'$1.25M–$1.5M', active:78, monthlySold:21.3, months:3.7},
+      {tier:'$1.5M–$1.6M', active:19, monthlySold:4.8, months:4.0},
+      {tier:'$1.6M–$1.7M', active:20, monthlySold:5.3, months:3.8},
+      {tier:'$1.7M–$1.8M', active:13, monthlySold:2.4, months:5.4},
+      {tier:'$1.8M–$1.9M', active:13, monthlySold:3.7, months:3.5},
+      {tier:'$1.9M–$2M', active:12, monthlySold:2.1, months:5.7},
+      {tier:'$2M–$2.25M', active:20, monthlySold:3.7, months:5.4},
+      {tier:'$2.25M–$2.5M', active:23, monthlySold:3.5, months:6.6},
+      {tier:'$2.5M–$3M', active:37, monthlySold:1.9, months:19.5},
+      {tier:'$3M+', active:35, monthlySold:4.3, months:8.1},
+    ]
+  },
+  canyon: {
+    overall: { totalActive: 1146, monthlyAvgSold: 494, overallMonths: 2.3 },
+    tiers: [
+      {tier:'$250k–$300k', active:13, monthlySold:13.3, months:1.0},
+      {tier:'$300k–$350k', active:38, monthlySold:38.1, months:1.0},
+      {tier:'$350k–$400k', active:110, monthlySold:101.6, months:1.1},
+      {tier:'$400k–$450k', active:208, monthlySold:118.4, months:1.8},
+      {tier:'$450k–$500k', active:184, monthlySold:62.9, months:2.9},
+      {tier:'$500k–$550k', active:127, monthlySold:43.5, months:2.9},
+      {tier:'$550k–$600k', active:102, monthlySold:27.7, months:3.7},
+      {tier:'$600k–$650k', active:49, monthlySold:18.4, months:2.7},
+      {tier:'$650k–$700k', active:40, monthlySold:9.9, months:4.0},
+      {tier:'$700k–$750k', active:30, monthlySold:11.2, months:2.7},
+      {tier:'$750k–$800k', active:24, monthlySold:7.5, months:3.2},
+      {tier:'$800k–$850k', active:6, monthlySold:4.3, months:1.4},
+      {tier:'$850k–$900k', active:21, monthlySold:5.3, months:4.0},
+      {tier:'$900k–$950k', active:13, monthlySold:2.1, months:6.2},
+      {tier:'$950k–$1M', active:28, monthlySold:5.3, months:5.3},
+      {tier:'$1M–$1.1M', active:17, monthlySold:3.2, months:5.3},
+      {tier:'$1.1M–$1.25M', active:38, monthlySold:7.7, months:4.9},
+      {tier:'$1.25M–$1.5M', active:43, monthlySold:5.3, months:8.1},
+      {tier:'$1.5M–$1.6M', active:10, monthlySold:1.1, months:9.1},
+      {tier:'$1.6M–$1.7M', active:6, monthlySold:1.1, months:5.5},
+      {tier:'$1.7M–$1.8M', active:9, monthlySold:0.5, months:18.0},
+      {tier:'$1.8M–$1.9M', active:6, monthlySold:0.0, months:null},
+      {tier:'$1.9M–$2M', active:7, monthlySold:0.3, months:null},
+      {tier:'$2M–$2.25M', active:3, monthlySold:0.0, months:null},
+      {tier:'$2.25M–$2.5M', active:2, monthlySold:0.3, months:null},
+      {tier:'$2.5M–$3M', active:8, monthlySold:0.0, months:null},
+      {tier:'$3M+', active:1, monthlySold:0.5, months:2.0},
+    ]
+  }
+};
+
+function marketClass(m) {
+  if (m === null || m === undefined) return 'cool';
+  if (m < 2)  return 'hot';
+  if (m < 4)  return 'warm';
+  if (m < 6)  return 'balanced';
+  return 'cool';
+}
+function marketLabel(m) {
+  if (m === null || m === undefined) return '— Insufficient sales data';
+  if (m < 2)  return '🔥 Seller\'s Market';
+  if (m < 4)  return '↑ Lean Seller';
+  if (m < 6)  return '⚖ Balanced';
+  return '❄ Buyer\'s Market';
+}
+function barColor(m) {
+  if (m === null || m === undefined) return '#D1D5DB';
+  if (m < 2)  return '#EF4444';
+  if (m < 4)  return '#F59E0B';
+  if (m < 6)  return '#10B981';
+  return '#3B82F6';
+}
+
+let absChart;
+let currentView = 'combined';
+
+function setView(view) {
+  currentView = view;
+  document.querySelectorAll('.tab').forEach(t =>
+    t.classList.toggle('active', t.textContent.toLowerCase().includes(
+      view === 'combined' ? 'combined' : view === 'ada' ? 'ada' : 'canyon'
+    ))
+  );
+  render();
+}
+
+function render() {
+  const d = DATA[currentView];
+  renderKPIs(d);
+  renderChart(d);
+  renderTable(d);
+}
+
+function renderKPIs(d) {
+  const hotCount  = d.tiers.filter(t => t.months < 2).length;
+  const overallClass = marketClass(d.overall.overallMonths);
+  document.getElementById('kpiRow').innerHTML = `
+    <div class="kpi-card">
+      <div class="kpi-val" style="color:${barColor(d.overall.overallMonths)}">${d.overall.overallMonths}</div>
+      <div class="kpi-label">Overall Months<br>of Supply</div>
+      <div class="kpi-sub">${marketLabel(d.overall.overallMonths)}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-val">${d.overall.totalActive.toLocaleString()}</div>
+      <div class="kpi-label">Active<br>Listings</div>
+      <div class="kpi-sub">As of July 19, 2026</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-val" style="color:#EF4444">${hotCount}</div>
+      <div class="kpi-label">Price Tiers in<br>Seller's Market</div>
+      <div class="kpi-sub">Under 2 months supply</div>
+    </div>
+  `;
+}
+
+function renderChart(d) {
+  const labels = d.tiers.map(t => t.tier);
+  const values = d.tiers.map(t => t.months);
+  const colors = values.map(m => barColor(m));
+
+  if (absChart) absChart.destroy();
+  absChart = new Chart(document.getElementById('absChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Months of Supply',
+        data: values,
+        backgroundColor: colors,
+        borderRadius: 5,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1a1a',
+          titleColor: '#fff',
+          bodyColor: '#ddd',
+          padding: 12,
+          callbacks: {
+            label: ctx => {
+              const t = d.tiers[ctx.dataIndex];
+              return [
+                `Months of supply: ${t.months !== null ? t.months : 'n/a (< 1 sale/mo)'}`,
+                `Active listings: ${t.active}`,
+                `Avg monthly sales: ${t.monthlySold}`,
+                `Condition: ${marketLabel(t.months)}`
+              ];
+            }
+          }
+        },
+        annotation: {}
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { size: 10 }, color: '#aaa', maxRotation: 45 },
+          border: { display: false }
+        },
+        y: {
+          min: 0,
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: {
+            font: { size: 11 }, color: '#aaa',
+            callback: v => v + ' mo'
+          },
+          border: { display: false }
+        }
+      }
+    }
+  });
+
+  // Draw reference lines manually after render
+  const originalDraw = absChart.draw.bind(absChart);
+  absChart.draw = function() {
+    originalDraw();
+    const ctx = absChart.ctx;
+    const area = absChart.chartArea;
+    const yScale = absChart.scales.y;
+    [[2,'#EF4444','Seller (<2mo)'],[4,'#F59E0B','Balanced (4mo)'],[6,'#3B82F6','Buyer (6mo)']].forEach(([val,color,lbl]) => {
+      const y = yScale.getPixelForValue(val);
+      if (y >= area.top && y <= area.bottom) {
+        ctx.save();
+        ctx.setLineDash([6,4]);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.5;
+        ctx.globalAlpha = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(area.left, y);
+        ctx.lineTo(area.right, y);
+        ctx.stroke();
+        ctx.restore();
+        ctx.save();
+        ctx.font = '10px -apple-system,Arial,sans-serif';
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.8;
+        ctx.fillText(lbl, area.right - 90, y - 4);
+        ctx.restore();
+      }
+    });
+  };
+  absChart.draw();
+}
+
+function renderTable(d) {
+  const rows = d.tiers.map(t => {
+    const cls = marketClass(t.months);
+    return `<tr>
+      <td>${t.tier}</td>
+      <td>${t.active}</td>
+      <td>${t.monthlySold.toFixed(1)}</td>
+      <td><span class="months-badge ${cls}">${t.months} mo</span></td>
+      <td><span class="months-badge ${cls}">${marketLabel(t.months)}</span></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('tierTableBody').innerHTML = rows;
+}
+
+render();
+</script>
+</body>
+</html>

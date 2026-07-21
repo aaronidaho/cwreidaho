@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Treasure Valley
+Weekly Stats*</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#f5f5f3;padding:24px 16px;min-height:100vh}
+.wrap{background:#fff;border-radius:14px;padding:30px 36px 24px;max-width:960px;margin:0 auto;box-shadow:0 2px 24px rgba(0,0,0,.08)}
+.chart-title{text-align:center;font-size:clamp(18px,3vw,26px);font-weight:800;letter-spacing:-.01em;color:#111;line-height:1.2;text-transform:uppercase;margin-bottom:3px;white-space:pre-line}
+.chart-sub{text-align:center;font-size:12px;color:#999;margin-bottom:18px}
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;border:1px solid #eee;border-radius:10px;padding:14px 16px;background:#fafaf9}
+.kpi{text-align:center}
+.kpi-val{font-size:clamp(18px,2.5vw,24px);font-weight:700;color:#111;line-height:1;margin-bottom:3px}
+.kpi-val.green{color:#16A34A}.kpi-val.blue{color:#0EA5E9}
+.kpi-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#aaa;line-height:1.3}
+.legend{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-bottom:14px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;color:#333}
+.ldot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.chart-wrap{position:relative;height:310px;margin-bottom:18px}
+.definitions{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;border-top:1px solid #eee;padding-top:16px}
+.def-head{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.def-swatch{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.def-label{font-size:11.5px;font-weight:700}
+.def-body{font-size:10.5px;color:#888;line-height:1.5}
+.footnote{text-align:center;font-size:10.5px;font-weight:600;color:#888;margin-top:14px;padding-top:12px;border-top:1px solid #eee}
+.partial-note{text-align:center;font-size:10px;color:#bbb;margin-top:6px;font-style:italic}
+@media(max-width:580px){.wrap{padding:20px 14px 18px}.definitions{grid-template-columns:repeat(2,1fr)}.kpi-strip{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="chart-title">Treasure Valley
+Weekly Stats*</div>
+  <div class="chart-sub">IMLS data — weekly residential market activity &nbsp;|&nbsp; Updated July 19, 2026</div>
+  <div class="kpi-strip">
+    <div class="kpi"><div class="kpi-val green">56.6%</div><div class="kpi-label">Sell Through<br>Rate</div></div>
+    <div class="kpi"><div class="kpi-val blue">98.7%</div><div class="kpi-label">SP / Original<br>List Price</div></div>
+    <div class="kpi"><div class="kpi-val">442</div><div class="kpi-label">Avg Weekly<br>New Listings</div></div>
+    <div class="kpi"><div class="kpi-val">250</div><div class="kpi-label">Avg Weekly<br>Sold</div></div>
+  </div>
+  <div class="legend">
+    <span class="legend-item"><span class="ldot" style="background:#E05252"></span>New Listings</span>
+    <span class="legend-item"><span class="ldot" style="background:#7C3AED"></span>New Pending</span>
+    <span class="legend-item"><span class="ldot" style="background:#16A34A"></span>New Sold</span>
+    <span class="legend-item"><span class="ldot" style="background:#0EA5E9"></span>Price Reductions</span>
+  </div>
+  <div class="chart-wrap"><canvas id="chart"></canvas></div>
+  <div class="definitions">
+    <div class="def-item"><div class="def-head"><span class="def-swatch" style="background:#E05252"></span><span class="def-label" style="color:#E05252">New Listings</span></div><div class="def-body">Residential properties listed on MLS each week.</div></div>
+    <div class="def-item"><div class="def-head"><span class="def-swatch" style="background:#7C3AED"></span><span class="def-label" style="color:#7C3AED">New Pending</span></div><div class="def-body">Properties that went under contract each week.</div></div>
+    <div class="def-item"><div class="def-head"><span class="def-swatch" style="background:#16A34A"></span><span class="def-label" style="color:#16A34A">New Sold</span></div><div class="def-body">Properties that closed escrow each week.</div></div>
+    <div class="def-item"><div class="def-head"><span class="def-swatch" style="background:#0EA5E9"></span><span class="def-label" style="color:#0EA5E9">Price Reductions</span></div><div class="def-body">Listings where price dropped below original list price.</div></div>
+  </div>
+  <div class="footnote">*IMLS data — Ada & Canyon county residential properties. Updated July 19, 2026. | CWREIdaho.com</div>
+  <div class="partial-note">KPI stats reflect 8-week avg of complete weeks. SP/OrigLP based on 2026 YTD closed sales.</div>
+</div>
+<script>
+const weeks=["12/1-12/7", "12/8-12/14", "12/15-12/21", "12/22-12/28", "12/29-1/4", "1/5-1/11", "1/12-1/18", "1/19-1/25", "1/26-2/1", "2/2-2/8", "2/9-2/15", "2/16-2/22", "2/23-3/1", "3/2-3/8", "3/9-3/15", "3/16-3/22", "3/23-3/29", "3/30-4/5", "4/6-4/12", "4/13-4/19", "4/20-4/26", "4/27-5/3", "5/4-5/10", "5/11-5/17", "5/18-5/24", "5/25-5/31", "6/1-6/7", "6/8-6/14", "6/15-6/21", "6/22-6/28", "6/29-7/5", "7/6-7/12", "7/13-7/19"],listings=[209, 178, 195, 94, 138, 205, 263, 277, 349, 283, 317, 313, 312, 317, 356, 367, 402, 412, 470, 445, 404, 506, 479, 475, 447, 411, 442, 528, 460, 467, 376, 461, 391],sold=[249, 259, 311, 136, 228, 178, 218, 146, 207, 215, 246, 228, 325, 288, 286, 255, 268, 373, 294, 312, 312, 419, 332, 320, 376, 383, 373, 312, 290, 64, 0, 232, 344],pending=[242, 210, 226, 135, 186, 229, 261, 263, 332, 304, 317, 326, 318, 327, 294, 354, 338, 390, 392, 390, 387, 381, 370, 333, 345, 331, 387, 349, 367, 307, 336, 341, 300],reductions=[125, 101, 109, 63, 61, 101, 126, 122, 139, 129, 153, 141, 134, 144, 168, 155, 157, 143, 148, 168, 154, 163, 112, 118, 104, 81, 57, 29, 6, 24, 5, 20, 1];
+new Chart(document.getElementById('chart'),{
+  type:'line',
+  data:{labels:weeks,datasets:[
+    {label:'New Listings',data:listings,borderColor:'#E05252',borderWidth:2.5,pointRadius:0,pointHoverRadius:5,tension:0.38,fill:false},
+    {label:'New Pending',data:pending,borderColor:'#7C3AED',borderWidth:2.5,pointRadius:0,pointHoverRadius:5,tension:0.38,fill:false},
+    {label:'New Sold',data:sold,borderColor:'#16A34A',borderWidth:2.5,pointRadius:0,pointHoverRadius:5,tension:0.38,fill:false},
+    {label:'Price Reductions',data:reductions,borderColor:'#0EA5E9',borderWidth:2.5,pointRadius:0,pointHoverRadius:5,tension:0.38,fill:false}
+  ]},
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{
+      legend:{display:false},
+      tooltip:{backgroundColor:'#1a1a1a',titleColor:'#fff',bodyColor:'#ddd',padding:12,
+        callbacks:{
+          title:items=>'Week of '+items[0].label,
+          afterBody:items=>{const sp=([98.25, 98.65, 98.28, 98.9, 98.18, 97.34, 99.36, 98.13, 98.73, 98.04, 97.98, 98.32, 98.89, 98.6, 98.53, 99.15, 99.28, 99.34, 100.0, 100.0, 99.76, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, null, 100.0, 99.97])[items[0].dataIndex];return sp?['','SP/Orig LP: '+sp+'%']:[]}
+        }
+      }
+    },
+    scales:{
+      x:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{font:{size:10},color:'#bbb',maxRotation:45,autoSkip:true,maxTicksLimit:18},border:{display:false}},
+      y:{min:0,grid:{color:'rgba(0,0,0,0.05)'},ticks:{font:{size:11},color:'#bbb'},border:{display:false}}
+    }
+  }
+});
+</script>
+</body>
+</html>
