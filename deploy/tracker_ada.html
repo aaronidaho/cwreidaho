@@ -35,11 +35,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;ba
 <div class="wrap">
   <div class="chart-title">Ada County
 Weekly Stats*</div>
-  <div class="chart-sub">IMLS data — weekly residential market activity &nbsp;|&nbsp; Updated July 19, 2026</div>
+  <div class="chart-sub">IMLS data — weekly residential market activity &nbsp;|&nbsp; Updated July 21, 2026</div>
   <div class="kpi-strip">
-    <div class="kpi"><div class="kpi-val green">55.3%</div><div class="kpi-label">Sell Through<br>Rate</div></div>
-    <div class="kpi"><div class="kpi-val blue">98.9%</div><div class="kpi-label">SP / Original<br>List Price</div></div>
-    <div class="kpi"><div class="kpi-val">293</div><div class="kpi-label">Avg Weekly<br>New Listings</div></div>
+    <div class="kpi"><div class="kpi-val green">55.1%</div><div class="kpi-label">Sell Through<br>Rate</div></div>
+    <div class="kpi"><div class="kpi-val blue">98.7%</div><div class="kpi-label">SP / Original<br>List Price</div></div>
+    <div class="kpi"><div class="kpi-val">294</div><div class="kpi-label">Avg Weekly<br>New Listings</div></div>
     <div class="kpi"><div class="kpi-val">162</div><div class="kpi-label">Avg Weekly<br>Sold</div></div>
   </div>
   <div class="legend">
@@ -55,11 +55,11 @@ Weekly Stats*</div>
     <div class="def-item"><div class="def-head"><span class="def-swatch" style="background:#16A34A"></span><span class="def-label" style="color:#16A34A">New Sold</span></div><div class="def-body">Properties that closed escrow each week.</div></div>
     <div class="def-item"><div class="def-head"><span class="def-swatch" style="background:#0EA5E9"></span><span class="def-label" style="color:#0EA5E9">Price Reductions</span></div><div class="def-body">Listings where price dropped below original list price.</div></div>
   </div>
-  <div class="footnote">*IMLS data — Ada County residential properties. Updated July 19, 2026. | CWREIdaho.com</div>
-  <div class="partial-note">KPI stats reflect 8-week avg of complete weeks. SP/OrigLP based on 2026 YTD closed sales.</div>
+  <div class="footnote">*IMLS data — Ada County residential properties. Updated July 21, 2026. | CWREIdaho.com</div>
+  <div class="partial-note">KPI stats reflect 8-week avg of complete weeks. SP/OrigLP based on 2026 YTD closed sales. Current week is partial.</div>
 </div>
 <script>
-const weeks=["12/1-12/7", "12/8-12/14", "12/15-12/21", "12/22-12/28", "12/29-1/4", "1/5-1/11", "1/12-1/18", "1/19-1/25", "1/26-2/1", "2/2-2/8", "2/9-2/15", "2/16-2/22", "2/23-3/1", "3/2-3/8", "3/9-3/15", "3/16-3/22", "3/23-3/29", "3/30-4/5", "4/6-4/12", "4/13-4/19", "4/20-4/26", "4/27-5/3", "5/4-5/10", "5/11-5/17", "5/18-5/24", "5/25-5/31", "6/1-6/7", "6/8-6/14", "6/15-6/21", "6/22-6/28", "6/29-7/5", "7/6-7/12", "7/13-7/19"],listings=[132, 128, 112, 56, 90, 138, 156, 165, 208, 188, 190, 178, 195, 217, 223, 210, 292, 255, 316, 291, 272, 332, 300, 294, 295, 270, 318, 342, 326, 314, 232, 305, 234],sold=[168, 162, 181, 80, 141, 131, 142, 90, 133, 142, 165, 139, 203, 178, 190, 171, 165, 236, 195, 189, 201, 275, 211, 207, 260, 249, 237, 199, 205, 39, 0, 147, 223],pending=[146, 144, 150, 89, 118, 149, 168, 168, 215, 198, 211, 186, 210, 220, 186, 229, 205, 233, 253, 258, 252, 243, 246, 209, 226, 218, 249, 226, 240, 188, 225, 238, 204],reductions=[80, 70, 51, 35, 38, 64, 64, 71, 70, 83, 89, 73, 85, 99, 106, 89, 120, 88, 95, 118, 103, 111, 66, 73, 69, 52, 38, 15, 4, 14, 4, 11, 1];
+const weeks=["12/1-12/7", "12/8-12/14", "12/15-12/21", "12/22-12/28", "12/29-1/4", "1/5-1/11", "1/12-1/18", "1/19-1/25", "1/26-2/1", "2/2-2/8", "2/9-2/15", "2/16-2/22", "2/23-3/1", "3/2-3/8", "3/9-3/15", "3/16-3/22", "3/23-3/29", "3/30-4/5", "4/6-4/12", "4/13-4/19", "4/20-4/26", "4/27-5/3", "5/4-5/10", "5/11-5/17", "5/18-5/24", "5/25-5/31", "6/1-6/7", "6/8-6/14", "6/15-6/21", "6/22-6/28", "6/29-7/5", "7/6-7/12", "7/13-7/19"],listings=[132, 128, 112, 56, 90, 138, 156, 165, 208, 188, 190, 178, 195, 217, 223, 210, 292, 255, 316, 291, 272, 332, 300, 294, 295, 270, 318, 342, 326, 314, 232, 305, 248],sold=[168, 162, 181, 80, 141, 131, 142, 90, 133, 142, 165, 139, 203, 178, 190, 171, 165, 236, 195, 189, 201, 275, 211, 207, 260, 249, 237, 199, 205, 39, 0, 147, 223],pending=[146, 144, 150, 89, 118, 149, 168, 168, 215, 198, 211, 186, 210, 220, 186, 229, 205, 233, 253, 258, 252, 243, 246, 209, 226, 218, 249, 226, 240, 188, 225, 238, 242],reductions=[80, 70, 51, 35, 38, 64, 64, 71, 70, 83, 89, 73, 85, 99, 106, 89, 120, 88, 95, 118, 103, 111, 66, 73, 69, 52, 38, 15, 4, 14, 4, 11, 1];
 new Chart(document.getElementById('chart'),{
   type:'line',
   data:{labels:weeks,datasets:[

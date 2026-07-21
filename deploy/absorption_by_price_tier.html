@@ -140,7 +140,7 @@ body{
   <div class="page-header">
     <div class="page-eyebrow">IMLS Data — Ada &amp; Canyon Counties</div>
     <div class="page-title">Treasure Valley<br>Absorption Rate by Price Tier</div>
-    <div class="page-sub">Months of supply = Active listings ÷ avg monthly sales (last 3.75 months) &nbsp;|&nbsp; As of July 19, 2026</div>
+    <div class="page-sub">Months of supply = Active listings ÷ avg monthly sales (last 3.75 months) &nbsp;|&nbsp; As of July 21, 2026</div>
   </div>
 
   <!-- TABS -->
@@ -200,7 +200,7 @@ body{
   </div>
 
   <div class="footnote">
-    *Months of supply = active inventory as of July 19, 2026 ÷ average monthly closed sales (March 1 – June 22, 2026, ~3.75 months).<br>
+    *Months of supply = active inventory as of July 21, 2026 ÷ average monthly closed sales (March 1 – June 22, 2026, ~3.75 months).<br>
     IMLS residential data — Ada &amp; Canyon counties. Prepared by CWREIdaho.com.
   </div>
 
@@ -209,93 +209,93 @@ body{
 <script>
 const DATA = {
   combined: {
-    overall: { totalActive: 3057, monthlyAvgSold: 1402, overallMonths: 2.2 },
+    overall: { totalActive: 3011, monthlyAvgSold: 1402, overallMonths: 2.1 },
     tiers: [
-      {tier:'$250k–$300k', active:14, monthlySold:15.2, months:0.9},
+      {tier:'$250k–$300k', active:11, monthlySold:15.2, months:0.7},
       {tier:'$300k–$350k', active:41, monthlySold:49.6, months:0.8},
-      {tier:'$350k–$400k', active:150, monthlySold:152.5, months:1.0},
-      {tier:'$400k–$450k', active:363, monthlySold:258.9, months:1.4},
-      {tier:'$450k–$500k', active:360, monthlySold:184.3, months:2.0},
-      {tier:'$500k–$550k', active:296, monthlySold:148.8, months:2.0},
-      {tier:'$550k–$600k', active:305, monthlySold:112.8, months:2.7},
-      {tier:'$600k–$650k', active:179, monthlySold:87.5, months:2.0},
-      {tier:'$650k–$700k', active:177, monthlySold:60.5, months:2.9},
-      {tier:'$700k–$750k', active:123, monthlySold:55.5, months:2.2},
-      {tier:'$750k–$800k', active:141, monthlySold:50.1, months:2.8},
-      {tier:'$800k–$850k', active:84, monthlySold:34.1, months:2.5},
-      {tier:'$850k–$900k', active:125, monthlySold:28.5, months:4.4},
-      {tier:'$900k–$950k', active:62, monthlySold:22.4, months:2.8},
-      {tier:'$950k–$1M', active:90, monthlySold:20.5, months:4.4},
-      {tier:'$1M–$1.1M', active:67, monthlySold:20.3, months:3.3},
-      {tier:'$1.1M–$1.25M', active:112, monthlySold:33.3, months:3.4},
-      {tier:'$1.25M–$1.5M', active:121, monthlySold:26.7, months:4.5},
-      {tier:'$1.5M–$1.6M', active:29, monthlySold:5.9, months:4.9},
+      {tier:'$350k–$400k', active:145, monthlySold:152.5, months:1.0},
+      {tier:'$400k–$450k', active:360, monthlySold:258.9, months:1.4},
+      {tier:'$450k–$500k', active:351, monthlySold:184.3, months:1.9},
+      {tier:'$500k–$550k', active:302, monthlySold:148.8, months:2.0},
+      {tier:'$550k–$600k', active:298, monthlySold:112.8, months:2.6},
+      {tier:'$600k–$650k', active:177, monthlySold:87.5, months:2.0},
+      {tier:'$650k–$700k', active:178, monthlySold:60.5, months:2.9},
+      {tier:'$700k–$750k', active:116, monthlySold:55.5, months:2.1},
+      {tier:'$750k–$800k', active:140, monthlySold:50.1, months:2.8},
+      {tier:'$800k–$850k', active:82, monthlySold:34.1, months:2.4},
+      {tier:'$850k–$900k', active:124, monthlySold:28.5, months:4.4},
+      {tier:'$900k–$950k', active:59, monthlySold:22.4, months:2.6},
+      {tier:'$950k–$1M', active:89, monthlySold:20.5, months:4.3},
+      {tier:'$1M–$1.1M', active:68, monthlySold:20.3, months:3.3},
+      {tier:'$1.1M–$1.25M', active:111, monthlySold:33.3, months:3.3},
+      {tier:'$1.25M–$1.5M', active:117, monthlySold:26.7, months:4.4},
+      {tier:'$1.5M–$1.6M', active:28, monthlySold:5.9, months:4.7},
       {tier:'$1.6M–$1.7M', active:26, monthlySold:6.4, months:4.1},
-      {tier:'$1.7M–$1.8M', active:22, monthlySold:2.9, months:7.6},
+      {tier:'$1.7M–$1.8M', active:20, monthlySold:2.9, months:6.9},
       {tier:'$1.8M–$1.9M', active:19, monthlySold:3.7, months:5.1},
-      {tier:'$1.9M–$2M', active:19, monthlySold:2.4, months:7.9},
+      {tier:'$1.9M–$2M', active:20, monthlySold:2.4, months:8.3},
       {tier:'$2M–$2.25M', active:23, monthlySold:3.7, months:6.2},
-      {tier:'$2.25M–$2.5M', active:25, monthlySold:3.7, months:6.8},
-      {tier:'$2.5M–$3M', active:45, monthlySold:1.9, months:23.7},
-      {tier:'$3M+', active:36, monthlySold:4.8, months:7.5},
+      {tier:'$2.25M–$2.5M', active:23, monthlySold:3.7, months:6.2},
+      {tier:'$2.5M–$3M', active:46, monthlySold:1.9, months:24.2},
+      {tier:'$3M+', active:35, monthlySold:4.8, months:7.3},
     ]
   },
   ada: {
-    overall: { totalActive: 1911, monthlyAvgSold: 909, overallMonths: 2.1 },
+    overall: { totalActive: 1876, monthlyAvgSold: 909, overallMonths: 2.1 },
     tiers: [
       {tier:'$250k–$300k', active:1, monthlySold:1.9, months:0.5},
-      {tier:'$300k–$350k', active:3, monthlySold:11.5, months:0.3},
+      {tier:'$300k–$350k', active:4, monthlySold:11.5, months:0.3},
       {tier:'$350k–$400k', active:40, monthlySold:50.9, months:0.8},
-      {tier:'$400k–$450k', active:155, monthlySold:140.5, months:1.1},
-      {tier:'$450k–$500k', active:176, monthlySold:121.3, months:1.5},
-      {tier:'$500k–$550k', active:169, monthlySold:105.3, months:1.6},
-      {tier:'$550k–$600k', active:203, monthlySold:85.1, months:2.4},
-      {tier:'$600k–$650k', active:130, monthlySold:69.1, months:1.9},
+      {tier:'$400k–$450k', active:153, monthlySold:140.5, months:1.1},
+      {tier:'$450k–$500k', active:166, monthlySold:121.3, months:1.4},
+      {tier:'$500k–$550k', active:174, monthlySold:105.3, months:1.7},
+      {tier:'$550k–$600k', active:197, monthlySold:85.1, months:2.3},
+      {tier:'$600k–$650k', active:126, monthlySold:69.1, months:1.8},
       {tier:'$650k–$700k', active:137, monthlySold:50.7, months:2.7},
-      {tier:'$700k–$750k', active:93, monthlySold:44.3, months:2.1},
-      {tier:'$750k–$800k', active:117, monthlySold:42.7, months:2.7},
-      {tier:'$800k–$850k', active:78, monthlySold:29.9, months:2.6},
-      {tier:'$850k–$900k', active:104, monthlySold:23.2, months:4.5},
-      {tier:'$900k–$950k', active:49, monthlySold:20.3, months:2.4},
-      {tier:'$950k–$1M', active:62, monthlySold:15.2, months:4.1},
-      {tier:'$1M–$1.1M', active:50, monthlySold:17.1, months:2.9},
-      {tier:'$1.1M–$1.25M', active:74, monthlySold:25.6, months:2.9},
-      {tier:'$1.25M–$1.5M', active:78, monthlySold:21.3, months:3.7},
-      {tier:'$1.5M–$1.6M', active:19, monthlySold:4.8, months:4.0},
+      {tier:'$700k–$750k', active:89, monthlySold:44.3, months:2.0},
+      {tier:'$750k–$800k', active:116, monthlySold:42.7, months:2.7},
+      {tier:'$800k–$850k', active:77, monthlySold:29.9, months:2.6},
+      {tier:'$850k–$900k', active:102, monthlySold:23.2, months:4.4},
+      {tier:'$900k–$950k', active:47, monthlySold:20.3, months:2.3},
+      {tier:'$950k–$1M', active:61, monthlySold:15.2, months:4.0},
+      {tier:'$1M–$1.1M', active:51, monthlySold:17.1, months:3.0},
+      {tier:'$1.1M–$1.25M', active:71, monthlySold:25.6, months:2.8},
+      {tier:'$1.25M–$1.5M', active:75, monthlySold:21.3, months:3.5},
+      {tier:'$1.5M–$1.6M', active:18, monthlySold:4.8, months:3.8},
       {tier:'$1.6M–$1.7M', active:20, monthlySold:5.3, months:3.8},
-      {tier:'$1.7M–$1.8M', active:13, monthlySold:2.4, months:5.4},
+      {tier:'$1.7M–$1.8M', active:12, monthlySold:2.4, months:5.0},
       {tier:'$1.8M–$1.9M', active:13, monthlySold:3.7, months:3.5},
-      {tier:'$1.9M–$2M', active:12, monthlySold:2.1, months:5.7},
+      {tier:'$1.9M–$2M', active:13, monthlySold:2.1, months:6.2},
       {tier:'$2M–$2.25M', active:20, monthlySold:3.7, months:5.4},
-      {tier:'$2.25M–$2.5M', active:23, monthlySold:3.5, months:6.6},
-      {tier:'$2.5M–$3M', active:37, monthlySold:1.9, months:19.5},
-      {tier:'$3M+', active:35, monthlySold:4.3, months:8.1},
+      {tier:'$2.25M–$2.5M', active:21, monthlySold:3.5, months:6.0},
+      {tier:'$2.5M–$3M', active:38, monthlySold:1.9, months:20.0},
+      {tier:'$3M+', active:34, monthlySold:4.3, months:7.9},
     ]
   },
   canyon: {
-    overall: { totalActive: 1146, monthlyAvgSold: 494, overallMonths: 2.3 },
+    overall: { totalActive: 1135, monthlyAvgSold: 494, overallMonths: 2.3 },
     tiers: [
-      {tier:'$250k–$300k', active:13, monthlySold:13.3, months:1.0},
-      {tier:'$300k–$350k', active:38, monthlySold:38.1, months:1.0},
-      {tier:'$350k–$400k', active:110, monthlySold:101.6, months:1.1},
-      {tier:'$400k–$450k', active:208, monthlySold:118.4, months:1.8},
-      {tier:'$450k–$500k', active:184, monthlySold:62.9, months:2.9},
-      {tier:'$500k–$550k', active:127, monthlySold:43.5, months:2.9},
-      {tier:'$550k–$600k', active:102, monthlySold:27.7, months:3.7},
-      {tier:'$600k–$650k', active:49, monthlySold:18.4, months:2.7},
-      {tier:'$650k–$700k', active:40, monthlySold:9.9, months:4.0},
-      {tier:'$700k–$750k', active:30, monthlySold:11.2, months:2.7},
+      {tier:'$250k–$300k', active:10, monthlySold:13.3, months:0.8},
+      {tier:'$300k–$350k', active:37, monthlySold:38.1, months:1.0},
+      {tier:'$350k–$400k', active:105, monthlySold:101.6, months:1.0},
+      {tier:'$400k–$450k', active:207, monthlySold:118.4, months:1.7},
+      {tier:'$450k–$500k', active:185, monthlySold:62.9, months:2.9},
+      {tier:'$500k–$550k', active:128, monthlySold:43.5, months:2.9},
+      {tier:'$550k–$600k', active:101, monthlySold:27.7, months:3.6},
+      {tier:'$600k–$650k', active:51, monthlySold:18.4, months:2.8},
+      {tier:'$650k–$700k', active:41, monthlySold:9.9, months:4.1},
+      {tier:'$700k–$750k', active:27, monthlySold:11.2, months:2.4},
       {tier:'$750k–$800k', active:24, monthlySold:7.5, months:3.2},
-      {tier:'$800k–$850k', active:6, monthlySold:4.3, months:1.4},
-      {tier:'$850k–$900k', active:21, monthlySold:5.3, months:4.0},
-      {tier:'$900k–$950k', active:13, monthlySold:2.1, months:6.2},
+      {tier:'$800k–$850k', active:5, monthlySold:4.3, months:1.2},
+      {tier:'$850k–$900k', active:22, monthlySold:5.3, months:4.2},
+      {tier:'$900k–$950k', active:12, monthlySold:2.1, months:5.7},
       {tier:'$950k–$1M', active:28, monthlySold:5.3, months:5.3},
       {tier:'$1M–$1.1M', active:17, monthlySold:3.2, months:5.3},
-      {tier:'$1.1M–$1.25M', active:38, monthlySold:7.7, months:4.9},
-      {tier:'$1.25M–$1.5M', active:43, monthlySold:5.3, months:8.1},
+      {tier:'$1.1M–$1.25M', active:40, monthlySold:7.7, months:5.2},
+      {tier:'$1.25M–$1.5M', active:42, monthlySold:5.3, months:7.9},
       {tier:'$1.5M–$1.6M', active:10, monthlySold:1.1, months:9.1},
       {tier:'$1.6M–$1.7M', active:6, monthlySold:1.1, months:5.5},
-      {tier:'$1.7M–$1.8M', active:9, monthlySold:0.5, months:18.0},
+      {tier:'$1.7M–$1.8M', active:8, monthlySold:0.5, months:16.0},
       {tier:'$1.8M–$1.9M', active:6, monthlySold:0.0, months:null},
       {tier:'$1.9M–$2M', active:7, monthlySold:0.3, months:null},
       {tier:'$2M–$2.25M', active:3, monthlySold:0.0, months:null},
@@ -360,7 +360,7 @@ function renderKPIs(d) {
     <div class="kpi-card">
       <div class="kpi-val">${d.overall.totalActive.toLocaleString()}</div>
       <div class="kpi-label">Active<br>Listings</div>
-      <div class="kpi-sub">As of July 19, 2026</div>
+      <div class="kpi-sub">As of July 21, 2026</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-val" style="color:#EF4444">${hotCount}</div>
