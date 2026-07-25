@@ -49,6 +49,14 @@
 
     <ul class="nav-links" role="list">
       <li><a href="index.html">Home</a></li>
+      <li class="nav-dropdown"><a href="new-homes/index.html">New Homes</a>
+        <ul class="dropdown-menu">
+          <li><a href="new-homes/index.html">New Homes Idaho</a></li>
+          <li><a href="new-homes/builders.html">Home Builders</a></li>
+          <li><a href="new-homes/communities.html">New Home Communities</a></li>
+          <li><a href="new-homes/land.html">Land</a></li>
+        </ul>
+      </li>
       <li class="nav-dropdown">
         <a href="communities/index.html">Communities</a>
         <ul class="dropdown-menu" role="list">
@@ -70,7 +78,7 @@
       <li><a href="search.html">Search</a></li>
       <li><a href="buyers.html">Buy</a></li>
       <li><a href="sellers.html">Sell</a></li>
-      <li><a href="subdivisions/index.html">Subdivisions</a></li>
+      <li><a href="subdivisions/index.html">Our Communities</a></li>
       <li><a href="blog/index.html">Market Updates</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -405,7 +413,9 @@
       <div class="lead-form-card">
         <h3>Let's Connect</h3>
         <p>Fill out the form and we'll be in touch shortly.</p>
-        <form id="contact-form" action="#" method="post" novalidate>
+        <form id="contact-form" name="contact-home" data-netlify="true" data-netlify-honeypot="bot-field" novalidate>
+          <input type="hidden" name="form-name" value="contact-home" />
+          <p class="hp-field"><label>Leave this field empty: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
           <div class="form-row">
             <div class="form-group">
               <label for="cf-first">First Name *</label>
@@ -648,9 +658,9 @@
       <div class="footer-newsletter">
         <span class="footer-heading">Monthly Market Report</span>
         <p>Get Idaho real estate market updates delivered to your inbox every month.</p>
-        <form class="newsletter-form" novalidate>
-          <input type="text" placeholder="Your name" aria-label="Name" />
-          <input type="email" placeholder="Email address" aria-label="Email" required />
+        <form class="newsletter-form" name="newsletter" data-netlify="true" data-netlify-honeypot="bot-field" novalidate><input type="hidden" name="form-name" value="newsletter" /><p class="hp-field"><label>Leave this field empty: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+          <input type="text" name="name" placeholder="Your name" aria-label="Name" />
+          <input type="email" name="email" placeholder="Email address" aria-label="Email" required />
           <button type="submit">Subscribe Free →</button>
         </form>
       </div>
@@ -692,7 +702,9 @@
       <div class="lead-gate-perk"><span>📊</span> Access neighborhood market data</div>
     </div>
 
-    <form id="lead-gate-form" novalidate>
+    <form id="lead-gate-form" name="lead-gate" data-netlify="true" data-netlify-honeypot="bot-field" novalidate>
+      <input type="hidden" name="form-name" value="lead-gate" />
+      <p class="hp-field"><label>Leave this field empty: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
       <div class="form-row">
         <div class="form-group">
           <label for="lg-first">First Name *</label>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Treasure Valley Home Builders | CWRE Idaho</title>
+  <meta name="description" content="Browse home builders active in the Boise, Meridian, Eagle, and Treasure Valley area — view available new construction homes from each builder." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .builder-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 2.5rem; }
+    .builder-card {
+      background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow);
+      padding: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .builder-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .builder-card h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--text); }
+    .builder-meta { font-size: 0.85rem; color: var(--text-light); font-weight: 500; }
+    .builder-card .btn { margin-top: auto; align-self: flex-start; }
+    @media (max-width: 900px) { .builder-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .builder-grid { grid-template-columns: 1fr; } }
+  </style>
+  <!-- Buying Buddy plugin v5.02; Authorized Domain: cwreidaho.com -->
+  <!-- DO NOT DEFER — must load in page head -->
+  <script src="https://www.mbb2.com/version3/css/theme/acid/0BEmjvJb"></script>
+  <script>
+  var MBB = {"seo" : "false","data":{ "acid" : "0BEmjvJb" } };
+  </script>
+  <script src="https://d2w6u17ngtanmy.cloudfront.net/scripts/my-buying-buddy.5.0.js.gz"></script>
+  <!-- End Buying Buddy Plugin. Copyright 2003-2026 -->
+</head>
+<body>
+
+<!-- IDX Brokerage Compliance -->
+<div class="brokerage-topbar">
+  <div class="brokerage-topbar-row1">
+    <img src="../images/mountain-realty-logo.png" alt="Mountain Realty LLC" />
+    <span>Licensed under Mountain Realty LLC &mdash; A Licensed Idaho Brokerage</span>
+  </div>
+  <div class="brokerage-topbar-row2">
+    <span>Mountain Realty &nbsp;·&nbsp; 7750 W Crestwood Dr, Boise ID 83704</span>
+    <span><a href="tel:+12084846564">(208) 484-6564</a></span>
+  </div>
+</div>
+
+<nav class="site-nav" role="navigation">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <div class="brand-logo-area">
+        <img src="../images/cwre-logo.png" alt="CWRE Idaho" class="navbar-logo-img" />
+        <div class="brand-name-text">
+          <span class="brand-name-main">Clint Walker Real Estate</span>
+          <span class="brand-name-sub">Idaho</span>
+        </div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li class="nav-dropdown"><a href="index.html">New Homes</a>
+        <ul class="dropdown-menu">
+          <li><a href="index.html">New Homes Idaho</a></li>
+          <li><a href="builders.html" class="active">Home Builders</a></li>
+          <li><a href="communities.html">New Home Communities</a></li>
+          <li><a href="land.html">Land</a></li>
+        </ul>
+      </li>
+      <li><a href="../search.html">Search</a></li>
+      <li><a href="../buyers.html">Buy</a></li>
+      <li><a href="../sellers.html">Sell</a></li>
+      <li><a href="../subdivisions/index.html">Our Communities</a></li>
+      <li><a href="../blog/index.html">Market Updates</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-cta"><a href="../contact.html" class="btn btn-gold">Get in Touch</a></div>
+    <button class="nav-hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container page-hero-inner">
+    <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="index.html">New Homes</a><span>/</span>Home Builders</div>
+    <h1>Treasure Valley Home Builders</h1>
+    <p>Dozens of builders are actively building new construction across Boise, Meridian, Eagle, and the surrounding valley. Pick a builder below to see their available homes.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="builder-grid" id="builderGrid"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-brand-text">CWRE Idaho</span>
+        <span class="footer-brand-sub">Clint Walker Real Estate</span>
+        <p class="footer-bio">Serving the Treasure Valley and Southwest Idaho.</p>
+        <div class="footer-contact-item">📞 <a href="tel:+12088704279">(208) 870-4279</a></div>
+        <div class="footer-contact-item">✉️ <a href="mailto:clintwalkeridaho@gmail.com">clintwalkeridaho@gmail.com</a></div>
+        <div class="footer-contact-item">📞 <a href="tel:+12089212195">(208) 921-2195</a></div>
+        <div class="footer-contact-item">✉️ <a href="mailto:aaron@3idaho.com">aaron@3idaho.com</a></div>
+      </div>
+      <div><span class="footer-heading">Navigation</span>
+        <ul class="footer-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../buyers.html">Buy</a></li>
+          <li><a href="../sellers.html">Sell</a></li>
+          <li><a href="../subdivisions/index.html">Our Communities</a></li>
+          <li><a href="../blog/index.html">Market Updates</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div><span class="footer-heading">New Homes</span>
+        <ul class="footer-links">
+          <li><a href="index.html">New Homes Idaho</a></li>
+          <li><a href="builders.html">Home Builders</a></li>
+          <li><a href="communities.html">New Home Communities</a></li>
+          <li><a href="land.html">Land</a></li>
+        </ul>
+      </div>
+      <div class="footer-newsletter">
+        <span class="footer-heading">Monthly Market Report</span>
+        <p>Idaho real estate updates monthly.</p>
+        <form class="newsletter-form" name="newsletter" data-netlify="true" data-netlify-honeypot="bot-field" novalidate><input type="hidden" name="form-name" value="newsletter" /><p class="hp-field"><label>Leave this field empty: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+          <input type="email" name="email" placeholder="Email address" required />
+          <button type="submit">Subscribe Free →</button>
+        </form>
+      </div>
+    </div>
+    <!-- BuyingBuddy MLS Disclaimer (required on all pages) -->
+    <div style="padding:0.5rem 0 0.25rem;"><bb-widget data-type="Disclaimer"></bb-widget></div>
+    <div class="footer-brokerage">
+      <div class="footer-brokerage-logo">
+        <img src="../images/mountain-realty-logo.png" alt="Mountain Realty LLC" />
+      </div>
+      <span>Licensed under Mountain Realty LLC</span>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 CWRE Idaho · Clint Walker Real Estate. All rights reserved.</span>
+      <div class="footer-bottom-links"><a href="../privacy.html">Privacy Policy</a><a href="../terms.html">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+// ══════════════════════════════════════════════════
+//  TREASURE VALLEY BUILDERS
+//  To add/remove a builder, just edit this list —
+//  no new pages needed. communities/price are shown
+//  as a quick reference and aren't pulled from MLS.
+// ══════════════════════════════════════════════════
+const BUILDERS = [
+  { name: 'Alturas Homes', communities: 4, from: '$500s' },
+  { name: 'Asbury Construction', communities: 6, from: '$600s' },
+  { name: 'Berkeley Building Co', communities: 8, from: '$500s' },
+  { name: 'Biltmore Company', communities: 10, from: '$500s' },
+  { name: 'Blackrock Homes', communities: 6, from: '$400s' },
+  { name: 'Boise Hunter Homes', communities: 4, from: '$800s' },
+  { name: 'Brighton Homes', communities: 5, from: '$400s' },
+  { name: 'Canyon Crest Homes', communities: 2, from: '$1M+' },
+  { name: 'CBH Homes', communities: 48, from: '$300s' },
+  { name: 'Clark & Co Homes', communities: null, from: '$1M+' },
+  { name: 'Core Building Company', communities: 8, from: '$1M+' },
+  { name: 'Eaglewood Homes', communities: 6, from: '$500s' },
+  { name: 'Gardner Homes', communities: 3, from: '$900s' },
+  { name: 'Hallmark Homes', communities: 5, from: '$400s' },
+  { name: 'Hammett Homes', communities: 7, from: '$500s' },
+  { name: 'Hayden Homes', communities: 11, from: '$300s' },
+  { name: 'Highland Homes', communities: 7, from: '$1M' },
+  { name: 'Hubble Homes', communities: 12, from: '$300s' },
+  { name: 'James Clyde Homes', communities: 3, from: '$600s' },
+  { name: 'Legacy Homes of Idaho', communities: null, from: '$1.5M+' },
+  { name: 'Paradigm Construction Company', communities: 2, from: '$2M' },
+  { name: 'Richmond American Homes', communities: 9, from: '$300s' },
+  { name: 'Riverwood Homes', communities: 8, from: '$600s' },
+  { name: 'Shadow Mountain Homes', communities: 10, from: '$800s' },
+  { name: 'Sherburne-Marrs', communities: 3, from: '$2M' },
+  { name: 'Solitude Homes', communities: 5, from: '$800s' },
+  { name: 'Stacy Construction', communities: null, from: '$700s' },
+  { name: 'Sterling Homes', communities: 4, from: '$700s' },
+  { name: 'Sunrise Homes of Idaho', communities: 1, from: '$500s' },
+  { name: 'Ted Mason Signature Homes', communities: 5, from: '$500s' },
+  { name: 'Todd Campbell Custom Homes', communities: 5, from: '$1M' },
+  { name: 'Toll Brothers', communities: 13, from: '$300s' },
+  { name: 'Tradewinds Homes', communities: 4, from: '$400s' },
+  { name: 'Tresidio Homes', communities: 18, from: '$500s' },
+  { name: 'Venta Homes', communities: 3, from: '$500s' },
+  { name: 'Zach Evans Construction', communities: 3, from: '$300s' },
+];
+
+const grid = document.getElementById('builderGrid');
+BUILDERS.forEach(b => {
+  const card = document.createElement('div');
+  card.className = 'builder-card';
+  const meta = b.communities
+    ? `${b.communities} ${b.communities === 1 ? 'community' : 'communities'} · from ${b.from}`
+    : `from ${b.from}`;
+  card.innerHTML = `
+    <h3>${b.name}</h3>
+    <span class="builder-meta">${meta}</span>
+    <a class="btn btn-primary" href="results.html?type=builder&name=${encodeURIComponent(b.name)}">View Available Homes →</a>
+  `;
+  grid.appendChild(card);
+});
+</script>
+
+  <!-- UserWay ADA Accessibility Widget — replace ACCOUNT_ID after signing up at userway.org -->
+  <script>
+    (function(d){
+      var s = d.createElement("script");
+      s.setAttribute("data-account", "ACCOUNT_ID");
+      s.setAttribute("src", "https://cdn.userway.org/widget.js");
+      (d.body || d.head).appendChild(s);
+    })(document)
+  </script>
+</body>
+</html>
