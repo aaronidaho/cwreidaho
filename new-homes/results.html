@@ -81,6 +81,24 @@
     </div>
     <!-- BuyingBuddy ListingResults Foundation Widget — filter set by script below -->
     <div id="idx-results-mount"></div>
+
+    <div class="lead-form-card" style="max-width:560px;margin:3rem auto 0;">
+      <h3 id="leadFormTitle">Want Alerts for New Listings Like These?</h3>
+      <p>Tell us how to reach you and Clint or Aaron will follow up with matching homes as soon as they hit the market.</p>
+      <form id="newconstruction-form" name="new-construction-lead" data-netlify="true" data-netlify-honeypot="bot-field" novalidate>
+        <input type="hidden" name="form-name" value="new-construction-lead" />
+        <input type="hidden" name="context" id="leadContext" value="" />
+        <p class="hp-field"><label>Leave this field empty: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+        <div class="form-row">
+          <div class="form-group"><label>First Name *</label><input type="text" name="firstName" required placeholder="First" /></div>
+          <div class="form-group"><label>Last Name *</label><input type="text" name="lastName" required placeholder="Last" /></div>
+        </div>
+        <div class="form-group"><label>Email Address *</label><input type="email" name="email" required placeholder="you@email.com" /></div>
+        <div class="form-group"><label>Phone Number *</label><input type="tel" name="phone" required placeholder="(208) 870-4279" /></div>
+        <button type="submit" class="btn btn-primary btn-lg form-submit">Send Me New Listings →</button>
+        <p class="form-privacy">No spam. <a href="../privacy.html">Privacy Policy</a></p>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -213,6 +231,13 @@ const widget = document.createElement('bb-widget');
 widget.setAttribute('data-type', 'ListingResults');
 if (filter) widget.setAttribute('data-filter', filter);
 document.getElementById('idx-results-mount').appendChild(widget);
+
+// Tailor the lead form to what the visitor is browsing.
+const resultsHeading = TITLES[type] ? TITLES[type](name) : 'New Home Listings';
+document.getElementById('leadFormTitle').textContent =
+  type === 'land' ? 'Want Alerts for New Land & Lots?' : `Want Alerts for New Homes Like ${name || 'These'}?`;
+document.getElementById('leadContext').value = resultsHeading;
+wireLeadForm(document.getElementById('newconstruction-form'), 'new-construction-lead', "Thanks! Clint and Aaron will follow up with matching listings soon.");
 </script>
 
   <!-- UserWay ADA Accessibility Widget — replace ACCOUNT_ID after signing up at userway.org -->
