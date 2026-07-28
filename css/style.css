@@ -904,6 +904,14 @@ p { color: var(--text-light); line-height: 1.7; }
   line-height: 1.5;
 }
 .form-privacy a { color: var(--navy); text-decoration: underline; }
+.form-success {
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+.hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 /* ── Testimonials ── */
 .testimonials { background: var(--white); }

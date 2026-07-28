@@ -1,5 +1,41 @@
 // CWRE Idaho — Main JavaScript
 
+// ── Netlify Forms submission helper ──
+function submitToNetlify(form, formName) {
+  const data = new FormData(form);
+  data.set('form-name', formName);
+  return fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams(data).toString(),
+  });
+}
+
+function showFormSuccess(form, message) {
+  const container = form.closest('.contact-form-card, .lead-form-card') || form.parentNode;
+  container.innerHTML = '<div class="form-success">✓ ' + message + '</div>';
+}
+
+// Wires a lead form to POST to Netlify Forms and show an inline confirmation.
+function wireLeadForm(formEl, formName, successMessage) {
+  if (!formEl) return;
+  formEl.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = formEl.querySelector('.form-submit');
+    const originalLabel = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+    submitToNetlify(formEl, formName)
+      .then((res) => {
+        if (!res.ok) throw new Error('Bad response');
+        showFormSuccess(formEl, successMessage);
+      })
+      .catch(() => {
+        if (btn) { btn.disabled = false; btn.textContent = originalLabel; }
+        alert("Something went wrong sending your info. Please call/text (208) 870-4279 or email clintwalkeridaho@gmail.com directly.");
+      });
+  });
+}
+
 // ── Nav scroll behavior ──
 (function () {
   const nav = document.querySelector('.site-nav');
@@ -63,6 +99,7 @@ const LeadGate = (function () {
           phone: form.querySelector('[name=phone]').value.trim(),
         };
         saveRegistration(data);
+        submitToNetlify(form, 'lead-gate').catch(() => {});
         closeModal();
         if (onSuccess) onSuccess(data);
       };
@@ -149,33 +186,33 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   });
 });
 
-// ── Hero search form ──
-(function () {
-  const form = document.getElementById('hero-search-form');
-  if (!form) return;
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const q = form.querySelector('input').value.trim();
-    if (!q) return;
-    // IDX will be integrated here — for now open lead gate
-    LeadGate.open(() => {
-      alert('IDX search integration coming soon. Your info has been saved and a CWRE Idaho agent will reach out!');
-    });
-  });
-})();
-
 // ── Newsletter form ──
 (function () {
   const forms = document.querySelectorAll('.newsletter-form');
   forms.forEach(form => {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const email = form.querySelector('input[type=email]').value;
-      if (email) {
-        form.innerHTML = '<p style="color:#c8a84b;font-size:0.9rem;padding:0.5rem 0;">✓ You\'re subscribed! Thank you.</p>';
-      }
+      const emailInput = form.querySelector('input[type=email]');
+      const email = emailInput ? emailInput.value.trim() : '';
+      if (!email) return;
+      submitToNetlify(form, 'newsletter')
+        .then((res) => {
+          if (!res.ok) throw new Error('Bad response');
+          form.innerHTML = '<p style="color:#c8a84b;font-size:0.9rem;padding:0.5rem 0;">✓ You\'re subscribed! Thank you.</p>';
+        })
+        .catch(() => {
+          form.innerHTML = '<p style="color:#c8a84b;font-size:0.9rem;padding:0.5rem 0;">Something went wrong. Please try again later.</p>';
+        });
     });
   });
+})();
+
+// ── Lead forms (contact pages, buyer/seller inquiry) ──
+(function () {
+  wireLeadForm(document.getElementById('contact-form'), 'contact-home', "Thanks! We'll be in touch shortly.");
+  wireLeadForm(document.getElementById('contact-page-form'), 'contact-page', 'Thanks! Clint will respond within one business day.');
+  wireLeadForm(document.getElementById('buyer-form'), 'buyer-inquiry', "Thanks! Clint will reach out to start your home search.");
+  wireLeadForm(document.getElementById('seller-form'), 'seller-cma', "Thanks! Clint will follow up with your free home value estimate.");
 })();
 
 // ── Active nav link ──
@@ -193,7 +230,7 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 (function () {
   const style = document.createElement('style');
   style.textContent = `
-    @media (max-width: 768px) {
+    @media (max-width: 1300px) {
       .nav-links.mobile-open {
         display: flex !important;
         flex-direction: column;
