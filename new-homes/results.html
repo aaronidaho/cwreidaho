@@ -168,11 +168,9 @@
 //  confirmed in the dashboard (see comments).
 // ══════════════════════════════════════════════════
 const FILTER_FIELD = {
-  // MLS field used to search by builder — most IDX feeds don't have a
-  // clean "Builder Name" field, so this defaults to a keyword/remarks
-  // search. Confirm the real field name in BuyingBuddy under
-  // Widgets → Listing Results → Filters, then update the value here.
-  builder: 'Keywords',
+  // Confirmed field — Intermountain MLS exposes "Builder" directly
+  // (BuyingBuddy → Search → Customize → Fields → Class: Residential).
+  builder: 'Builder',
   // Confirmed field — "City" is standard on every MLS/IDX feed.
   community: 'City',
   // RESO-standard property type field. Confirm value is exactly
