@@ -45,19 +45,47 @@
     </a>
     <ul class="nav-links">
       <li><a href="../index.html">Home</a></li>
-      <li class="nav-dropdown"><a href="index.html" class="active">New Homes</a>
+      <li class="nav-dropdown"><a href="../new-homes/index.html" class="active">New Construction</a>
         <ul class="dropdown-menu">
-          <li><a href="index.html">New Homes Idaho</a></li>
-          <li><a href="builders.html">Home Builders</a></li>
-          <li><a href="communities.html">New Home Communities</a></li>
-          <li><a href="land.html">Land</a></li>
+          <li><a href="../new-homes/index.html">New Construction Idaho</a></li>
+          <li><a href="../subdivisions/index.html">Featured Communities</a></li>
+          <li><a href="../new-homes/builders.html">Home Builders</a></li>
+          <li><a href="../new-homes/communities.html">By City</a></li>
+          <li><a href="../new-homes/land.html">Land</a></li>
         </ul>
       </li>
-      <li><a href="../search.html">Search</a></li>
-      <li><a href="../buyers.html">Buy</a></li>
-      <li><a href="../sellers.html">Sell</a></li>
-      <li><a href="../subdivisions/index.html">Our Communities</a></li>
-      <li><a href="../blog/index.html">Market Updates</a></li>
+      <li class="nav-dropdown"><a href="../buy.html">Buy</a>
+        <ul class="dropdown-menu">
+          <li><a href="../search.html">Search Listings</a></li>
+          <li><a href="../buyers.html">Buyer's Guide</a></li>
+          <li><a href="../new-homes/index.html">New Construction</a></li>
+        </ul>
+      </li>
+      <li class="nav-dropdown"><a href="../sell.html">Sell</a>
+        <ul class="dropdown-menu">
+          <li><a href="../sellers.html#seller-form">Free Home Valuation</a></li>
+          <li><a href="../sellers.html">Seller's Guide</a></li>
+          <li><a href="../blog/index.html">Market Reports</a></li>
+        </ul>
+      </li>
+      <li class="nav-dropdown"><a href="../communities/index.html">Communities</a>
+        <ul class="dropdown-menu">
+          <li><a href="../communities/boise.html">Boise</a></li>
+          <li><a href="../communities/eagle.html">Eagle</a></li>
+          <li><a href="../communities/meridian.html">Meridian</a></li>
+          <li><a href="../communities/nampa-caldwell.html">Nampa &amp; Caldwell</a></li>
+          <li><a href="../communities/star.html">Star</a></li>
+          <li><a href="../communities/middleton.html">Middleton</a></li>
+          <li><a href="../communities/kuna.html">Kuna</a></li>
+          <li><a href="../communities/emmett.html">Emmett</a></li>
+          <li><a href="../communities/mountain-home.html">Mountain Home</a></li>
+          <li><a href="../communities/new-plymouth.html">New Plymouth</a></li>
+          <li><a href="../communities/melba.html">Melba</a></li>
+          <li><a href="../communities/marsing.html">Marsing</a></li>
+          <li><a href="../communities/payette.html">Payette</a></li>
+          <li><a href="../communities/index.html">View All →</a></li>
+        </ul>
+      </li>
       <li><a href="../about.html">About</a></li>
       <li><a href="../contact.html">Contact</a></li>
     </ul>
@@ -68,7 +96,7 @@
 
 <div class="page-hero">
   <div class="container page-hero-inner">
-    <div class="breadcrumb" id="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="index.html">New Homes</a></div>
+    <div class="breadcrumb" id="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="index.html">New Construction</a></div>
     <h1 id="resultsTitle">New Home Listings</h1>
     <p id="resultsSubtitle">Active listings, updated daily from Intermountain MLS.</p>
   </div>
@@ -77,7 +105,7 @@
 <section class="section" style="padding-top:2rem;">
   <div class="container">
     <div style="margin-bottom:1.5rem;">
-      <a href="index.html" id="backLink" class="btn btn-outline">&larr; Back to New Homes</a>
+      <a href="index.html" id="backLink" class="btn btn-outline">&larr; Back to New Construction</a>
     </div>
     <!-- BuyingBuddy ListingResults Foundation Widget — filter set by script below -->
     <div id="idx-results-mount"></div>
@@ -117,19 +145,19 @@
       <div><span class="footer-heading">Navigation</span>
         <ul class="footer-links">
           <li><a href="../index.html">Home</a></li>
-          <li><a href="../buyers.html">Buy</a></li>
-          <li><a href="../sellers.html">Sell</a></li>
-          <li><a href="../subdivisions/index.html">Our Communities</a></li>
-          <li><a href="../blog/index.html">Market Updates</a></li>
+          <li><a href="../new-homes/index.html">New Construction</a></li>
+          <li><a href="../buy.html">Buy</a></li>
+          <li><a href="../sell.html">Sell</a></li>
+          <li><a href="../communities/index.html">Communities</a></li>
           <li><a href="../about.html">About</a></li>
           <li><a href="../contact.html">Contact</a></li>
         </ul>
       </div>
-      <div><span class="footer-heading">New Homes</span>
+      <div><span class="footer-heading">New Construction</span>
         <ul class="footer-links">
-          <li><a href="index.html">New Homes Idaho</a></li>
+          <li><a href="index.html">New Construction Idaho</a></li>
           <li><a href="builders.html">Home Builders</a></li>
-          <li><a href="communities.html">New Home Communities</a></li>
+          <li><a href="communities.html">New Construction by City</a></li>
           <li><a href="land.html">Land</a></li>
         </ul>
       </div>
@@ -183,8 +211,8 @@ const type = params.get('type');
 const name = params.get('name') || '';
 
 const TITLES = {
-  builder: (n) => `New Homes by ${n}`,
-  community: (n) => `New Homes in ${n}`,
+  builder: (n) => `New Construction by ${n}`,
+  community: (n) => `New Construction in ${n}`,
   land: () => 'Land & Building Lots for Sale',
 };
 const SUBTITLES = {
@@ -194,12 +222,12 @@ const SUBTITLES = {
 };
 const BACK = {
   builder: { href: 'builders.html', label: '← Back to Home Builders' },
-  community: { href: 'communities.html', label: '← Back to New Home Communities' },
-  land: { href: 'index.html', label: '← Back to New Homes' },
+  community: { href: 'communities.html', label: '← Back to New Construction by City' },
+  land: { href: 'index.html', label: '← Back to New Construction' },
 };
 const CRUMB_PARENT = {
   builder: { href: 'builders.html', label: 'Home Builders' },
-  community: { href: 'communities.html', label: 'New Home Communities' },
+  community: { href: 'communities.html', label: 'New Construction by City' },
   land: { href: 'land.html', label: 'Land' },
 };
 
@@ -215,7 +243,7 @@ backLink.textContent = back.label;
 const crumb = document.getElementById('breadcrumb');
 const parent = CRUMB_PARENT[type];
 if (parent) {
-  crumb.innerHTML = `<a href="../index.html">Home</a><span>/</span><a href="index.html">New Homes</a><span>/</span><a href="${parent.href}">${parent.label}</a>` +
+  crumb.innerHTML = `<a href="../index.html">Home</a><span>/</span><a href="index.html">New Construction</a><span>/</span><a href="${parent.href}">${parent.label}</a>` +
     (name ? `<span>/</span>${name}` : '');
 }
 
@@ -233,7 +261,7 @@ document.getElementById('idx-results-mount').appendChild(widget);
 // Tailor the lead form to what the visitor is browsing.
 const resultsHeading = TITLES[type] ? TITLES[type](name) : 'New Home Listings';
 document.getElementById('leadFormTitle').textContent =
-  type === 'land' ? 'Want Alerts for New Land & Lots?' : `Want Alerts for New Homes Like ${name || 'These'}?`;
+  type === 'land' ? 'Want Alerts for New Land & Lots?' : `Want Alerts for New Construction Like ${name || 'These'}?`;
 document.getElementById('leadContext').value = resultsHeading;
 wireLeadForm(document.getElementById('newconstruction-form'), 'new-construction-lead', "Thanks! Clint and Aaron will follow up with matching listings soon.");
 </script>
