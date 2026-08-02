@@ -18,6 +18,7 @@
       box-shadow: var(--shadow-md);
       transition: transform 0.25s, box-shadow 0.25s;
       display: flex; flex-direction: column;
+      text-decoration: none; color: inherit; cursor: pointer;
     }
     .sub-card:hover { transform: translateY(-4px); box-shadow: 0 16px 60px rgba(25,77,155,0.18); }
     .sub-card-thumb {
@@ -44,14 +45,6 @@
     .legend-dot.spec::before { background: #3b82f6; }
     .legend-dot.reserved::before { background: #f97316; }
     @media (max-width: 768px) { .sub-grid { grid-template-columns: 1fr; } }
-    .sub-card-top-btn {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-      border-radius: 0;
-      padding: 1rem;
-      font-size: 1rem;
-    }
   </style>
   <!-- Buying Buddy plugin v5.02; Authorized Domain: cwreidaho.com -->
   <!-- DO NOT DEFER — must load in page head -->
@@ -151,8 +144,7 @@
     <div class="sub-grid">
 
       <!-- Lakehaven Estates -->
-      <div class="sub-card">
-        <a href="lakehaven.html" class="btn btn-primary sub-card-top-btn">View Interactive Plat Map →</a>
+      <a href="lakehaven.html" class="sub-card">
         <div class="sub-card-thumb">
           <img src="../images/lakehaven-plat-web.jpg" alt="Lakehaven Estates Plat Map" />
         </div>
@@ -173,23 +165,22 @@
             <span class="legend-dot sold">Sold</span>
           </div>
         </div>
-      </div>
+      </a>
 
       <!-- The Stadium -->
-      <div class="sub-card">
-        <a href="stadium.html" class="btn btn-primary sub-card-top-btn">View Interactive Plat Map →</a>
+      <a href="stadium.html" class="sub-card">
         <div class="sub-card-thumb">
           <img src="../images/stadium-plat-web.jpg" alt="The Stadium Subdivision Plat Map" />
         </div>
         <div class="sub-logo sub-logo-contain"><img src="../images/stadium-logo-white.png" alt="The Stadium" /></div>
         <div class="sub-card-body">
-          <span class="sub-card-label">Phase One — Active</span>
+          <span class="sub-card-label">New Lots Just Released</span>
           <h2 class="sub-card-title">The Stadium</h2>
-          <p class="sub-card-desc">Phase One of The Stadium is actively selling with spec homes under construction. Premium lots with modern floorplans — secure yours before they're gone.</p>
+          <p class="sub-card-desc">136 total lots across the full master plan, with new construction actively selling and 44 newly released lots. Premium lots with modern floorplans — secure yours before they're gone.</p>
           <div class="sub-stats">
-            <div class="sub-stat"><strong>30+</strong><span>Total Lots</span></div>
-            <div class="sub-stat"><strong>TBD</strong><span>Available</span></div>
-            <div class="sub-stat"><strong>TBD</strong><span>Sold</span></div>
+            <div class="sub-stat"><strong>82</strong><span>Total Lots</span></div>
+            <div class="sub-stat"><strong>53</strong><span>Available</span></div>
+            <div class="sub-stat"><strong>17</strong><span>Sold</span></div>
           </div>
           <div class="lot-legend">
             <span class="legend-dot available">Available</span>
@@ -198,7 +189,7 @@
             <span class="legend-dot sold">Sold</span>
           </div>
         </div>
-      </div>
+      </a>
 
       <!-- Ridgeland — coming soon -->
       <div class="sub-card">

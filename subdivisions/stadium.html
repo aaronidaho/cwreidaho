@@ -4,77 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Stadium — Interactive Plat Map | CWRE Idaho</title>
-  <meta name="description" content="View The Stadium subdivision Phase One interactive plat map — click any lot to see status, builder, and floor plan. New home lots in Idaho." />
+  <meta name="description" content="View The Stadium subdivision's full 136-lot master plan on an interactive satellite map, plus current lot inventory and pricing. New home lots in Idaho." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
-    /* ── (same styles as lakehaven.html) ── */
-    .plat-page { display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start; }
-    .plat-sidebar { position: sticky; top: 90px; }
-    .plat-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
-    .filter-btn {
-      padding: 0.45rem 1.1rem; border-radius: 50px; font-size: 0.82rem; font-weight: 600;
-      border: 2px solid transparent; cursor: pointer; transition: all 0.2s;
-      display: inline-flex; align-items: center; gap: 0.4rem;
-    }
-    .filter-btn.all { background: var(--navy); color: white; }
-    .filter-btn.available { background: #dcfce7; color: #15803d; border-color: #86efac; }
-    .filter-btn.spec { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
-    .filter-btn.reserved { background: #ffedd5; color: #c2410c; border-color: #fdba74; }
-    .filter-btn.sold { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
-    .filter-btn.active, .filter-btn:hover { opacity: 0.85; transform: scale(1.03); }
-    .filter-btn .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
-    .filter-btn.available .dot { background: #22c55e; }
-    .filter-btn.spec .dot { background: #3b82f6; }
-    .filter-btn.reserved .dot { background: #f97316; }
-    .filter-btn.sold .dot { background: #ef4444; }
-    .map-wrap {
-      position: relative; overflow: hidden; border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-md); background: #f0f0f0; cursor: grab;
-      user-select: none; touch-action: none;
-    }
-    .map-wrap:active { cursor: grabbing; }
-    .map-inner { transform-origin: 0 0; transition: transform 0.05s linear; width: 100%; position: relative; display: block; }
-    .map-inner img { width: 100%; display: block; pointer-events: none; }
-    .lot-pin {
-      position: absolute; width: 26px; height: 26px; border-radius: 50%;
-      transform: translate(-50%, -50%); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 9px; font-weight: 700; color: white;
-      border: 2px solid rgba(255,255,255,0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.35);
-      transition: transform 0.15s, box-shadow 0.15s; z-index: 10;
-    }
-    .lot-pin:hover { transform: translate(-50%, -50%) scale(1.45); box-shadow: 0 4px 16px rgba(0,0,0,0.45); z-index: 20; }
-    .lot-pin.available { background: #22c55e; }
-    .lot-pin.spec     { background: #3b82f6; }
-    .lot-pin.reserved { background: #f97316; }
-    .lot-pin.sold     { background: #ef4444; }
-    .lot-pin.filtered-out { opacity: 0.15; pointer-events: none; }
-    .lot-pin.selected { transform: translate(-50%, -50%) scale(1.5); box-shadow: 0 0 0 3px white, 0 4px 20px rgba(0,0,0,0.5); z-index: 30; }
-    .zoom-controls { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
-    .zoom-btn {
-      padding: 0.5rem 1.1rem; border-radius: var(--radius); font-size: 0.88rem; font-weight: 600;
-      background: var(--gray-light); color: var(--text); border: 1px solid var(--gray); cursor: pointer; transition: background 0.15s;
-    }
-    .zoom-btn:hover { background: var(--gray); }
     .zoom-hint { font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem; }
-    .lot-detail-card { background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; }
-    .lot-detail-header { padding: 1.25rem 1.5rem; background: var(--navy); color: white; }
-    .lot-detail-header h3 { color: white; font-size: 1.3rem; margin-bottom: 0.2rem; }
-    .status-badge { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.25rem 0.75rem; border-radius: 50px; }
-    .status-badge.available { background: #dcfce7; color: #15803d; }
-    .status-badge.spec     { background: #dbeafe; color: #1d4ed8; }
-    .status-badge.reserved { background: #ffedd5; color: #c2410c; }
-    .status-badge.sold     { background: #fee2e2; color: #b91c1c; }
-    .lot-detail-body { padding: 1.5rem; }
-    .lot-detail-row { display: flex; flex-direction: column; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-light); }
-    .lot-detail-row:last-child { border: none; margin-bottom: 0; padding-bottom: 0; }
-    .lot-detail-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-dark); margin-bottom: 0.2rem; }
-    .lot-detail-value { font-size: 0.95rem; font-weight: 600; color: var(--text); }
-    .lot-detail-empty { padding: 3rem 1.5rem; text-align: center; color: var(--text-light); }
-    .lot-detail-empty .empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
     .inventory-section { margin-top: 3rem; }
     .inventory-table-wrap { overflow-x: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow); }
     .inventory-table { width: 100%; border-collapse: collapse; }
@@ -82,14 +19,12 @@
     .inventory-table td { padding: 0.8rem 1rem; font-size: 0.9rem; border-bottom: 1px solid var(--gray-light); }
     .inventory-table tr:last-child td { border-bottom: none; }
     .inventory-table tr:hover td { background: var(--gray-light); }
-    .inventory-table tr { cursor: pointer; }
     .tbl-status { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; font-weight: 700; padding: 0.2rem 0.65rem; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.04em; }
     .tbl-status.available { background: #dcfce7; color: #15803d; }
     .tbl-status.spec     { background: #dbeafe; color: #1d4ed8; }
     .tbl-status.reserved { background: #ffedd5; color: #c2410c; }
     .tbl-status.sold     { background: #fee2e2; color: #b91c1c; }
     .tbl-status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; display: block; }
-    @media (max-width: 900px) { .plat-page { grid-template-columns: 1fr; } .plat-sidebar { position: static; } }
   </style>
   <!-- Buying Buddy plugin v5.02; Authorized Domain: cwreidaho.com -->
   <!-- DO NOT DEFER — must load in page head -->
@@ -180,156 +115,40 @@
   <div class="container page-hero-inner">
     <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="index.html">Featured Communities</a><span>/</span>The Stadium</div>
     <div class="page-hero-logo"><img src="../images/stadium-logo-white.png" alt="The Stadium" /></div>
-    <h1>The Stadium — Phase One</h1>
-    <p>Click any lot on the plat map to view status, builder, and floor plan. Use scroll/pinch to zoom, drag to pan.</p>
+    <h1>The Stadium</h1>
+    <p>136 lots on one master plan — new construction actively selling, with new lots just released.</p>
   </div>
 </div>
 
 <section class="section">
   <div class="container">
-    <div class="plat-page">
+    <div style="margin-bottom:1.25rem; padding:1rem 1.25rem; background:var(--gray-light); border-radius:var(--radius); font-size:0.9rem; color:var(--text-light);">
+      🗺️ This map shows Stadium Subdivision No. 2's full 136-lot master plan from Horrocks Engineers, positioned over live satellite imagery. Zoom in to read individual lot acreages. For current pricing and status, see the lot inventory below.
+    </div>
+    <div id="stadiumMap" style="height:600px; border-radius:var(--radius-lg); box-shadow:var(--shadow-md); overflow:hidden;"></div>
+    <p class="zoom-hint">💡 Scroll to zoom · Drag to pan · Satellite imagery © Esri</p>
 
-      <!-- LEFT: Map -->
-      <div class="plat-main">
-        <div class="plat-filters">
-          <button class="filter-btn all active" data-filter="all">All Lots</button>
-          <button class="filter-btn available" data-filter="available"><span class="dot"></span> Available</button>
-          <button class="filter-btn spec" data-filter="spec"><span class="dot"></span> Spec Build</button>
-          <button class="filter-btn reserved" data-filter="reserved"><span class="dot"></span> Reserved</button>
-          <button class="filter-btn sold" data-filter="sold"><span class="dot"></span> Sold</button>
-        </div>
-
-        <div class="map-wrap" id="mapWrap">
-          <div class="map-inner" id="mapInner">
-            <img src="../images/stadium-plat-web.jpg" alt="The Stadium Phase One Plat Map" id="platImg" />
-
-            <!-- ═══════════════════════════════════════
-                 LOT PINS — positions read directly from plat image
-                 left% / top% = center of lot on the 2000×2000 web image
-                 Colors: RED outline = sold, BLUE outline = spec build
-                 ═══════════════════════════════════════ -->
-
-            <!-- Block 2 upper column (north to south) -->
-            <div class="lot-pin spec" data-lot="B2-5"  style="left:38%;top:19%">5</div>
-            <div class="lot-pin spec" data-lot="B2-4"  style="left:38%;top:25%">4</div>
-            <div class="lot-pin spec" data-lot="B2-3"  style="left:38%;top:31%">3</div>
-            <div class="lot-pin sold" data-lot="B2-2"  style="left:36%;top:40%">2</div>
-
-            <!-- Block 1 entry column (north to south, near Goodson Rd) -->
-            <div class="lot-pin spec" data-lot="B1-10" style="left:52%;top:23%">10</div>
-            <div class="lot-pin spec" data-lot="B1-9"  style="left:52%;top:30%">9</div>
-            <div class="lot-pin spec" data-lot="B1-8"  style="left:51%;top:37%">8</div>
-            <div class="lot-pin spec" data-lot="B1-7"  style="left:48%;top:43%">7</div>
-            <div class="lot-pin spec" data-lot="B1-6"  style="left:42%;top:49%">6</div>
-            <div class="lot-pin spec" data-lot="B1-5"  style="left:37%;top:54%">5</div>
-            <div class="lot-pin spec" data-lot="B1-4"  style="left:38%;top:61%">4</div>
-            <div class="lot-pin spec" data-lot="B1-3"  style="left:33%;top:67%">3</div>
-
-            <!-- Block 1 Commerce Comet Way (top column, north to south) -->
-            <div class="lot-pin sold" data-lot="B1-28" style="left:63%;top:17%">28</div>
-            <div class="lot-pin spec" data-lot="B1-27" style="left:69%;top:21%">27</div>
-            <div class="lot-pin spec" data-lot="B1-26" style="left:69%;top:28%">26</div>
-            <div class="lot-pin spec" data-lot="B1-25" style="left:68%;top:34%">25</div>
-            <div class="lot-pin spec" data-lot="B1-24" style="left:68%;top:40%">24</div>
-            <div class="lot-pin spec" data-lot="B1-23" style="left:66%;top:45%">23</div>
-
-            <!-- Block 1 center / transition -->
-            <div class="lot-pin spec" data-lot="B1-22" style="left:66%;top:50%">22</div>
-            <div class="lot-pin spec" data-lot="B1-21" style="left:63%;top:56%">21</div>
-            <div class="lot-pin spec" data-lot="B1-20" style="left:69%;top:61%">20</div>
-            <div class="lot-pin spec" data-lot="B1-19" style="left:73%;top:67%">19</div>
-
-            <!-- Block 1 Commerce Court Way (lower-right, north to south) -->
-            <div class="lot-pin sold" data-lot="B1-18" style="left:82%;top:57%">18</div>
-            <div class="lot-pin spec" data-lot="B1-17" style="left:84%;top:63%">17</div>
-            <div class="lot-pin spec" data-lot="B1-16" style="left:85%;top:70%">16</div>
-            <div class="lot-pin spec" data-lot="B1-15" style="left:78%;top:74%">15</div>
-            <div class="lot-pin spec" data-lot="B1-14" style="left:81%;top:79%">14</div>
-            <div class="lot-pin spec" data-lot="B1-13" style="left:88%;top:76%">13</div>
-
-            <!-- Block 2 lower-right column (north to south) -->
-            <div class="lot-pin spec" data-lot="B2-12" style="left:54%;top:64%">12</div>
-            <div class="lot-pin spec" data-lot="B2-11" style="left:59%;top:66%">11</div>
-            <div class="lot-pin spec" data-lot="B2-10" style="left:63%;top:69%">10</div>
-            <div class="lot-pin spec" data-lot="B2-9"  style="left:67%;top:73%">9</div>
-            <div class="lot-pin spec" data-lot="B2-8"  style="left:70%;top:77%">8</div>
-            <div class="lot-pin spec" data-lot="B2-7"  style="left:72%;top:82%">7</div>
-            <div class="lot-pin spec" data-lot="B2-6"  style="left:74%;top:87%">6</div>
-          </div>
-        </div>
-
-        <div class="zoom-controls">
-          <button class="zoom-btn" id="zoomIn">＋ Zoom In</button>
-          <button class="zoom-btn" id="zoomOut">－ Zoom Out</button>
-          <button class="zoom-btn" id="zoomReset">↺ Reset</button>
-        </div>
-        <p class="zoom-hint">💡 Scroll to zoom · Drag to pan · Click a lot for details</p>
+    <div style="margin-top:1.5rem; background:var(--gray-light); border-radius:var(--radius-lg); padding:1.25rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+      <div>
+        <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray-dark);margin-bottom:0.5rem;">Availability</div>
+        <div id="summaryStats" style="display:flex;gap:1.5rem;flex-wrap:wrap;"></div>
       </div>
-
-      <!-- RIGHT: Detail Panel -->
-      <div class="plat-sidebar">
-        <div class="lot-detail-card" id="lotDetailCard">
-          <div class="lot-detail-empty" id="lotDetailEmpty">
-            <div class="empty-icon">📍</div>
-            <p><strong>Click any lot</strong> on the map to view its status, assigned builder, and floor plan.</p>
-          </div>
-          <div id="lotDetailContent" style="display:none;">
-            <div class="lot-detail-header" id="detailHeader">
-              <h3 id="detailTitle">Lot —</h3>
-              <span class="status-badge" id="detailBadge"></span>
-            </div>
-            <div class="lot-detail-body">
-              <div class="lot-detail-row">
-                <span class="lot-detail-label">Status</span>
-                <span class="lot-detail-value" id="detailStatus">—</span>
-              </div>
-              <div class="lot-detail-row">
-                <span class="lot-detail-label">Builder</span>
-                <span class="lot-detail-value" id="detailBuilder">—</span>
-              </div>
-              <div class="lot-detail-row">
-                <span class="lot-detail-label">Floor Plan</span>
-                <span class="lot-detail-value" id="detailFloorPlan">—</span>
-              </div>
-              <div class="lot-detail-row">
-                <span class="lot-detail-label">Sq Footage</span>
-                <span class="lot-detail-value" id="detailSqft">—</span>
-              </div>
-              <div class="lot-detail-row">
-                <span class="lot-detail-label">Notes</span>
-                <span class="lot-detail-value" id="detailNotes" style="font-weight:400;font-size:0.88rem;">—</span>
-              </div>
-              <a href="../contact.html" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:0.5rem;">
-                Inquire About This Lot →
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-top:1.25rem; background:var(--gray-light); border-radius:var(--radius-lg); padding:1.25rem;">
-          <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray-dark);margin-bottom:0.75rem;">Availability Summary</div>
-          <div id="summaryStats" style="display:flex;flex-direction:column;gap:0.5rem;"></div>
-        </div>
-
-        <div style="margin-top:1.25rem;">
-          <a href="tel:+12088704279" class="btn btn-gold" style="width:100%;justify-content:center;">📞 Call Clint — (208) 870-4279</a>
-        </div>
-      </div>
-
+      <a href="tel:+12088704279" class="btn btn-gold">📞 Call Clint — (208) 870-4279</a>
     </div>
 
     <!-- Inventory Table -->
     <div class="inventory-section">
-      <h2 style="margin-bottom:1.5rem;">Lot Inventory — Phase One</h2>
+      <h2 style="margin-bottom:0.5rem;">Lot Inventory</h2>
+      <p style="color:var(--text-light);margin-bottom:1.5rem;">Every currently-listed lot, sorted by lot number. <a href="../contact.html">Contact us</a> for the exact location of any lot.</p>
       <div class="inventory-table-wrap">
         <table class="inventory-table" id="inventoryTable">
           <thead>
             <tr>
               <th>Lot #</th>
               <th>Status</th>
+              <th>Price</th>
               <th>Builder</th>
-              <th>Floor Plan</th>
-              <th>Sq Ft</th>
+              <th>Acres</th>
               <th>Notes</th>
             </tr>
           </thead>
@@ -393,191 +212,177 @@
 </footer>
 
 <script src="../js/main.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 // ══════════════════════════════════════════════════
 //  THE STADIUM PHASE ONE — LOT DATA
 //  Edit this object to update any lot's info.
-//  Status pulled from plat map coloring:
-//  Red = sold, Blue = spec, Green = available, Orange = reserved
+//  Status read off the official CWRE Phase One plat, whose
+//  legend is: Blue = Sold, Red = Spec Build, Green = Available,
+//  Orange = Reserved. Spec builds are builder-owned and can be
+//  toured and purchased today.
 // ══════════════════════════════════════════════════
 const LOT_DATA = {
-  // Block 2 upper column (north to south)
-  "B2-5": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.26 AC", notes: "Block 2, Lot 5" },
-  "B2-4": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.08 AC", notes: "Block 2, Lot 4" },
-  "B2-3": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.22 AC", notes: "Block 2, Lot 3" },
-  "B2-2": { status: "sold", builder: "TBD", floorPlan: "TBD", sqft: "1.39 AC", notes: "Block 2, Lot 2 — sold per plat" },
-  // Block 1 entry column (north to south, near Goodson Rd)
-  "B1-10": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.20 AC", notes: "Block 1, Lot 10" },
-  "B1-9":  { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.24 AC", notes: "Block 1, Lot 9" },
-  "B1-8":  { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.20 AC", notes: "Block 1, Lot 8" },
-  "B1-7":  { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.25 AC", notes: "Block 1, Lot 7" },
-  "B1-6":  { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.14 AC", notes: "Block 1, Lot 6" },
-  "B1-5":  { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.26 AC", notes: "Block 1, Lot 5" },
-  "B1-4":  { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.11 AC", notes: "Block 1, Lot 4" },
-  "B1-3":  { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.21 AC", notes: "Block 1, Lot 3" },
-  // Block 1 Commerce Comet Way (top column, north to south)
-  "B1-28": { status: "sold", builder: "TBD", floorPlan: "TBD", sqft: "1.30 AC", notes: "Block 1, Lot 28 — sold per plat" },
-  "B1-27": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.33 AC", notes: "Block 1, Lot 27" },
-  "B1-26": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.11 AC", notes: "Block 1, Lot 26" },
-  "B1-25": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.06 AC", notes: "Block 1, Lot 25" },
-  "B1-24": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.02 AC", notes: "Block 1, Lot 24" },
-  "B1-23": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.34 AC", notes: "Block 1, Lot 23" },
-  // Block 1 center / transition
-  "B1-22": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.64 AC", notes: "Block 1, Lot 22" },
-  "B1-21": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.50 AC", notes: "Block 1, Lot 21" },
-  "B1-20": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.53 AC", notes: "Block 1, Lot 20" },
-  "B1-19": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.06 AC", notes: "Block 1, Lot 19" },
-  // Block 1 Commerce Court Way (lower-right, north to south)
-  "B1-18": { status: "sold", builder: "TBD", floorPlan: "TBD", sqft: "2.79 AC", notes: "Block 1, Lot 18 — sold per plat" },
-  "B1-17": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "2.75 AC", notes: "Block 1, Lot 17" },
-  "B1-16": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.01 AC", notes: "Block 1, Lot 16" },
-  "B1-15": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.01 AC", notes: "Block 1, Lot 15" },
-  "B1-14": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.01 AC", notes: "Block 1, Lot 14" },
-  "B1-13": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "2.05 AC", notes: "Block 1, Lot 13" },
-  // Block 2 lower-right column (north to south)
-  "B2-12": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.22 AC", notes: "Block 2, Lot 12" },
-  "B2-11": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.37 AC", notes: "Block 2, Lot 11" },
-  "B2-10": { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.02 AC", notes: "Block 2, Lot 10" },
-  "B2-9":  { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.02 AC", notes: "Block 2, Lot 9" },
-  "B2-8":  { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.05 AC", notes: "Block 2, Lot 8" },
-  "B2-7":  { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.07 AC", notes: "Block 2, Lot 7" },
-  "B2-6":  { status: "spec", builder: "TBD", floorPlan: "TBD", sqft: "1.00 AC", notes: "Block 2, Lot 6" },
+  // Block 1 — west side, off Goodson Rd (north to south)
+  "B1-10": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.20 AC", notes: "Block 1, Lot 10" },
+  "B1-9":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.24 AC", notes: "Block 1, Lot 9" },
+  "B1-8":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.20 AC", notes: "Block 1, Lot 8" },
+  "B1-7":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.25 AC", notes: "Block 1, Lot 7" },
+  "B1-6":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.14 AC", notes: "Block 1, Lot 6" },
+  "B1-5":  { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.26 AC", notes: "Block 1, Lot 5" },
+  "B1-4":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.11 AC", notes: "Block 1, Lot 4" },
+  "B1-3":  { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.21 AC", notes: "Block 1, Lot 3" },
+  "B1-2":  { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.20 AC", notes: "Block 1, Lot 2" },
+  // Block 1 — Iron Horse Dr / Triple Crown Pl (center)
+  "B1-11": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.22 AC", notes: "Block 1, Lot 11" },
+  "B1-12": { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.37 AC", notes: "Block 1, Lot 12" },
+  "B1-13": { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "2.05 AC", notes: "Block 1, Lot 13" },
+  "B1-14": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.01 AC", notes: "Block 1, Lot 14" },
+  "B1-15": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.01 AC", notes: "Block 1, Lot 15" },
+  "B1-16": { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.01 AC", notes: "Block 1, Lot 16" },
+  "B1-17": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "2.75 AC", notes: "Block 1, Lot 17" },
+  "B1-18": { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "2.79 AC", notes: "Block 1, Lot 18" },
+  "B1-19": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.06 AC", notes: "Block 1, Lot 19" },
+  "B1-20": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.53 AC", notes: "Block 1, Lot 20" },
+  "B1-21": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.50 AC", notes: "Block 1, Lot 21" },
+  // Block 1 — Commerce Comet Way (northeast, south to north)
+  "B1-22": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.64 AC", notes: "Block 1, Lot 22" },
+  "B1-23": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.34 AC", notes: "Block 1, Lot 23" },
+  "B1-24": { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.02 AC", notes: "Block 1, Lot 24" },
+  "B1-25": { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.06 AC", notes: "Block 1, Lot 25" },
+  "B1-26": { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.11 AC", notes: "Block 1, Lot 26" },
+  "B1-27": { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.33 AC", notes: "Block 1, Lot 27" },
+  "B1-28": { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.30 AC", notes: "Block 1, Lot 28" },
+  // Block 2 — west column off Goodson Rd (south to north)
+  "B2-2":  { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.39 AC", notes: "Block 2, Lot 2" },
+  "B2-3":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.22 AC", notes: "Block 2, Lot 3" },
+  "B2-4":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.08 AC", notes: "Block 2, Lot 4" },
+  // Block 2 — east side, along Iron Horse Dr (south to north)
+  "B2-5":  { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.04 AC", notes: "Block 2, Lot 5" },
+  "B2-6":  { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.00 AC", notes: "Block 2, Lot 6" },
+  "B2-7":  { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.07 AC", notes: "Block 2, Lot 7" },
+  "B2-8":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.05 AC", notes: "Block 2, Lot 8" },
+  "B2-9":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.02 AC", notes: "Block 2, Lot 9" },
+  "B2-10": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.02 AC", notes: "Block 2, Lot 10" },
+  "B2-11": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.37 AC", notes: "Block 2, Lot 11" },
+  "B2-12": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.22 AC", notes: "Block 2, Lot 12" },
 };
 
 const STATUS_LABEL = { available: "Available", spec: "Spec Build", reserved: "Reserved", sold: "Sold" };
 
-document.querySelectorAll('.lot-pin').forEach(pin => {
-  const lotKey = pin.dataset.lot;
-  const d = LOT_DATA[lotKey];
-  if (!d) return;
-  pin.className = 'lot-pin ' + d.status;
-  pin.textContent = lotKey.split('-')[1];
-});
+// ══════════════════════════════════════════════════
+//  THE STADIUM PHASE TWO — LOT DATA
+//  Sourced from LandVest Idaho's live lot listings
+//  (landvestidaho.com/communities/stadium-subdivision),
+//  Plat 2. No plat map image yet, so these show in the
+//  inventory table only — no pins on the map.
+// ══════════════════════════════════════════════════
+const PHASE2_LOT_DATA = {
+  "P2-33-2": { status: "available", price: "$238,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.31 AC", block: "Block 2", lotNum: "33", notes: "Block 2, Lot 33" },
+  "P2-34-2": { status: "available", price: "$240,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.54 AC", block: "Block 2", lotNum: "34", notes: "Block 2, Lot 34" },
+  "P2-35-2": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.58 AC", block: "Block 2", lotNum: "35", notes: "Block 2, Lot 35" },
+  "P2-36-2": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.83 AC", block: "Block 2", lotNum: "36", notes: "Block 2, Lot 36" },
+  "P2-37-2": { status: "available", price: "$229,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.38 AC", block: "Block 2", lotNum: "37", notes: "Block 2, Lot 37" },
+  "P2-38-2": { status: "available", price: "$229,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.36 AC", block: "Block 2", lotNum: "38", notes: "Block 2, Lot 38" },
+  "P2-38-3": { status: "available", price: "$238,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.27 AC", block: "Block 3", lotNum: "38", notes: "Block 3, Lot 38" },
+  "P2-39-2": { status: "available", price: "$235,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.20 AC", block: "Block 2", lotNum: "39", notes: "Block 2, Lot 39" },
+  "P2-39-3": { status: "available", price: "$295,000.00", builder: "TBD", floorPlan: "TBD", sqft: "2.93 AC", block: "Block 3", lotNum: "39", notes: "Block 3, Lot 39" },
+  "P2-40-2": { status: "available", price: "$239,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.26 AC", block: "Block 2", lotNum: "40", notes: "Block 2, Lot 40" },
+  "P2-40-3": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.68 AC", block: "Block 3", lotNum: "40", notes: "Block 3, Lot 40" },
+  "P2-41-2": { status: "available", price: "$225,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.42 AC", block: "Block 2", lotNum: "41", notes: "Block 2, Lot 41" },
+  "P2-41-3": { status: "available", price: "$248,000.00", builder: "TBD", floorPlan: "TBD", sqft: "3.32 AC", block: "Block 3", lotNum: "41", notes: "Block 3, Lot 41" },
+  "P2-42-2": { status: "available", price: "$247,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.94 AC", block: "Block 2", lotNum: "42", notes: "Block 2, Lot 42" },
+  "P2-42-3": { status: "available", price: "$225,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.14 AC", block: "Block 3", lotNum: "42", notes: "Block 3, Lot 42" },
+  "P2-43-2": { status: "available", price: "$225,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.63 AC", block: "Block 2", lotNum: "43", notes: "Block 2, Lot 43" },
+  "P2-43-3": { status: "available", price: "$235,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.43 AC", block: "Block 3", lotNum: "43", notes: "Block 3, Lot 43" },
+  "P2-44-2": { status: "available", price: "$295,000.00", builder: "TBD", floorPlan: "TBD", sqft: "2.86 AC", block: "Block 2", lotNum: "44", notes: "Block 2, Lot 44" },
+  "P2-44-3": { status: "available", price: "$225,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.52 AC", block: "Block 3", lotNum: "44", notes: "Block 3, Lot 44" },
+  "P2-45-2": { status: "available", price: "$225,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.31 AC", block: "Block 2", lotNum: "45", notes: "Block 2, Lot 45" },
+  "P2-45-3": { status: "available", price: "$225,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.42 AC", block: "Block 3", lotNum: "45", notes: "Block 3, Lot 45" },
+  "P2-46-2": { status: "available", price: "$235,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.67 AC", block: "Block 2", lotNum: "46", notes: "Block 2, Lot 46" },
+  "P2-46-3": { status: "available", price: "$235,000.00", builder: "TBD", floorPlan: "TBD", sqft: "2.21 AC", block: "Block 3", lotNum: "46", notes: "Block 3, Lot 46" },
+  "P2-47-2": { status: "available", price: "$215,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.21 AC", block: "Block 2", lotNum: "47", notes: "Block 2, Lot 47" },
+  "P2-47-3": { status: "available", price: "$219,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.39 AC", block: "Block 3", lotNum: "47", notes: "Block 3, Lot 47" },
+  "P2-48-2": { status: "available", price: "$220,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.32 AC", block: "Block 2", lotNum: "48", notes: "Block 2, Lot 48" },
+  "P2-48-3": { status: "available", price: "$235,000.00", builder: "TBD", floorPlan: "TBD", sqft: "2.15 AC", block: "Block 3", lotNum: "48", notes: "Block 3, Lot 48" },
+  "P2-49-2": { status: "available", price: "$220,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.21 AC", block: "Block 2", lotNum: "49", notes: "Block 2, Lot 49" },
+  "P2-49-3": { status: "available", price: "$249,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.11 AC", block: "Block 3", lotNum: "49", notes: "Block 3, Lot 49" },
+  "P2-50-2": { status: "available", price: "$220,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.23 AC", block: "Block 2", lotNum: "50", notes: "Block 2, Lot 50" },
+  "P2-50-3": { status: "available", price: "$235,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.68 AC", block: "Block 3", lotNum: "50", notes: "Block 3, Lot 50" },
+  "P2-51-2": { status: "available", price: "$220,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.17 AC", block: "Block 2", lotNum: "51", notes: "Block 2, Lot 51" },
+  "P2-51-3": { status: "available", price: "$260,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.67 AC", block: "Block 3", lotNum: "51", notes: "Block 3, Lot 51" },
+  "P2-52-2": { status: "available", price: "$219,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.05 AC", block: "Block 2", lotNum: "52", notes: "Block 2, Lot 52" },
+  "P2-52-3": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "2.11 AC", block: "Block 3", lotNum: "52", notes: "Block 3, Lot 52" },
+  "P2-53-2": { status: "available", price: "$185,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.14 AC", block: "Block 2", lotNum: "53", notes: "Block 2, Lot 53" },
+  "P2-53-3": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.89 AC", block: "Block 3", lotNum: "53", notes: "Block 3, Lot 53" },
+  "P2-54-3": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.64 AC", block: "Block 3", lotNum: "54", notes: "Block 3, Lot 54" },
+  "P2-55-3": { status: "reserved", price: "", builder: "TBD", floorPlan: "TBD", sqft: "1.78 AC", block: "Block 3", lotNum: "55", notes: "Block 3, Lot 55" },
+  "P2-56-3": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.72 AC", block: "Block 3", lotNum: "56", notes: "Block 3, Lot 56" },
+  "P2-57-3": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.87 AC", block: "Block 3", lotNum: "57", notes: "Block 3, Lot 57" },
+  "P2-58-3": { status: "available", price: "$235,000.00", builder: "TBD", floorPlan: "TBD", sqft: "2.39 AC", block: "Block 3", lotNum: "58", notes: "Block 3, Lot 58" },
+  "P2-59-3": { status: "available", price: "$215,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.70 AC", block: "Block 3", lotNum: "59", notes: "Block 3, Lot 59" },
+  "P2-60-3": { status: "available", price: "$180,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.24 AC", block: "Block 3", lotNum: "60", notes: "Block 3, Lot 60" },
+};
+
+// ══════════════════════════════════════════════════
+//  UNIFIED LOT INVENTORY — combines both data sets
+//  above into one table sorted by lot number, with one
+//  combined availability summary.
+// ══════════════════════════════════════════════════
+const ALL_LOTS = [
+  ...Object.entries(LOT_DATA).map(([lotKey, d]) => {
+    const [block, lotNum] = lotKey.split('-');
+    return { lotNum: Number(lotNum), status: d.status, price: '', builder: d.builder, acres: d.sqft, notes: d.notes };
+  }),
+  ...Object.entries(PHASE2_LOT_DATA).map(([key, d]) => ({
+    lotNum: Number(d.lotNum), status: d.status, price: d.price, builder: d.builder, acres: d.sqft, notes: d.notes,
+  })),
+].sort((a, b) => a.lotNum - b.lotNum);
 
 const tbody = document.getElementById('inventoryBody');
-Object.entries(LOT_DATA).forEach(([lotKey, d]) => {
-  const [block, lotNum] = lotKey.split('-');
-  const blockLabel = block === 'B1' ? 'Block 1' : 'Block 2';
+ALL_LOTS.forEach(d => {
   const tr = document.createElement('tr');
-  tr.dataset.lot = lotKey;
   tr.innerHTML = `
-    <td><strong>Lot ${lotNum}</strong><br><small style="font-weight:400;font-size:0.78rem;color:var(--text-light)">${blockLabel}</small></td>
+    <td><strong>Lot ${d.lotNum}</strong></td>
     <td><span class="tbl-status ${d.status}">${STATUS_LABEL[d.status]}</span></td>
+    <td>${d.price || '—'}</td>
     <td>${d.builder || '—'}</td>
-    <td>${d.floorPlan || '—'}</td>
-    <td>${d.sqft || '—'}</td>
+    <td>${d.acres || '—'}</td>
     <td style="font-size:0.82rem;color:var(--text-light)">${d.notes || '—'}</td>
   `;
-  tr.addEventListener('click', () => selectLot(lotKey));
   tbody.appendChild(tr);
 });
 
-function buildSummary() {
+(function buildSummary() {
   const counts = { available: 0, spec: 0, reserved: 0, sold: 0 };
-  Object.values(LOT_DATA).forEach(d => counts[d.status]++);
+  ALL_LOTS.forEach(d => counts[d.status]++);
   const labels = { available: '🟢 Available', spec: '🔵 Spec Build', reserved: '🟠 Reserved', sold: '🔴 Sold' };
   const el = document.getElementById('summaryStats');
-  el.innerHTML = Object.entries(counts).map(([s, c]) =>
-    `<div style="display:flex;justify-content:space-between;font-size:0.9rem;">
-       <span style="color:var(--text-light)">${labels[s]}</span>
-       <strong>${c}</strong>
-     </div>`
+  el.innerHTML = Object.entries(counts).filter(([,c]) => c > 0).map(([s, c]) =>
+    `<div style="font-size:0.9rem;"><span style="color:var(--text-light)">${labels[s]}:</span> <strong>${c}</strong></div>`
   ).join('');
-}
-buildSummary();
-
-let selectedPin = null;
-function selectLot(lotKey) {
-  const d = LOT_DATA[lotKey];
-  if (!d) return;
-  if (selectedPin) selectedPin.classList.remove('selected');
-  selectedPin = document.querySelector(`.lot-pin[data-lot="${lotKey}"]`);
-  if (selectedPin) selectedPin.classList.add('selected');
-  document.getElementById('lotDetailEmpty').style.display = 'none';
-  document.getElementById('lotDetailContent').style.display = 'block';
-  const [block, lotNum] = lotKey.split('-');
-  const blockLabel = block === 'B1' ? 'Block 1' : 'Block 2';
-  document.getElementById('detailTitle').textContent = `${blockLabel} — Lot ${lotNum}`;
-  const badge = document.getElementById('detailBadge');
-  badge.textContent = STATUS_LABEL[d.status];
-  badge.className = 'status-badge ' + d.status;
-  document.getElementById('detailStatus').textContent = STATUS_LABEL[d.status];
-  document.getElementById('detailBuilder').textContent = d.builder || '—';
-  document.getElementById('detailFloorPlan').textContent = d.floorPlan || '—';
-  document.getElementById('detailSqft').textContent = d.sqft || '—';
-  document.getElementById('detailNotes').textContent = d.notes || '—';
-}
-
-document.querySelectorAll('.lot-pin').forEach(pin => {
-  pin.addEventListener('click', () => selectLot(pin.dataset.lot));
-});
-
-let currentFilter = 'all';
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    currentFilter = btn.dataset.filter;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.lot-pin').forEach(pin => {
-      const status = LOT_DATA[pin.dataset.lot]?.status;
-      pin.classList.toggle('filtered-out', currentFilter !== 'all' && status !== currentFilter);
-    });
-    document.querySelectorAll('#inventoryBody tr').forEach(row => {
-      const status = LOT_DATA[row.dataset.lot]?.status;
-      row.style.display = (currentFilter === 'all' || status === currentFilter) ? '' : 'none';
-    });
-  });
-});
-
-(function() {
-  const wrap = document.getElementById('mapWrap');
-  const inner = document.getElementById('mapInner');
-  let scale = 1, minScale = 0.5, maxScale = 5;
-  let tx = 0, ty = 0;
-  let dragging = false, startX, startY, startTx, startTy;
-  function clamp(val, min, max) { return Math.min(Math.max(val, min), max); }
-  function apply() { inner.style.transition = 'none'; inner.style.transform = `translate(${tx}px,${ty}px) scale(${scale})`; }
-  wrap.addEventListener('wheel', e => {
-    e.preventDefault();
-    const rect = wrap.getBoundingClientRect();
-    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-    const delta = e.deltaY < 0 ? 1.12 : 0.89;
-    const newScale = clamp(scale * delta, minScale, maxScale);
-    tx = mx - (mx - tx) * (newScale / scale);
-    ty = my - (my - ty) * (newScale / scale);
-    scale = newScale; apply();
-  }, { passive: false });
-  wrap.addEventListener('mousedown', e => {
-    if (e.target.classList.contains('lot-pin')) return;
-    dragging = true; startX = e.clientX; startY = e.clientY; startTx = tx; startTy = ty;
-  });
-  window.addEventListener('mousemove', e => {
-    if (!dragging) return; tx = startTx + (e.clientX - startX); ty = startTy + (e.clientY - startY); apply();
-  });
-  window.addEventListener('mouseup', () => { dragging = false; });
-  let lastDist = null;
-  wrap.addEventListener('touchstart', e => {
-    if (e.touches.length === 1 && !e.target.classList.contains('lot-pin')) {
-      dragging = true; startX = e.touches[0].clientX; startY = e.touches[0].clientY; startTx = tx; startTy = ty;
-    }
-  }, { passive: true });
-  wrap.addEventListener('touchmove', e => {
-    if (e.touches.length === 2) {
-      e.preventDefault();
-      const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-      if (lastDist) { scale = clamp(scale * (d / lastDist), minScale, maxScale); apply(); }
-      lastDist = d;
-    } else if (dragging) { tx = startTx + (e.touches[0].clientX - startX); ty = startTy + (e.touches[0].clientY - startY); apply(); }
-  }, { passive: false });
-  wrap.addEventListener('touchend', () => { dragging = false; lastDist = null; });
-  document.getElementById('zoomIn').addEventListener('click', () => { scale = clamp(scale * 1.3, minScale, maxScale); apply(); });
-  document.getElementById('zoomOut').addEventListener('click', () => { scale = clamp(scale * 0.77, minScale, maxScale); apply(); });
-  document.getElementById('zoomReset').addEventListener('click', () => {
-    scale = 1; tx = 0; ty = 0;
-    inner.style.transition = 'transform 0.3s ease';
-    inner.style.transform = 'translate(0,0) scale(1)';
-  });
 })();
+
+// ══════════════════════════════════════════════════
+//  INTERACTIVE MAP — Horrocks Engineers' 136-lot master
+//  plat overlaid on live Esri satellite imagery. Bounds
+//  below were hand-calibrated against real satellite
+//  imagery (dragged/scaled to match roads and field
+//  lines) — see subdivisions/stadium.html history if
+//  these ever need re-calibrating.
+// ══════════════════════════════════════════════════
+const stadiumMap = L.map('stadiumMap');
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+  attribution: 'Tiles &copy; Esri',
+  maxZoom: 20,
+}).addTo(stadiumMap);
+
+const PLAT_BOUNDS = [
+  [43.76362803032697, -116.7549369981232],
+  [43.776017003790116, -116.73179452187561],
+];
+L.imageOverlay('../images/stadium-master-plat-overlay.png', PLAT_BOUNDS, { opacity: 1 }).addTo(stadiumMap);
+stadiumMap.fitBounds(PLAT_BOUNDS);
 </script>
 
   <!-- UserWay ADA Accessibility Widget — replace ACCOUNT_ID after signing up at userway.org -->
