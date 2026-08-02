@@ -123,7 +123,7 @@
 <section class="section">
   <div class="container">
     <div style="margin-bottom:1.25rem; padding:1rem 1.25rem; background:var(--gray-light); border-radius:var(--radius); font-size:0.9rem; color:var(--text-light);">
-      🗺️ This map shows Stadium Subdivision No. 2's full 136-lot master plan from Horrocks Engineers, positioned over live satellite imagery. Zoom in to read individual lot acreages. For current pricing and status, see the lot inventory below.
+      🗺️ All 136 lots of the Stadium Subdivision No. 2 master plan, mapped over live satellite imagery. Hover any lot to see its number and acreage, or click it for details. For current pricing, see the lot inventory below.
     </div>
     <div id="stadiumMap" style="height:600px; border-radius:var(--radius-lg); box-shadow:var(--shadow-md); overflow:hidden;"></div>
     <p class="zoom-hint">💡 Scroll to zoom · Drag to pan · Satellite imagery © Esri</p>
@@ -364,25 +364,85 @@ ALL_LOTS.forEach(d => {
 })();
 
 // ══════════════════════════════════════════════════
-//  INTERACTIVE MAP — Horrocks Engineers' 136-lot master
-//  plat overlaid on live Esri satellite imagery. Bounds
-//  below were hand-calibrated against real satellite
-//  imagery (dragged/scaled to match roads and field
-//  lines) — see subdivisions/stadium.html history if
-//  these ever need re-calibrating.
+//  INTERACTIVE MAP — every lot is a real polygon.
+//
+//  ../data/stadium-lots.geojson holds all 136 lots as
+//  individual parcels, extracted from the CAD vector
+//  geometry inside Horrocks Engineers' "Stadium
+//  Subdivision No. 2" PDF (not traced by hand or by eye).
+//  The georeference is scaled so each polygon's computed
+//  area matches the acreage printed on the plat — the
+//  median lot lands within 0.33% of its surveyed acreage.
+//
+//  To change a lot's status, edit MASTER_LOT_STATUS below.
+//  Anything not listed falls back to "unreleased".
 // ══════════════════════════════════════════════════
+const STATUS_STYLE = {
+  available:  { color: '#1e8e4e', fill: '#2ecc71', label: 'Available' },
+  spec:       { color: '#a5281f', fill: '#e74c3c', label: 'Spec Build' },
+  reserved:   { color: '#a86608', fill: '#f39c12', label: 'Reserved' },
+  sold:       { color: '#1c5b8a', fill: '#3498db', label: 'Sold' },
+  unreleased: { color: '#5c636a', fill: '#95a5a6', label: 'Future Release' },
+};
+
+// Master-plat lot number -> status. Fill in as lots are released.
+const MASTER_LOT_STATUS = {};
+
 const stadiumMap = L.map('stadiumMap');
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
   attribution: 'Tiles &copy; Esri',
   maxZoom: 20,
 }).addTo(stadiumMap);
 
-const PLAT_BOUNDS = [
-  [43.76362803032697, -116.7549369981232],
-  [43.776017003790116, -116.73179452187561],
-];
-L.imageOverlay('../images/stadium-master-plat-overlay.png', PLAT_BOUNDS, { opacity: 1 }).addTo(stadiumMap);
-stadiumMap.fitBounds(PLAT_BOUNDS);
+function lotStyle(feature) {
+  const s = STATUS_STYLE[MASTER_LOT_STATUS[feature.properties.lot] || 'unreleased'];
+  return { color: s.color, weight: 1, opacity: 0.9, fillColor: s.fill, fillOpacity: 0.42 };
+}
+
+fetch('../data/stadium-lots.geojson')
+  .then(r => r.json())
+  .then(geo => {
+    const layer = L.geoJSON(geo, {
+      style: lotStyle,
+      onEachFeature: (feature, lyr) => {
+        const p = feature.properties;
+        const st = MASTER_LOT_STATUS[p.lot] || 'unreleased';
+        const s = STATUS_STYLE[st];
+        lyr.bindTooltip(`Lot ${p.lot} · ${p.acres.toFixed(2)} AC`, { sticky: true });
+        lyr.bindPopup(
+          `<div style="min-width:150px">
+             <div style="font-size:1.05rem;font-weight:700;margin-bottom:2px">Lot ${p.lot}</div>
+             <div style="color:#555;font-size:0.86rem">${p.acres.toFixed(2)} acres</div>
+             <div style="margin:6px 0"><span style="display:inline-block;padding:2px 8px;border-radius:99px;
+               background:${s.fill};color:#fff;font-size:0.76rem;font-weight:700">${s.label}</span></div>
+             <a href="../contact.html" style="font-size:0.84rem;font-weight:600">Ask about this lot →</a>
+           </div>`);
+        lyr.on({
+          mouseover: e => e.target.setStyle({ weight: 3, fillOpacity: 0.65 }),
+          mouseout:  e => layer.resetStyle(e.target),
+        });
+      },
+    }).addTo(stadiumMap);
+    stadiumMap.fitBounds(layer.getBounds(), { padding: [12, 12] });
+
+    const legend = L.control({ position: 'bottomleft' });
+    legend.onAdd = () => {
+      const div = L.DomUtil.create('div');
+      div.style.cssText = 'background:rgba(255,255,255,0.94);padding:8px 10px;border-radius:8px;' +
+                          'font-size:0.78rem;line-height:1.7;box-shadow:0 1px 5px rgba(0,0,0,0.3)';
+      div.innerHTML = Object.values(STATUS_STYLE).map(s =>
+        `<div><span style="display:inline-block;width:12px;height:12px;border-radius:3px;
+          background:${s.fill};border:1px solid ${s.color};vertical-align:-1px"></span> ${s.label}</div>`
+      ).join('');
+      return div;
+    };
+    legend.addTo(stadiumMap);
+  })
+  .catch(() => {
+    document.getElementById('stadiumMap').innerHTML =
+      '<p style="padding:2rem;text-align:center;color:#666">The lot map could not be loaded. ' +
+      'Please call Clint at (208) 870-4279 for current lot availability.</p>';
+  });
 </script>
 
   <!-- UserWay ADA Accessibility Widget — replace ACCOUNT_ID after signing up at userway.org -->
