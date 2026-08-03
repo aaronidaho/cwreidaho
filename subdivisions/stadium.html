@@ -26,6 +26,11 @@
     .tbl-status.sold     { background: #dbeafe; color: #1d4ed8; }
     .tbl-status.future   { background: #eef0f2; color: #4b5563; }
     .tbl-status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; display: block; }
+    .phase-callout { display: inline-flex; align-items: center; gap: 6px; width: max-content;
+      transform: translate(-50%, -100%); background: #fff; color: #1a1a1a; font-weight: 800;
+      font-size: 0.72rem; letter-spacing: 0.04em; padding: 4px 10px; border-radius: 6px;
+      border: 2px solid #888; box-shadow: 0 2px 6px rgba(0,0,0,0.35); }
+    .phase-callout span { width: 9px; height: 9px; border-radius: 2px; display: inline-block; flex: none; }
   </style>
   <!-- Buying Buddy plugin v5.02; Authorized Domain: cwreidaho.com -->
   <!-- DO NOT DEFER — must load in page head -->
@@ -293,18 +298,43 @@ Promise.all([
     interactive: false,
   }).addTo(stadiumMap);
 
-  phases.features.forEach(f => {
+  const phaseLabels = phases.features.map(f => {
     const c = f.properties.labelPoint || L.geoJSON(f).getBounds().getCenter();
-    L.marker(c, { interactive: false, icon: L.divIcon({
+    const marker = L.marker(c, { interactive: false, icon: L.divIcon({
       className: '',
-      html: `<div style="white-space:nowrap;transform:translate(-50%,-50%);
-              background:${PHASE_COLOR[f.properties.phase]};color:#1a1a1a;font-weight:800;
-              font-size:0.74rem;letter-spacing:0.04em;padding:3px 9px;border-radius:99px;
-              border:2px solid rgba(0,0,0,0.55);box-shadow:0 1px 4px rgba(0,0,0,0.4)">
+      // iconSize null lets the callout size to its own text; Leaflet would
+      // otherwise pin it to a fixed box and collapse the label.
+      iconSize: null,
+      html: `<div class="phase-callout" style="border-color:${PHASE_COLOR[f.properties.phase]}">
+              <span style="background:${PHASE_COLOR[f.properties.phase]}"></span>
               ${f.properties.label.toUpperCase()} · ${f.properties.lots} LOTS</div>`,
-      iconSize: [0, 0],
     })}).addTo(stadiumMap);
+    return marker;
   });
+
+  // The phases meet at the north-east corner, so their callouts can collide at
+  // some zooms. Stack any that overlap instead of letting them overprint.
+  function declutter() {
+    const els = phaseLabels.map(m => m.getElement() && m.getElement().firstElementChild)
+                           .filter(Boolean);
+    els.forEach(el => { el.style.marginTop = '0px'; });
+    const placed = [];
+    els.map(el => ({ el, r: el.getBoundingClientRect() }))
+       .sort((a, b) => a.r.left - b.r.left)
+       .forEach(({ el, r }) => {
+         let shift = 0;
+         let box = { top: r.top, bottom: r.bottom, left: r.left, right: r.right };
+         while (placed.some(p => box.left < p.right && p.left < box.right &&
+                                 box.top < p.bottom && p.top < box.bottom)) {
+           shift -= r.height + 5;
+           box = { ...box, top: r.top + shift, bottom: r.bottom + shift };
+         }
+         el.style.marginTop = shift + 'px';
+         placed.push(box);
+       });
+  }
+  stadiumMap.on('zoomend moveend', declutter);
+  setTimeout(declutter, 0);
 
   const lotLayer = L.geoJSON(lots, {
     style: lotStyle,
@@ -320,7 +350,10 @@ Promise.all([
     },
   }).addTo(stadiumMap);
 
-  stadiumMap.fitBounds(lotLayer.getBounds(), { padding: [12, 12] });
+  // Include the label anchors so the callouts above the plat stay in frame.
+  const view = lotLayer.getBounds();
+  phases.features.forEach(f => f.properties.labelPoint && view.extend(f.properties.labelPoint));
+  stadiumMap.fitBounds(view, { paddingTopLeft: [12, 26], paddingBottomRight: [12, 12] });
 
   const legend = L.control({ position: 'bottomleft' });
   legend.onAdd = () => {
