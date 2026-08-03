@@ -21,9 +21,10 @@
     .inventory-table tr:hover td { background: var(--gray-light); }
     .tbl-status { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; font-weight: 700; padding: 0.2rem 0.65rem; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.04em; }
     .tbl-status.available { background: #dcfce7; color: #15803d; }
-    .tbl-status.spec     { background: #dbeafe; color: #1d4ed8; }
+    .tbl-status.forsale  { background: #fee2e2; color: #b91c1c; }
     .tbl-status.reserved { background: #ffedd5; color: #c2410c; }
-    .tbl-status.sold     { background: #fee2e2; color: #b91c1c; }
+    .tbl-status.sold     { background: #dbeafe; color: #1d4ed8; }
+    .tbl-status.future   { background: #eef0f2; color: #4b5563; }
     .tbl-status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; display: block; }
   </style>
   <!-- Buying Buddy plugin v5.02; Authorized Domain: cwreidaho.com -->
@@ -123,7 +124,7 @@
 <section class="section">
   <div class="container">
     <div style="margin-bottom:1.25rem; padding:1rem 1.25rem; background:var(--gray-light); border-radius:var(--radius); font-size:0.9rem; color:var(--text-light);">
-      🗺️ All 136 lots of the Stadium Subdivision No. 2 master plan, mapped over live satellite imagery. Hover any lot to see its number and acreage, or click it for details. For current pricing, see the lot inventory below.
+      🗺️ All 136 lots of the Stadium master plan, mapped over live satellite imagery and outlined by phase. Hover any lot for its block, lot number and acreage — click it for pricing, builder and status.
     </div>
     <div id="stadiumMap" style="height:600px; border-radius:var(--radius-lg); box-shadow:var(--shadow-md); overflow:hidden;"></div>
     <p class="zoom-hint">💡 Scroll to zoom · Drag to pan · Satellite imagery © Esri</p>
@@ -139,7 +140,7 @@
     <!-- Inventory Table -->
     <div class="inventory-section">
       <h2 style="margin-bottom:0.5rem;">Lot Inventory</h2>
-      <p style="color:var(--text-light);margin-bottom:1.5rem;">Every currently-listed lot, sorted by lot number. <a href="../contact.html">Contact us</a> for the exact location of any lot.</p>
+      <p style="color:var(--text-light);margin-bottom:1.5rem;">All 82 released lots across Phase 1 and Phase 2, by block and lot number. Phase 3's 54 lots are shown on the map but are not yet released. <a href="../contact.html">Contact us</a> about any lot.</p>
       <div class="inventory-table-wrap">
         <table class="inventory-table" id="inventoryTable">
           <thead>
@@ -215,178 +216,34 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 // ══════════════════════════════════════════════════
-//  THE STADIUM PHASE ONE — LOT DATA
-//  Edit this object to update any lot's info.
-//  Status read off the official CWRE Phase One plat, whose
-//  legend is: Blue = Sold, Red = Spec Build, Green = Available,
-//  Orange = Reserved. Spec builds are builder-owned and can be
-//  toured and purchased today.
-// ══════════════════════════════════════════════════
-const LOT_DATA = {
-  // Block 1 — west side, off Goodson Rd (north to south)
-  "B1-10": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.20 AC", notes: "Block 1, Lot 10" },
-  "B1-9":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.24 AC", notes: "Block 1, Lot 9" },
-  "B1-8":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.20 AC", notes: "Block 1, Lot 8" },
-  "B1-7":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.25 AC", notes: "Block 1, Lot 7" },
-  "B1-6":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.14 AC", notes: "Block 1, Lot 6" },
-  "B1-5":  { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.26 AC", notes: "Block 1, Lot 5" },
-  "B1-4":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.11 AC", notes: "Block 1, Lot 4" },
-  "B1-3":  { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.21 AC", notes: "Block 1, Lot 3" },
-  "B1-2":  { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.20 AC", notes: "Block 1, Lot 2" },
-  // Block 1 — Iron Horse Dr / Triple Crown Pl (center)
-  "B1-11": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.22 AC", notes: "Block 1, Lot 11" },
-  "B1-12": { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.37 AC", notes: "Block 1, Lot 12" },
-  "B1-13": { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "2.05 AC", notes: "Block 1, Lot 13" },
-  "B1-14": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.01 AC", notes: "Block 1, Lot 14" },
-  "B1-15": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.01 AC", notes: "Block 1, Lot 15" },
-  "B1-16": { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.01 AC", notes: "Block 1, Lot 16" },
-  "B1-17": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "2.75 AC", notes: "Block 1, Lot 17" },
-  "B1-18": { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "2.79 AC", notes: "Block 1, Lot 18" },
-  "B1-19": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.06 AC", notes: "Block 1, Lot 19" },
-  "B1-20": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.53 AC", notes: "Block 1, Lot 20" },
-  "B1-21": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.50 AC", notes: "Block 1, Lot 21" },
-  // Block 1 — Commerce Comet Way (northeast, south to north)
-  "B1-22": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.64 AC", notes: "Block 1, Lot 22" },
-  "B1-23": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.34 AC", notes: "Block 1, Lot 23" },
-  "B1-24": { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.02 AC", notes: "Block 1, Lot 24" },
-  "B1-25": { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.06 AC", notes: "Block 1, Lot 25" },
-  "B1-26": { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.11 AC", notes: "Block 1, Lot 26" },
-  "B1-27": { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.33 AC", notes: "Block 1, Lot 27" },
-  "B1-28": { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.30 AC", notes: "Block 1, Lot 28" },
-  // Block 2 — west column off Goodson Rd (south to north)
-  "B2-2":  { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.39 AC", notes: "Block 2, Lot 2" },
-  "B2-3":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.22 AC", notes: "Block 2, Lot 3" },
-  "B2-4":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.08 AC", notes: "Block 2, Lot 4" },
-  // Block 2 — east side, along Iron Horse Dr (south to north)
-  "B2-5":  { status: "spec",      builder: "TBD", floorPlan: "TBD", sqft: "1.04 AC", notes: "Block 2, Lot 5" },
-  "B2-6":  { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.00 AC", notes: "Block 2, Lot 6" },
-  "B2-7":  { status: "available", builder: "TBD", floorPlan: "TBD", sqft: "1.07 AC", notes: "Block 2, Lot 7" },
-  "B2-8":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.05 AC", notes: "Block 2, Lot 8" },
-  "B2-9":  { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.02 AC", notes: "Block 2, Lot 9" },
-  "B2-10": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.02 AC", notes: "Block 2, Lot 10" },
-  "B2-11": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.37 AC", notes: "Block 2, Lot 11" },
-  "B2-12": { status: "sold",      builder: "TBD", floorPlan: "TBD", sqft: "1.22 AC", notes: "Block 2, Lot 12" },
-};
-
-const STATUS_LABEL = { available: "Available", spec: "Spec Build", reserved: "Reserved", sold: "Sold" };
-
-// ══════════════════════════════════════════════════
-//  THE STADIUM PHASE TWO — LOT DATA
-//  Sourced from LandVest Idaho's live lot listings
-//  (landvestidaho.com/communities/stadium-subdivision),
-//  Plat 2. No plat map image yet, so these show in the
-//  inventory table only — no pins on the map.
-// ══════════════════════════════════════════════════
-const PHASE2_LOT_DATA = {
-  "P2-33-2": { status: "available", price: "$238,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.31 AC", block: "Block 2", lotNum: "33", notes: "Block 2, Lot 33" },
-  "P2-34-2": { status: "available", price: "$240,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.54 AC", block: "Block 2", lotNum: "34", notes: "Block 2, Lot 34" },
-  "P2-35-2": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.58 AC", block: "Block 2", lotNum: "35", notes: "Block 2, Lot 35" },
-  "P2-36-2": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.83 AC", block: "Block 2", lotNum: "36", notes: "Block 2, Lot 36" },
-  "P2-37-2": { status: "available", price: "$229,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.38 AC", block: "Block 2", lotNum: "37", notes: "Block 2, Lot 37" },
-  "P2-38-2": { status: "available", price: "$229,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.36 AC", block: "Block 2", lotNum: "38", notes: "Block 2, Lot 38" },
-  "P2-38-3": { status: "available", price: "$238,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.27 AC", block: "Block 3", lotNum: "38", notes: "Block 3, Lot 38" },
-  "P2-39-2": { status: "available", price: "$235,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.20 AC", block: "Block 2", lotNum: "39", notes: "Block 2, Lot 39" },
-  "P2-39-3": { status: "available", price: "$295,000.00", builder: "TBD", floorPlan: "TBD", sqft: "2.93 AC", block: "Block 3", lotNum: "39", notes: "Block 3, Lot 39" },
-  "P2-40-2": { status: "available", price: "$239,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.26 AC", block: "Block 2", lotNum: "40", notes: "Block 2, Lot 40" },
-  "P2-40-3": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.68 AC", block: "Block 3", lotNum: "40", notes: "Block 3, Lot 40" },
-  "P2-41-2": { status: "available", price: "$225,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.42 AC", block: "Block 2", lotNum: "41", notes: "Block 2, Lot 41" },
-  "P2-41-3": { status: "available", price: "$248,000.00", builder: "TBD", floorPlan: "TBD", sqft: "3.32 AC", block: "Block 3", lotNum: "41", notes: "Block 3, Lot 41" },
-  "P2-42-2": { status: "available", price: "$247,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.94 AC", block: "Block 2", lotNum: "42", notes: "Block 2, Lot 42" },
-  "P2-42-3": { status: "available", price: "$225,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.14 AC", block: "Block 3", lotNum: "42", notes: "Block 3, Lot 42" },
-  "P2-43-2": { status: "available", price: "$225,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.63 AC", block: "Block 2", lotNum: "43", notes: "Block 2, Lot 43" },
-  "P2-43-3": { status: "available", price: "$235,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.43 AC", block: "Block 3", lotNum: "43", notes: "Block 3, Lot 43" },
-  "P2-44-2": { status: "available", price: "$295,000.00", builder: "TBD", floorPlan: "TBD", sqft: "2.86 AC", block: "Block 2", lotNum: "44", notes: "Block 2, Lot 44" },
-  "P2-44-3": { status: "available", price: "$225,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.52 AC", block: "Block 3", lotNum: "44", notes: "Block 3, Lot 44" },
-  "P2-45-2": { status: "available", price: "$225,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.31 AC", block: "Block 2", lotNum: "45", notes: "Block 2, Lot 45" },
-  "P2-45-3": { status: "available", price: "$225,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.42 AC", block: "Block 3", lotNum: "45", notes: "Block 3, Lot 45" },
-  "P2-46-2": { status: "available", price: "$235,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.67 AC", block: "Block 2", lotNum: "46", notes: "Block 2, Lot 46" },
-  "P2-46-3": { status: "available", price: "$235,000.00", builder: "TBD", floorPlan: "TBD", sqft: "2.21 AC", block: "Block 3", lotNum: "46", notes: "Block 3, Lot 46" },
-  "P2-47-2": { status: "available", price: "$215,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.21 AC", block: "Block 2", lotNum: "47", notes: "Block 2, Lot 47" },
-  "P2-47-3": { status: "available", price: "$219,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.39 AC", block: "Block 3", lotNum: "47", notes: "Block 3, Lot 47" },
-  "P2-48-2": { status: "available", price: "$220,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.32 AC", block: "Block 2", lotNum: "48", notes: "Block 2, Lot 48" },
-  "P2-48-3": { status: "available", price: "$235,000.00", builder: "TBD", floorPlan: "TBD", sqft: "2.15 AC", block: "Block 3", lotNum: "48", notes: "Block 3, Lot 48" },
-  "P2-49-2": { status: "available", price: "$220,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.21 AC", block: "Block 2", lotNum: "49", notes: "Block 2, Lot 49" },
-  "P2-49-3": { status: "available", price: "$249,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.11 AC", block: "Block 3", lotNum: "49", notes: "Block 3, Lot 49" },
-  "P2-50-2": { status: "available", price: "$220,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.23 AC", block: "Block 2", lotNum: "50", notes: "Block 2, Lot 50" },
-  "P2-50-3": { status: "available", price: "$235,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.68 AC", block: "Block 3", lotNum: "50", notes: "Block 3, Lot 50" },
-  "P2-51-2": { status: "available", price: "$220,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.17 AC", block: "Block 2", lotNum: "51", notes: "Block 2, Lot 51" },
-  "P2-51-3": { status: "available", price: "$260,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.67 AC", block: "Block 3", lotNum: "51", notes: "Block 3, Lot 51" },
-  "P2-52-2": { status: "available", price: "$219,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.05 AC", block: "Block 2", lotNum: "52", notes: "Block 2, Lot 52" },
-  "P2-52-3": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "2.11 AC", block: "Block 3", lotNum: "52", notes: "Block 3, Lot 52" },
-  "P2-53-2": { status: "available", price: "$185,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.14 AC", block: "Block 2", lotNum: "53", notes: "Block 2, Lot 53" },
-  "P2-53-3": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.89 AC", block: "Block 3", lotNum: "53", notes: "Block 3, Lot 53" },
-  "P2-54-3": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.64 AC", block: "Block 3", lotNum: "54", notes: "Block 3, Lot 54" },
-  "P2-55-3": { status: "reserved", price: "", builder: "TBD", floorPlan: "TBD", sqft: "1.78 AC", block: "Block 3", lotNum: "55", notes: "Block 3, Lot 55" },
-  "P2-56-3": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.72 AC", block: "Block 3", lotNum: "56", notes: "Block 3, Lot 56" },
-  "P2-57-3": { status: "available", price: "$245,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.87 AC", block: "Block 3", lotNum: "57", notes: "Block 3, Lot 57" },
-  "P2-58-3": { status: "available", price: "$235,000.00", builder: "TBD", floorPlan: "TBD", sqft: "2.39 AC", block: "Block 3", lotNum: "58", notes: "Block 3, Lot 58" },
-  "P2-59-3": { status: "available", price: "$215,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.70 AC", block: "Block 3", lotNum: "59", notes: "Block 3, Lot 59" },
-  "P2-60-3": { status: "available", price: "$180,000.00", builder: "TBD", floorPlan: "TBD", sqft: "1.24 AC", block: "Block 3", lotNum: "60", notes: "Block 3, Lot 60" },
-};
-
-// ══════════════════════════════════════════════════
-//  UNIFIED LOT INVENTORY — combines both data sets
-//  above into one table sorted by lot number, with one
-//  combined availability summary.
-// ══════════════════════════════════════════════════
-const ALL_LOTS = [
-  ...Object.entries(LOT_DATA).map(([lotKey, d]) => {
-    const [block, lotNum] = lotKey.split('-');
-    return { lotNum: Number(lotNum), status: d.status, price: '', builder: d.builder, acres: d.sqft, notes: d.notes };
-  }),
-  ...Object.entries(PHASE2_LOT_DATA).map(([key, d]) => ({
-    lotNum: Number(d.lotNum), status: d.status, price: d.price, builder: d.builder, acres: d.sqft, notes: d.notes,
-  })),
-].sort((a, b) => a.lotNum - b.lotNum);
-
-const tbody = document.getElementById('inventoryBody');
-ALL_LOTS.forEach(d => {
-  const tr = document.createElement('tr');
-  tr.innerHTML = `
-    <td><strong>Lot ${d.lotNum}</strong></td>
-    <td><span class="tbl-status ${d.status}">${STATUS_LABEL[d.status]}</span></td>
-    <td>${d.price || '—'}</td>
-    <td>${d.builder || '—'}</td>
-    <td>${d.acres || '—'}</td>
-    <td style="font-size:0.82rem;color:var(--text-light)">${d.notes || '—'}</td>
-  `;
-  tbody.appendChild(tr);
-});
-
-(function buildSummary() {
-  const counts = { available: 0, spec: 0, reserved: 0, sold: 0 };
-  ALL_LOTS.forEach(d => counts[d.status]++);
-  const labels = { available: '🟢 Available', spec: '🔵 Spec Build', reserved: '🟠 Reserved', sold: '🔴 Sold' };
-  const el = document.getElementById('summaryStats');
-  el.innerHTML = Object.entries(counts).filter(([,c]) => c > 0).map(([s, c]) =>
-    `<div style="font-size:0.9rem;"><span style="color:var(--text-light)">${labels[s]}:</span> <strong>${c}</strong></div>`
-  ).join('');
-})();
-
-// ══════════════════════════════════════════════════
-//  INTERACTIVE MAP — every lot is a real polygon.
+//  THE STADIUM — LOT MAP & INVENTORY
 //
-//  ../data/stadium-lots.geojson holds all 136 lots as
-//  individual parcels, extracted from the CAD vector
-//  geometry inside Horrocks Engineers' "Stadium
-//  Subdivision No. 2" PDF (not traced by hand or by eye).
-//  The georeference is scaled so each polygon's computed
-//  area matches the acreage printed on the plat — the
-//  median lot lands within 0.33% of its surveyed acreage.
+//  Everything on this page is driven by two files:
+//    ../data/stadium-lots.geojson    136 lot polygons
+//    ../data/stadium-phases.geojson  phase boundaries
 //
-//  To change a lot's status, edit MASTER_LOT_STATUS below.
-//  Anything not listed falls back to "unreleased".
+//  The polygons come from the CAD vector geometry inside
+//  Horrocks Engineers' "Stadium Subdivision No. 2" plat.
+//  Status, pricing, builder and MLS data come from the
+//  reconciled builder tracker. To update availability,
+//  regenerate the GeoJSON — nothing here needs editing.
 // ══════════════════════════════════════════════════
-const STATUS_STYLE = {
-  available:  { color: '#1e8e4e', fill: '#2ecc71', label: 'Available' },
-  spec:       { color: '#a5281f', fill: '#e74c3c', label: 'Spec Build' },
-  reserved:   { color: '#a86608', fill: '#f39c12', label: 'Reserved' },
-  sold:       { color: '#1c5b8a', fill: '#3498db', label: 'Sold' },
-  unreleased: { color: '#5c636a', fill: '#95a5a6', label: 'Future Release' },
+const STATUS = {
+  available: { fill: '#2ecc71', line: '#1e8e4e', label: 'Available Lot' },
+  forsale:   { fill: '#e74c3c', line: '#a5281f', label: 'Home For Sale' },
+  reserved:  { fill: '#f39c12', line: '#a86608', label: 'Reserved' },
+  sold:      { fill: '#3498db', line: '#1c5b8a', label: 'Sold' },
+  future:    { fill: '#95a5a6', line: '#5c636a', label: 'Future Release' },
 };
 
-// Master-plat lot number -> status. Fill in as lots are released.
-const MASTER_LOT_STATUS = {};
+const PHASE_COLOR = { 1: '#ffd23f', 2: '#00e5ff', 3: '#c77dff' };
+
+const money = n => (n === null || n === undefined || n === '' || n === 'None')
+  ? null : '$' + Number(n).toLocaleString('en-US');
+
+const lotName = p => p.phase === 3
+  ? `Lot ${p.platLot}`
+  : `Block ${p.block}, Lot ${p.lot}`;
 
 const stadiumMap = L.map('stadiumMap');
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -394,55 +251,136 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/
   maxZoom: 20,
 }).addTo(stadiumMap);
 
-function lotStyle(feature) {
-  const s = STATUS_STYLE[MASTER_LOT_STATUS[feature.properties.lot] || 'unreleased'];
-  return { color: s.color, weight: 1, opacity: 0.9, fillColor: s.fill, fillOpacity: 0.42 };
+const lotStyle = f => ({
+  color: STATUS[f.properties.status].line,
+  weight: 1,
+  opacity: 0.9,
+  fillColor: STATUS[f.properties.status].fill,
+  fillOpacity: f.properties.phase === 3 ? 0.3 : 0.5,
+});
+
+function popupHtml(p) {
+  const rows = [];
+  if (p.lotPrice)  rows.push(['Lot price', money(p.lotPrice)]);
+  if (p.homePrice) rows.push(['Home price', money(p.homePrice)]);
+  if (p.builder)   rows.push(['Builder', p.builder]);
+  if (p.address)   rows.push(['Address', p.address]);
+  if (p.mls)       rows.push(['MLS #', p.mls]);
+  const s = STATUS[p.status];
+  return `<div style="min-width:190px">
+    <div style="font-size:1.05rem;font-weight:700">${lotName(p)}</div>
+    <div style="color:#666;font-size:0.82rem;margin-bottom:6px">
+      ${p.phase === 3 ? 'Phase 3 · not yet released' : 'Phase ' + p.phase} · ${p.acres.toFixed(2)} acres</div>
+    <div style="margin-bottom:7px"><span style="display:inline-block;padding:2px 9px;border-radius:99px;
+      background:${s.fill};color:#fff;font-size:0.74rem;font-weight:700">${p.statusText || s.label}</span></div>
+    ${rows.map(([k, v]) =>
+      `<div style="font-size:0.83rem"><span style="color:#777">${k}:</span> <strong>${v}</strong></div>`).join('')}
+    <a href="../contact.html" style="display:inline-block;margin-top:8px;font-size:0.84rem;font-weight:600">
+      Ask about this lot →</a>
+  </div>`;
 }
 
-fetch('../data/stadium-lots.geojson')
-  .then(r => r.json())
-  .then(geo => {
-    const layer = L.geoJSON(geo, {
-      style: lotStyle,
-      onEachFeature: (feature, lyr) => {
-        const p = feature.properties;
-        const st = MASTER_LOT_STATUS[p.lot] || 'unreleased';
-        const s = STATUS_STYLE[st];
-        lyr.bindTooltip(`Lot ${p.lot} · ${p.acres.toFixed(2)} AC`, { sticky: true });
-        lyr.bindPopup(
-          `<div style="min-width:150px">
-             <div style="font-size:1.05rem;font-weight:700;margin-bottom:2px">Lot ${p.lot}</div>
-             <div style="color:#555;font-size:0.86rem">${p.acres.toFixed(2)} acres</div>
-             <div style="margin:6px 0"><span style="display:inline-block;padding:2px 8px;border-radius:99px;
-               background:${s.fill};color:#fff;font-size:0.76rem;font-weight:700">${s.label}</span></div>
-             <a href="../contact.html" style="font-size:0.84rem;font-weight:600">Ask about this lot →</a>
-           </div>`);
-        lyr.on({
-          mouseover: e => e.target.setStyle({ weight: 3, fillOpacity: 0.65 }),
-          mouseout:  e => layer.resetStyle(e.target),
-        });
-      },
-    }).addTo(stadiumMap);
-    stadiumMap.fitBounds(layer.getBounds(), { padding: [12, 12] });
+Promise.all([
+  fetch('../data/stadium-phases.geojson').then(r => r.json()),
+  fetch('../data/stadium-lots.geojson').then(r => r.json()),
+]).then(([phases, lots]) => {
 
-    const legend = L.control({ position: 'bottomleft' });
-    legend.onAdd = () => {
-      const div = L.DomUtil.create('div');
-      div.style.cssText = 'background:rgba(255,255,255,0.94);padding:8px 10px;border-radius:8px;' +
-                          'font-size:0.78rem;line-height:1.7;box-shadow:0 1px 5px rgba(0,0,0,0.3)';
-      div.innerHTML = Object.values(STATUS_STYLE).map(s =>
-        `<div><span style="display:inline-block;width:12px;height:12px;border-radius:3px;
-          background:${s.fill};border:1px solid ${s.color};vertical-align:-1px"></span> ${s.label}</div>`
-      ).join('');
-      return div;
-    };
-    legend.addTo(stadiumMap);
-  })
-  .catch(() => {
-    document.getElementById('stadiumMap').innerHTML =
-      '<p style="padding:2rem;text-align:center;color:#666">The lot map could not be loaded. ' +
-      'Please call Clint at (208) 870-4279 for current lot availability.</p>';
+  // Phase boundaries sit under the lots as a bold outline, with a label on each.
+  L.geoJSON(phases, {
+    style: f => ({ color: PHASE_COLOR[f.properties.phase], weight: 4, opacity: 0.95,
+                   fill: false, dashArray: f.properties.phase === 3 ? '10 7' : null,
+                   lineJoin: 'round' }),
+    interactive: false,
+  }).addTo(stadiumMap);
+
+  phases.features.forEach(f => {
+    const c = f.properties.labelPoint || L.geoJSON(f).getBounds().getCenter();
+    L.marker(c, { interactive: false, icon: L.divIcon({
+      className: '',
+      html: `<div style="white-space:nowrap;transform:translate(-50%,-50%);
+              background:${PHASE_COLOR[f.properties.phase]};color:#1a1a1a;font-weight:800;
+              font-size:0.74rem;letter-spacing:0.04em;padding:3px 9px;border-radius:99px;
+              border:2px solid rgba(0,0,0,0.55);box-shadow:0 1px 4px rgba(0,0,0,0.4)">
+              ${f.properties.label.toUpperCase()} · ${f.properties.lots} LOTS</div>`,
+      iconSize: [0, 0],
+    })}).addTo(stadiumMap);
   });
+
+  const lotLayer = L.geoJSON(lots, {
+    style: lotStyle,
+    onEachFeature: (f, lyr) => {
+      const p = f.properties;
+      lyr.bindTooltip(`${lotName(p)} · ${p.acres.toFixed(2)} AC · ${STATUS[p.status].label}`,
+                      { sticky: true });
+      lyr.bindPopup(popupHtml(p));
+      lyr.on({
+        mouseover: e => e.target.setStyle({ weight: 3, fillOpacity: 0.72 }),
+        mouseout:  e => lotLayer.resetStyle(e.target),
+      });
+    },
+  }).addTo(stadiumMap);
+
+  stadiumMap.fitBounds(lotLayer.getBounds(), { padding: [12, 12] });
+
+  const legend = L.control({ position: 'bottomleft' });
+  legend.onAdd = () => {
+    const d = L.DomUtil.create('div');
+    d.style.cssText = 'background:rgba(255,255,255,0.95);padding:9px 11px;border-radius:8px;' +
+                      'font-size:0.76rem;line-height:1.65;box-shadow:0 1px 6px rgba(0,0,0,0.35)';
+    d.innerHTML =
+      Object.values(STATUS).map(s =>
+        `<div><span style="display:inline-block;width:12px;height:12px;border-radius:3px;
+          background:${s.fill};border:1px solid ${s.line};vertical-align:-1px"></span> ${s.label}</div>`).join('') +
+      '<div style="border-top:1px solid #ddd;margin:5px 0 4px"></div>' +
+      [1, 2, 3].map(n =>
+        `<div><span style="display:inline-block;width:12px;height:0;border-top:3px solid ${PHASE_COLOR[n]};
+          vertical-align:4px"></span> Phase ${n}${n === 3 ? ' (future)' : ''}</div>`).join('');
+    return d;
+  };
+  legend.addTo(stadiumMap);
+
+  buildInventory(lots.features.map(f => f.properties));
+}).catch(() => {
+  document.getElementById('stadiumMap').innerHTML =
+    '<p style="padding:2rem;text-align:center;color:#666">The lot map could not be loaded. ' +
+    'Please call Clint at (208) 870-4279 for current availability.</p>';
+});
+
+function buildInventory(props) {
+  const listed = props.filter(p => p.phase !== 3)
+    .sort((a, b) => a.phase - b.phase || a.block - b.block || a.lot - b.lot);
+
+  const tbody = document.getElementById('inventoryBody');
+  listed.forEach(p => {
+    const price = money(p.lotPrice);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>Blk ${p.block}, Lot ${p.lot}</strong>
+          <div style="font-size:0.75rem;color:var(--text-light)">Phase ${p.phase}</div></td>
+      <td><span class="tbl-status ${p.status}">${STATUS[p.status].label}</span></td>
+      <td>${price || '—'}</td>
+      <td>${p.builder || '—'}</td>
+      <td>${p.acres.toFixed(2)} AC</td>
+      <td style="font-size:0.82rem;color:var(--text-light)">${
+        p.homePrice ? 'Home ' + money(p.homePrice) : (p.address || '—')}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  const onMarket = listed.filter(p => p.status === 'available' || p.status === 'forsale');
+  const prices = onMarket.map(p => Number(p.lotPrice)).filter(Boolean);
+  const stats = [
+    ['🟢 On market', onMarket.length],
+    ['🟠 Reserved', listed.filter(p => p.status === 'reserved').length],
+    ['🔵 Sold', listed.filter(p => p.status === 'sold').length],
+    ['⚪ Future (Phase 3)', props.filter(p => p.phase === 3).length],
+  ];
+  if (prices.length) {
+    stats.push(['Lot prices', `${money(Math.min(...prices))} – ${money(Math.max(...prices))}`]);
+  }
+  document.getElementById('summaryStats').innerHTML = stats.map(([k, v]) =>
+    `<div style="font-size:0.9rem;"><span style="color:var(--text-light)">${k}:</span> <strong>${v}</strong></div>`
+  ).join('');
+}
 </script>
 
   <!-- UserWay ADA Accessibility Widget — replace ACCOUNT_ID after signing up at userway.org -->
