@@ -31,6 +31,12 @@
       font-size: 0.72rem; letter-spacing: 0.04em; padding: 4px 10px; border-radius: 6px;
       border: 2px solid #888; box-shadow: 0 2px 6px rgba(0,0,0,0.35); }
     .phase-callout span { width: 9px; height: 9px; border-radius: 2px; display: inline-block; flex: none; }
+    .phase-status { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.85rem; margin-bottom: 1.25rem; }
+    .phase-status-card { border: 1px solid var(--gray-light); border-top: 4px solid var(--pc); border-radius: var(--radius); padding: 0.9rem 1rem; background: #fff; box-shadow: var(--shadow); }
+    .phase-status-head { display: flex; align-items: center; gap: 0.45rem; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.35rem; }
+    .phase-status-head span { width: 10px; height: 10px; border-radius: 3px; background: var(--pc); flex: none; }
+    .phase-status-card strong { display: block; font-size: 1rem; margin-bottom: 0.3rem; }
+    .phase-status-card p { font-size: 0.84rem; line-height: 1.5; color: var(--text-light); margin: 0; }
   </style>
   <!-- Buying Buddy plugin v5.02; Authorized Domain: cwreidaho.com -->
   <!-- DO NOT DEFER — must load in page head -->
@@ -130,6 +136,24 @@
   <div class="container">
     <div style="margin-bottom:1.25rem; padding:1rem 1.25rem; background:var(--gray-light); border-radius:var(--radius); font-size:0.9rem; color:var(--text-light);">
       🗺️ All 136 lots of the Stadium master plan, mapped over live satellite imagery and outlined by phase. Hover any lot for its block, lot number and acreage — click it for pricing, builder and status.
+    </div>
+
+    <div class="phase-status">
+      <div class="phase-status-card" style="--pc:#ffd23f">
+        <div class="phase-status-head"><span></span>Phase 1</div>
+        <strong>Available to purchase now</strong>
+        <p>Recorded and selling. Buy a lot outright or a builder's home — 38 lots.</p>
+      </div>
+      <div class="phase-status-card" style="--pc:#00e5ff">
+        <div class="phase-status-head"><span></span>Phase 2</div>
+        <strong>Reservations only</strong>
+        <p>You can reserve a lot now and hold your pick until the plat records, expected by the end of 2026 — 44 lots.</p>
+      </div>
+      <div class="phase-status-card" style="--pc:#c77dff">
+        <div class="phase-status-head"><span></span>Phase 3</div>
+        <strong>Not yet released</strong>
+        <p>Shown for planning only. Expected to come available later in 2027 — 54 lots.</p>
+      </div>
     </div>
     <div id="stadiumMap" style="height:600px; border-radius:var(--radius-lg); box-shadow:var(--shadow-md); overflow:hidden;"></div>
     <p class="zoom-hint">💡 Scroll to zoom · Drag to pan · Satellite imagery © Esri</p>
