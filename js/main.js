@@ -31,7 +31,7 @@ function wireLeadForm(formEl, formName, successMessage) {
       })
       .catch(() => {
         if (btn) { btn.disabled = false; btn.textContent = originalLabel; }
-        alert("Something went wrong sending your info. Please call/text (208) 870-4279 or email clintwalkeridaho@gmail.com directly.");
+        alert("Something went wrong sending your info. Please call/text Clint at (208) 870-4279 or Aaron at (208) 921-2195, or email aaron@3idaho.com directly.");
       });
   });
 }
