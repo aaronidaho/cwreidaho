@@ -1,0 +1,501 @@
+{
+ "_note": "Join table between the Horrocks master-plan exhibit number (platLot 1-136, the polygon key in stadium-lots.geojson) and the recorded lot identity. LandVest propertyName is \"lot/block\"; phaseName \"Plat 1\" = phase 1, \"Plat 2\" = phase 2. Phase 1 chains confirmed by LandVest label points 38/38. Phase 2 solved jointly on surveyed acreage + LandVest pin position (44/44 acreage-exact). Regenerate rather than hand-edit.",
+ "phases": {
+  "Plat 1": 1,
+  "Plat 2": 2
+ },
+ "lots": [
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 2,
+   "platLot": 136
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 3,
+   "platLot": 135
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 4,
+   "platLot": 134
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 5,
+   "platLot": 133
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 6,
+   "platLot": 132
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 7,
+   "platLot": 131
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 8,
+   "platLot": 129
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 9,
+   "platLot": 127
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 10,
+   "platLot": 125
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 11,
+   "platLot": 124
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 12,
+   "platLot": 122
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 13,
+   "platLot": 121
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 14,
+   "platLot": 119
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 15,
+   "platLot": 116
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 16,
+   "platLot": 115
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 17,
+   "platLot": 114
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 18,
+   "platLot": 113
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 19,
+   "platLot": 112
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 20,
+   "platLot": 110
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 21,
+   "platLot": 97
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 22,
+   "platLot": 98
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 23,
+   "platLot": 99
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 24,
+   "platLot": 101
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 25,
+   "platLot": 102
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 26,
+   "platLot": 103
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 27,
+   "platLot": 105
+  },
+  {
+   "phase": 1,
+   "block": 1,
+   "lot": 28,
+   "platLot": 107
+  },
+  {
+   "phase": 1,
+   "block": 2,
+   "lot": 2,
+   "platLot": 130
+  },
+  {
+   "phase": 1,
+   "block": 2,
+   "lot": 3,
+   "platLot": 128
+  },
+  {
+   "phase": 1,
+   "block": 2,
+   "lot": 4,
+   "platLot": 126
+  },
+  {
+   "phase": 1,
+   "block": 2,
+   "lot": 5,
+   "platLot": 123
+  },
+  {
+   "phase": 1,
+   "block": 2,
+   "lot": 6,
+   "platLot": 120
+  },
+  {
+   "phase": 1,
+   "block": 2,
+   "lot": 7,
+   "platLot": 118
+  },
+  {
+   "phase": 1,
+   "block": 2,
+   "lot": 8,
+   "platLot": 117
+  },
+  {
+   "phase": 1,
+   "block": 2,
+   "lot": 9,
+   "platLot": 111
+  },
+  {
+   "phase": 1,
+   "block": 2,
+   "lot": 10,
+   "platLot": 109
+  },
+  {
+   "phase": 1,
+   "block": 2,
+   "lot": 11,
+   "platLot": 108
+  },
+  {
+   "phase": 1,
+   "block": 2,
+   "lot": 12,
+   "platLot": 96
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 33,
+   "platLot": 43
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 34,
+   "platLot": 42
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 35,
+   "platLot": 41
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 36,
+   "platLot": 40
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 37,
+   "platLot": 39
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 38,
+   "platLot": 38
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 39,
+   "platLot": 37
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 40,
+   "platLot": 23
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 41,
+   "platLot": 22
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 42,
+   "platLot": 21
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 43,
+   "platLot": 20
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 44,
+   "platLot": 19
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 45,
+   "platLot": 18
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 46,
+   "platLot": 17
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 47,
+   "platLot": 16
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 48,
+   "platLot": 12
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 49,
+   "platLot": 10
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 50,
+   "platLot": 8
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 51,
+   "platLot": 5
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 52,
+   "platLot": 3
+  },
+  {
+   "phase": 2,
+   "block": 2,
+   "lot": 53,
+   "platLot": 2
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 38,
+   "platLot": 44
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 39,
+   "platLot": 36
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 40,
+   "platLot": 35
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 41,
+   "platLot": 34
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 42,
+   "platLot": 33
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 43,
+   "platLot": 32
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 44,
+   "platLot": 29
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 45,
+   "platLot": 28
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 46,
+   "platLot": 27
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 47,
+   "platLot": 26
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 48,
+   "platLot": 25
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 49,
+   "platLot": 30
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 50,
+   "platLot": 31
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 51,
+   "platLot": 24
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 52,
+   "platLot": 15
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 53,
+   "platLot": 14
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 54,
+   "platLot": 13
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 55,
+   "platLot": 11
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 56,
+   "platLot": 9
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 57,
+   "platLot": 7
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 58,
+   "platLot": 6
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 59,
+   "platLot": 4
+  },
+  {
+   "phase": 2,
+   "block": 3,
+   "lot": 60,
+   "platLot": 1
+  }
+ ]
+}

@@ -23,6 +23,7 @@
     .tbl-status.available { background: #dcfce7; color: #15803d; }
     .tbl-status.forsale  { background: #fee2e2; color: #b91c1c; }
     .tbl-status.reserved { background: #ffedd5; color: #c2410c; }
+    .tbl-status.pending  { background: #fef9c3; color: #854d0e; }
     .tbl-status.sold     { background: #dbeafe; color: #1d4ed8; }
     .tbl-status.future   { background: #eef0f2; color: #4b5563; }
     .tbl-status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; display: block; }
@@ -156,7 +157,7 @@
       </div>
     </div>
     <div id="stadiumMap" style="height:600px; border-radius:var(--radius-lg); box-shadow:var(--shadow-md); overflow:hidden;"></div>
-    <p class="zoom-hint">💡 Scroll to zoom · Drag to pan · Satellite imagery © Esri</p>
+    <p class="zoom-hint">💡 Scroll to zoom · Drag to pan · Satellite imagery © Esri <span id="syncStamp" style="display:block;margin-top:.25rem;"></span></p>
 
     <div style="margin-top:1.5rem; background:var(--gray-light); border-radius:var(--radius-lg); padding:1.25rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
       <div>
@@ -261,6 +262,7 @@ const STATUS = {
   available: { fill: '#2ecc71', line: '#1e8e4e', label: 'Available Lot' },
   forsale:   { fill: '#e74c3c', line: '#a5281f', label: 'Home For Sale' },
   reserved:  { fill: '#f39c12', line: '#a86608', label: 'Reserved' },
+  pending:   { fill: '#f6d55c', line: '#9a7b00', label: 'Pending' },
   sold:      { fill: '#3498db', line: '#1c5b8a', label: 'Sold' },
   future:    { fill: '#95a5a6', line: '#5c636a', label: 'Future Release' },
 };
@@ -397,6 +399,12 @@ Promise.all([
   legend.addTo(stadiumMap);
 
   buildInventory(lots.features.map(f => f.properties));
+  if (lots.updated) {
+    const d = new Date(lots.updated);
+    document.getElementById('syncStamp').textContent =
+      'Lot status and pricing synced from the developer ' +
+      d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + '.';
+  }
 }).catch(() => {
   document.getElementById('stadiumMap').innerHTML =
     '<p style="padding:2rem;text-align:center;color:#666">The lot map could not be loaded. ' +
@@ -428,6 +436,7 @@ function buildInventory(props) {
   const stats = [
     ['🟢 On market', onMarket.length],
     ['🟠 Reserved', listed.filter(p => p.status === 'reserved').length],
+    ['🟡 Pending', listed.filter(p => p.status === 'pending').length],
     ['🔵 Sold', listed.filter(p => p.status === 'sold').length],
     ['⚪ Future (Phase 3)', props.filter(p => p.phase === 3).length],
   ];
