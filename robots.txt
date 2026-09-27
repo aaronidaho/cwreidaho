@@ -1,0 +1,76 @@
+# ─────────────────────────────────────────────────────────────
+#  WHO IS ALLOWED TO CRAWL THIS SITE
+#
+#  ALLOWED: Google, Bing and the other search engines, plus the
+#  bots that build link previews when you paste a link into
+#  Facebook, Instagram, LinkedIn, iMessage or Slack. Blocking
+#  those would take the site off Google and kill the preview
+#  image when you share a listing — so they stay.
+#
+#  BLOCKED below: crawlers that exist to scrape the site wholesale
+#  to train AI models, plus the SEO tools competitors use to pull
+#  apart someone else's site.
+#
+#  NOTE: robots.txt is obeyed voluntarily. The big AI companies do
+#  honour it. A bad actor can ignore it — nothing in a text file
+#  can stop that. See SECURITY.md for what actually enforces.
+# ─────────────────────────────────────────────────────────────
+
+# ── AI model training crawlers ──
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: CCBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: meta-externalagent
+User-agent: FacebookBot
+User-agent: Bytespider
+User-agent: Amazonbot
+User-agent: AI2Bot
+User-agent: Diffbot
+User-agent: Omgilibot
+User-agent: Omgili
+User-agent: ImagesiftBot
+User-agent: img2dataset
+User-agent: Webzio-Extended
+User-agent: Timpibot
+User-agent: YouBot
+User-agent: PanguBot
+User-agent: Kangaroo Bot
+User-agent: Scrapy
+Disallow: /
+
+# ── SEO / competitive-analysis scrapers ──
+User-agent: AhrefsBot
+User-agent: SemrushBot
+User-agent: MJ12bot
+User-agent: DotBot
+User-agent: BLEXBot
+User-agent: DataForSeoBot
+User-agent: PetalBot
+User-agent: SeznamBot
+User-agent: serpstatbot
+User-agent: ZoominfoBot
+Disallow: /
+
+# ── AI ANSWER ENGINES ──
+#  These send real people to the site when someone asks an AI
+#  "new construction lots in Star Idaho". They are ALLOWED on
+#  purpose. To block them too, delete the # from the four lines
+#  under the word Disallow.
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+Allow: /
+# Disallow: /
+
+# ── Everyone else (Google, Bing, link previews) ──
+User-agent: *
+Allow: /
+Disallow: /qr/
+Disallow: /signs/
+Disallow: /scripts/

@@ -1,0 +1,9 @@
+# Netlify security headers for cwreidaho.com
+# Applied to every page. See SECURITY.md for what these do and don't do.
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
+  X-Robots-Tag: index, follow, noai, noimageai
