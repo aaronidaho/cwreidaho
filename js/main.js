@@ -1,9 +1,25 @@
 // CWRE Idaho — Main JavaScript
 
+// Aaron's CRM lead inbox. Every form also sends a copy here. Set to '' to
+// disconnect; Netlify Forms keeps working either way.
+const CRM_URL = 'https://3idaho-crm.vercel.app/api/lead';
+
+function copyToCrm(data, formName) {
+  if (!CRM_URL) return;
+  const lead = Object.fromEntries([...data.entries()].filter(([k]) => !['form-name', 'bot-field'].includes(k)));
+  if (data.get('bot-field')) return;
+  fetch(CRM_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({ ...lead, form: formName, page: location.href, referrer: document.referrer || '' }),
+  }).catch((err) => console.warn('CRM copy failed:', err));
+}
+
 // ── Netlify Forms submission helper ──
 function submitToNetlify(form, formName) {
   const data = new FormData(form);
   data.set('form-name', formName);
+  copyToCrm(data, formName);
   return fetch('/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
